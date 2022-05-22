@@ -26,7 +26,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mdworld.stereo8aaos"
+      "package": "com.mdworld.stereo8aaos",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
