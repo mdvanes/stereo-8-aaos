@@ -1,5 +1,7 @@
-import React, { MutableRefObject, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-native";
+import { Audio } from "expo-av";
+import { Text } from "../Themed";
 
 const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 
@@ -7,15 +9,28 @@ const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 export const StationButton = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [pbo, setPbo] = useState<Audio.Sound | null>(null);
 
-  const onToggle = () => {
-    const elem = audioRef.current;
-    if (elem) {
+  const init = async () => {
+    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+    const { sound: playbackObject } = await Audio.Sound.createAsync(
+      { uri: channelUrl },
+      { shouldPlay: false }
+    );
+    setPbo(playbackObject);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const onToggle = async () => {
+    if (pbo) {
       if (isPlaying) {
-        elem.pause();
+        await pbo.pauseAsync();
       } else {
-        elem.src = `${channelUrl}?${Date.now()}`;
-        elem.play();
+        //   elem.src = `${channelUrl}?${Date.now()}`;
+        await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
     }
@@ -23,21 +38,10 @@ export const StationButton = () => {
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        id="homeremote-stream-player-audio-elem"
-        src={channelUrl}
-        // @ts-expect-error
-        type="audio/mpeg"
-        controls
-        style={{ display: "none" }}
-      />
-      <Button
-        onPress={onToggle}
-        title="Play NPO Radio 2"
-        // color="#841584"
-        // accessibilityLabel="Learn more about this purple button"
-      />
+      <Button onPress={onToggle} title="Play NPO Radio 2" />
+      <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
+        {isPlaying ? "PLAYING" : "STOPPED"}
+      </Text>
     </>
   );
 };
