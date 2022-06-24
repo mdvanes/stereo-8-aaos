@@ -24,4 +24,26 @@ I have not done this fully, because I'm the only user. So I just go to https://p
 
 This just needs an the AAB (App release bundle) files to be uploaded.
 
-After releasing for internal testing, 
+AAOS is listed under Release > Setup > Advanced settings > Release types. Then "Automotive OS only" is available on the Internal testing release page.
+
+Continue Internal test release with "review" and then "roll out to test devices"
+
+After releasing for internal testing go to the "Testers" tab and use the "copy link" and open this on the device
+
+A normal release: Left menu bar > "Internal testing"
+
+A AAOS release: Left menu bar > "Advanced Settings" > "Release types" > "Release an Android Automotive OS app bundle or APK to a test track >" > "Review and roll out release" 
+This now fails with "APKs or Android App Bundles in this track must require the following features:android.hardware.type.automotive."
+See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-features
+
+### set up Android studio
+
+Building for automotive requires a modification like https://reactnative.dev/docs/building-for-tv
+instead of: <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+use: ??? https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-features
+
+APKs or Android App Bundles in this track must require the following features:android.hardware.type.automotive.
+
+Building with Expo does not set up an AndroidManifest.xml
+
+https://reactnative.dev/docs/environment-setup
