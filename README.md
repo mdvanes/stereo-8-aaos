@@ -35,6 +35,14 @@ A normal release: Left menu bar > "Internal testing"
 A AAOS release: Left menu bar > "Advanced Settings" > "Release types" > "Release an Android Automotive OS app bundle or APK to a test track >" > "Review and roll out release" 
 This now fails with "APKs or Android App Bundles in this track must require the following features:android.hardware.type.automotive."
 See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-features
+* Expo is managing ios and android files internally. Try `react-native eject`
+    * Eject: `expo eject`
+    * dir is created: android/
+    * still build with? eas build -p android
+    * build with: cd android/ && ./gradlew
+    * result in android/app/?
+* The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
+
 
 ### set up Android studio
 
