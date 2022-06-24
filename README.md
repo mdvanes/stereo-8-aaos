@@ -15,6 +15,7 @@ Build:
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
 - npm i -g eas-cli
+- update version code in app.json
 - eas build -p android
 - log into expo.dev dashboard and download AAB (under Builds or just use the URL listed by the CLI)
 
@@ -38,9 +39,10 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
 * Expo is managing ios and android files internally. Try `react-native eject`
     * Eject: `expo eject`
     * dir is created: android/
-    * still build with? eas build -p android
-    * build with: cd android/ && ./gradlew
-    * result in android/app/?
+    * update version code in android/build.gradle
+    * still build with: `eas build -p android` (requires `npm i -g eas-cli`)
+    * NOT NEEDED build with: cd android/ && ./gradlew
+    * NOT NEEDED result in android/app/?
 * The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
 
 
