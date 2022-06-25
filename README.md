@@ -39,10 +39,13 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
 * Expo is managing ios and android files internally. Try `react-native eject`
     * Eject: `expo eject`
     * dir is created: android/
-    * update version code in android/build.gradle
+    * update `version code` in `android/build.gradle` and `app.json`
     * still build with: `eas build -p android` (requires `npm i -g eas-cli`)
     * NOT NEEDED build with: cd android/ && ./gradlew
     * NOT NEEDED result in android/app/?
+    * (source: https://moleman1024.github.io/audiowagon/developers.html) Internal testing does not work: Right now “Internal Testing” is not supported for apps using AAOS features. My experience: everything works, you can select "install on device" but it never shows up in the car.
+    * AAOS is listed under Release > Setup > Advanced settings > Release types. Then "Automotive OS only" is available on the Internal testing release page.
+    * Try Closed testing (initial review time ca. 1 week). When finished with the Interal Testing process, click "promote release" and select create new track.
 * The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
 
 
