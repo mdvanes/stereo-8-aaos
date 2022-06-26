@@ -73,3 +73,5 @@ web-build/
 dist/
 
 # @end expo-cli
+
+components/StationButton/settings.json
