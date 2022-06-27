@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "react-native";
+import { Button, View } from "react-native";
 import { Audio } from "expo-av";
 import { Text } from "../Themed";
-import { SubsonicButton } from "./getSubsonic";
-import { MyList } from "./MyList";
+import { styles } from "../item.styles";
 
 const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 
@@ -22,7 +21,6 @@ const getMovies = async () => {
 
 // TODO extract channelUrl and label to props
 export const StationButton = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
 
@@ -52,7 +50,7 @@ export const StationButton = () => {
   };
 
   return (
-    <>
+    <View style={styles.item}>
       <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
         NPO Radio 2
       </Text>
@@ -60,8 +58,6 @@ export const StationButton = () => {
         onPress={onToggle}
         title={`${isPlaying ? "Pause" : "Play"} NPO Radio 2`}
       />
-      <SubsonicButton />
-      <MyList />
-    </>
+    </View>
   );
 };

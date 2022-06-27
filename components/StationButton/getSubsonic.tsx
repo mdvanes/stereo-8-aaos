@@ -6,11 +6,13 @@ import md5 from "md5";
 import { Text } from "../Themed";
 import settings from "./settings.json";
 
+const PLAYER_NAME = "Stereo8";
+
 const API_DOMAIN = settings.subsonic.domain;
 const API_USER = settings.subsonic.user;
 const API_SALT = settings.subsonic.salt;
 const API_TOKEN = md5(settings.subsonic.password + API_SALT);
-const API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=Stereo8&f=json`;
+const API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
 
 const getAPI = (method: string, option = "") =>
   API_DOMAIN + method + API_CONFIG + option;
@@ -20,17 +22,30 @@ interface SubsonicNowPlaying {
   title: string;
   album: string;
   artist: string;
+  playerName?: string;
 }
 
-export const getNowPlaying = async (): Promise<SubsonicNowPlaying | null> => {
+export const getNowPlaying = async ({
+  remote,
+}: {
+  remote: boolean;
+}): Promise<SubsonicNowPlaying | null> => {
   try {
     const response = await fetch(getAPI("getNowPlaying"));
     const json = await response.json();
     const { nowPlaying } = json["subsonic-response"];
-    if (nowPlaying?.entry && nowPlaying.entry[0]) {
-      const { artist, title } = nowPlaying.entry[0];
+    const entry =
+      (nowPlaying?.entry as SubsonicNowPlaying[]).filter((p) => {
+        if (remote) {
+          return p.playerName !== PLAYER_NAME;
+        } else {
+          return p.playerName === PLAYER_NAME;
+        }
+      }) || [];
+    if (entry && entry.length > 0) {
+      const { artist, title } = entry[0];
       console.log(`Now playing: ${artist} - ${title}`);
-      return nowPlaying.entry[0];
+      return entry[0];
     } else {
       return null;
     }
@@ -44,15 +59,19 @@ export const getNowPlaying = async (): Promise<SubsonicNowPlaying | null> => {
   // }
 };
 
+const getCurrentRemotePlayingId = async (): Promise<string> => {
+  const newMeta = await getNowPlaying({remote: true});
+  const id = newMeta?.id ?? "5716";
+  return id;
+};
+
 export const SubsonicButton: FC = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
   const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
 
   const init = async () => {
-    const newMeta = await getNowPlaying();
-    const id = newMeta?.id ?? '5716';
+    const id = await getCurrentRemotePlayingId();
     await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
     const { sound: playbackObject } = await Audio.Sound.createAsync(
       { uri: getAPI("stream", `&id=${id}`) },
@@ -66,15 +85,17 @@ export const SubsonicButton: FC = () => {
   }, []);
 
   const onToggle = async () => {
-    const newMeta = await getNowPlaying();
-    setMeta(newMeta);
     if (pbo) {
       if (isPlaying) {
         await pbo.pauseAsync();
       } else {
+        // const id = await getCurrentRemotePlayingId();
+        // await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
         await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
+      const newMeta = await getNowPlaying({remote: false});
+      setMeta(newMeta);
     }
   };
   return (
