@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Audio } from "expo-av";
-import { Text } from "../Themed";
-import { styles } from "../item.styles";
+import { ListItemButton } from "./ListItemButton";
 
 const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 
@@ -50,14 +48,10 @@ export const StationButton = () => {
   };
 
   return (
-    <View style={styles.item}>
-      <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
-        NPO Radio 2
-      </Text>
-      <Button
-        onPress={onToggle}
-        title={`${isPlaying ? "Pause" : "Play"} NPO Radio 2`}
-      />
-    </View>
+    <ListItemButton
+      text="NPO Radio 2"
+      title={isPlaying ? "Pause" : "Play"}
+      onClick={onToggle}
+    />
   );
 };

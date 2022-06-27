@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import { Button, FlatList, View, StyleSheet, StatusBar } from "react-native";
+import React, { FC, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 // @ts-expect-error
 import md5 from "md5";
-import { Text } from "../Themed";
 import settings from "./settings.json";
+import { ListItemButton } from "./ListItemButton";
 
 const PLAYER_NAME = "Stereo8";
 
@@ -98,18 +97,14 @@ export const SubsonicButton: FC = () => {
       setMeta(newMeta);
     }
   };
+
   return (
-    <>
-      {" "}
-      <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
-        {meta
-          ? `Now playing: ${meta.artist} - ${meta.title}`
-          : "Nothing playing"}
-      </Text>
-      <Button
-        onPress={onToggle}
-        title={`${isPlaying ? "Pause" : "Play"} Subsonic`}
-      />
-    </>
+    <ListItemButton
+      text={meta
+        ? `Now playing: ${meta.artist} - ${meta.title}`
+        : "Nothing playing"}
+      title={isPlaying ? "Pause" : "Play"}
+      onClick={onToggle}
+    />
   );
 };
