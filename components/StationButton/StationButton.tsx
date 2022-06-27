@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-native";
 import { Audio } from "expo-av";
 import { Text } from "../Themed";
-import { getSubsonic } from "./getSubsonic";
+import { SubsonicButton } from "./getSubsonic";
 import { MyList } from "./MyList";
 
 const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
@@ -38,7 +38,6 @@ export const StationButton = () => {
   useEffect(() => {
     init();
     getMovies();
-    getSubsonic();
   }, []);
 
   const onToggle = async () => {
@@ -46,7 +45,6 @@ export const StationButton = () => {
       if (isPlaying) {
         await pbo.pauseAsync();
       } else {
-        //   elem.src = `${channelUrl}?${Date.now()}`;
         await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
@@ -55,10 +53,14 @@ export const StationButton = () => {
 
   return (
     <>
-      <Button onPress={onToggle} title="Play NPO Radio 2" />
       <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
-        {isPlaying ? "PLAYING" : "STOPPED"}
+        NPO Radio 2
       </Text>
+      <Button
+        onPress={onToggle}
+        title={`${isPlaying ? "Pause" : "Play"} NPO Radio 2`}
+      />
+      <SubsonicButton />
       <MyList />
     </>
   );

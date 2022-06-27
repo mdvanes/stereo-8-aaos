@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, FlatList, View, StyleSheet, StatusBar } from "react-native";
 import { Audio } from "expo-av";
 import { Text } from "../Themed";
-import settings from "./settings.json";
-
-const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
+import { ListItemButton } from "./ListItemButton";
 
 const DATA = [
   {
@@ -21,31 +19,31 @@ const DATA = [
   },
 ];
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    // backgroundColor: "#f9c2ff",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+});
+
+const Item = ({ title }: any) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+  </View>
+);
+
+const renderItem = ({ item }: any) => <ListItemButton title={item.title} />;
+
 export const MyList = () => {
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-      // backgroundColor: "#f9c2ff",
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
-    },
-    title: {
-      fontSize: 32,
-    },
-  });
-
-  const Item = ({ title }: any) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-
-  const renderItem = ({ item }: any) => <Item title={item.title} />;
-
   return (
     <FlatList
       data={DATA}
