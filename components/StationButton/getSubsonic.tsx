@@ -59,7 +59,7 @@ export const getNowPlaying = async ({
 };
 
 const getCurrentRemotePlayingId = async (): Promise<string> => {
-  const newMeta = await getNowPlaying({remote: true});
+  const newMeta = await getNowPlaying({ remote: true });
   const id = newMeta?.id ?? "5716";
   return id;
 };
@@ -88,22 +88,25 @@ export const SubsonicButton: FC = () => {
       if (isPlaying) {
         await pbo.pauseAsync();
       } else {
-        // const id = await getCurrentRemotePlayingId();
-        // await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
+        await pbo.unloadAsync();
+        const id = await getCurrentRemotePlayingId();
+        await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
         await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
-      const newMeta = await getNowPlaying({remote: false});
-      setMeta(newMeta);
+      setTimeout(async () => {
+        const newMeta = await getNowPlaying({ remote: false });
+        setMeta(newMeta);
+      }, 500);
     }
   };
 
   return (
     <ListItemButton
-      text={meta
-        ? `Now playing: ${meta.artist} - ${meta.title}`
-        : "Nothing playing"}
-      title={isPlaying ? "Pause" : "Play"}
+      text={
+        `Subsonic: ${meta ? `${meta.artist} - ${meta.title}` : "Nothing playing"}`
+      }
+      title={isPlaying ? "pause" : "play"}
       onClick={onToggle}
     />
   );

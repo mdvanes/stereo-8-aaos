@@ -50,7 +50,7 @@ export const StationButton = () => {
   return (
     <ListItemButton
       text="NPO Radio 2"
-      title={isPlaying ? "Pause" : "Play"}
+      title={isPlaying ? "pause" : "play"}
       onClick={onToggle}
     />
   );
