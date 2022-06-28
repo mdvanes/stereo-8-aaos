@@ -1,4 +1,3 @@
-// @ts-expect-error
 import md5 from "md5";
 import { getSettings } from "../../getSettings";
 
