@@ -16,7 +16,7 @@ import useColorScheme from "../../hooks/useColorScheme";
 
 interface Props {
   text: string;
-  title: "play" | "pause";
+  title: "play" | "pause" | "bug";
   onClick: () => void;
 }
 

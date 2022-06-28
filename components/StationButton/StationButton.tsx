@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { ListItemButton } from "./ListItemButton";
-// @ts-expect-error
-import MediaMeta from "react-native-media-meta";
+// / @ts-expect-error
+// import MediaMeta from "react-native-media-meta";
 
 const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 
@@ -19,19 +19,19 @@ const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 //   }
 // };
 
-const getMediaMeta = async (): Promise<string> => {
-  try {
-    const metadata = await MediaMeta.get(channelUrl);
-    console.log(metadata);
-    return metadata;
-  } catch (err) {
-    console.error(err);
-    return "error";
-  }
+// const getMediaMeta = async (): Promise<string> => {
+//   try {
+//     const metadata = await MediaMeta.get(channelUrl);
+//     console.log(metadata);
+//     return metadata;
+//   } catch (err) {
+//     console.error(err);
+//     return "error";
+//   }
 
-  // .then((metadata: any) => console.log(metadata))
-  // .catch((err: any) => console.error(err));
-};
+//   // .then((metadata: any) => console.log(metadata))
+//   // .catch((err: any) => console.error(err));
+// };
 
 // TODO extract channelUrl and label to props
 export const StationButton = () => {
@@ -46,8 +46,8 @@ export const StationButton = () => {
       { shouldPlay: false }
     );
     setPbo(playbackObject);
-    const newMeta = await getMediaMeta();
-    setMeta(newMeta);
+    // const newMeta = await getMediaMeta();
+    // setMeta(newMeta);
   };
 
   useEffect(() => {
