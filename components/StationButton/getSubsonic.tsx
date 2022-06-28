@@ -2,15 +2,17 @@ import React, { FC, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 // @ts-expect-error
 import md5 from "md5";
-import settings from "./settings.json";
 import { ListItemButton } from "./ListItemButton";
+import { getSettings } from "../../getSettings";
 
 const PLAYER_NAME = "Stereo8";
 
-const API_DOMAIN = settings.subsonic.domain;
-const API_USER = settings.subsonic.user;
-const API_SALT = settings.subsonic.salt;
-const API_TOKEN = md5(settings.subsonic.password + API_SALT);
+const settings = getSettings();
+
+const API_DOMAIN = settings?.subsonic?.domain ?? "";
+const API_USER = settings?.subsonic?.user ?? "";
+const API_SALT = settings?.subsonic?.salt ?? "";
+const API_TOKEN = md5((settings?.subsonic?.password ?? "") + API_SALT);
 const API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
 
 const getAPI = (method: string, option = "") =>
@@ -60,7 +62,9 @@ export const getNowPlaying = async ({
 
 const getCurrentRemotePlayingId = async (): Promise<string> => {
   const newMeta = await getNowPlaying({ remote: true });
-  const id = newMeta?.id ?? "5716";
+  // Between 1000 and 5716
+  const randomId = `${Math.floor(Math.random() * 4716) + 1000}`;
+  const id = newMeta?.id ?? randomId;
   return id;
 };
 
@@ -80,6 +84,9 @@ export const SubsonicButton: FC = () => {
   };
 
   useEffect(() => {
+    if (API_DOMAIN) {
+      throw new Error("Settings not complete");
+    }
     init();
   }, []);
 
@@ -103,9 +110,9 @@ export const SubsonicButton: FC = () => {
 
   return (
     <ListItemButton
-      text={
-        `Subsonic: ${meta ? `${meta.artist} - ${meta.title}` : "Nothing playing"}`
-      }
+      text={`Subsonic: ${
+        meta ? `${meta.artist} - ${meta.title}` : "Nothing playing"
+      }`}
       title={isPlaying ? "pause" : "play"}
       onClick={onToggle}
     />

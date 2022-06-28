@@ -40,6 +40,9 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
     * Eject: `expo eject`
     * dir is created: android/
     * update `version code` in `android/app/build.gradle` and `app.json`
+    * settings.json is in gitigore, set on expo like this: 
+        * `base64 settings.json`
+        * `eas secret:create` with SETTINGS_BASE64
     * still build with: `eas build -p android` (requires `npm i -g eas-cli`)
     * build only APK: `eas build -p android --profile previewApk`
     * NOT NEEDED build with: cd android/ && ./gradlew

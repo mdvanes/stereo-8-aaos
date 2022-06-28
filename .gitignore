@@ -74,4 +74,4 @@ dist/
 
 # @end expo-cli
 
-components/StationButton/settings.json
+settings.json
