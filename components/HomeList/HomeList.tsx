@@ -1,8 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, FlatList, View, StyleSheet, StatusBar } from "react-native";
-import { Audio } from "expo-av";
-import { Text } from "../Themed";
-import { ListItemButton } from "../StationButton/ListItemButton";
+import React from "react";
+import { FlatList } from "react-native";
 import { SubsonicButton } from "../StationButton/getSubsonic";
 import { StationButton } from "../StationButton/StationButton";
 
@@ -21,34 +18,12 @@ import { StationButton } from "../StationButton/StationButton";
 //   },
 // ];
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     marginTop: StatusBar.currentHeight || 0,
-//   },
-//   item: {
-//     // backgroundColor: "#f9c2ff",
-//     padding: 20,
-//     marginVertical: 8,
-//     marginHorizontal: 16,
-//   },
-//   title: {
-//     fontSize: 32,
-//   },
-// });
-
-// const Item = ({ title }: any) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// );
-
 // const renderItem = ({ item }: any) => <ListItemButton title={item.title} />;
 
 export const HomeList = () => {
   return (
     <FlatList
-    style={{minWidth: "40vw"}}
+      style={{ minWidth: "40vw" }}
       //   data={DATA}
       //   renderItem={renderItem}
       data={[

@@ -39,8 +39,9 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
 * Expo is managing ios and android files internally. Try `react-native eject`
     * Eject: `expo eject`
     * dir is created: android/
-    * update `version code` in `android/build.gradle` and `app.json`
+    * update `version code` in `android/app/build.gradle` and `app.json`
     * still build with: `eas build -p android` (requires `npm i -g eas-cli`)
+    * build only APK: `eas build -p android --profile previewApk`
     * NOT NEEDED build with: cd android/ && ./gradlew
     * NOT NEEDED result in android/app/?
     * (source: https://moleman1024.github.io/audiowagon/developers.html) Internal testing does not work: Right now “Internal Testing” is not supported for apps using AAOS features. My experience: everything works, you can select "install on device" but it never shows up in the car.
