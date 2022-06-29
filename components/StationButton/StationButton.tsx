@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { ListItemButton } from "./ListItemButton";
-// @ts-expect-error
 import MediaMeta from "react-native-media-meta";
-
-const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 
 // const getMovies = async () => {
 //   try {
@@ -19,33 +16,43 @@ const channelUrl = `https://icecast.omroep.nl/radio2-bb-mp3`;
 //   }
 // };
 
-const getMediaMeta = async (): Promise<string> => {
+const getMediaMeta = async (channelURL: string): Promise<string> => {
   try {
-    const metadata = await MediaMeta.get(channelUrl);
+    // console.log(MediaMeta.get(channelUrl));
+    // return "";
+    const metadata = await MediaMeta.get(channelURL);
     // console.log(metadata);
-    return metadata;
+    return JSON.stringify(metadata);
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return "No metadata";
   }
-  // .then((metadata: any) => console.log(metadata))
-  // .catch((err: any) => console.error(err));
 };
 
-// TODO extract channelUrl and label to props
-export const StationButton = () => {
-  const [meta, setMeta] = useState<string>();
+interface IStationButtonProps {
+  channelURL: string;
+  channelName: string;
+}
+
+export const StationButton: FC<IStationButtonProps> = ({channelName, channelURL}) => {
+  const [meta, setMeta] = useState<string>("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
 
   const init = async () => {
-    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+    await Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      staysActiveInBackground: true,
+    });
     const { sound: playbackObject } = await Audio.Sound.createAsync(
-      { uri: channelUrl },
+      { uri: channelURL },
       { shouldPlay: false }
     );
+    playbackObject.setOnMetadataUpdate((title) => {
+      setMeta(`pbometa ${title}`);
+    });
     setPbo(playbackObject);
-    const newMeta = await getMediaMeta();
+    const newMeta = await getMediaMeta(channelURL);
     setMeta(newMeta);
   };
 
@@ -67,7 +74,7 @@ export const StationButton = () => {
 
   return (
     <ListItemButton
-      text={`NPO Radio 2${meta && `: ${meta}`}`}
+      text={`${channelName}${meta && `: ${meta}`}`}
       title={isPlaying ? "pause" : "play"}
       onClick={onToggle}
     />

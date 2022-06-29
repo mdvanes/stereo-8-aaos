@@ -18,7 +18,7 @@ export const HomeList = () => {
       <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
         without FlatList
       </Text>
-      <StationButton />
+      <StationButton channelName="NPO Radio 2" channelURL="https://icecast.omroep.nl/radio2-bb-mp3" />
       <SubsonicButton />
       {/* <FlatList
         style={{ minWidth: "40vw" }}
