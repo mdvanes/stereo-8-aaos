@@ -144,8 +144,10 @@ android {
         applicationId 'com.mdworld.stereo8aaos'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "1.0.7"
+        /* start versions */
+        versionCode 11
+        versionName "1.0.11"
+        /* end versions */
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {

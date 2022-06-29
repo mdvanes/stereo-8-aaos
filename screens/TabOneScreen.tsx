@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { HomeList } from "../components/HomeList/HomeList";
-import { StationButton } from "../components/StationButton/StationButton";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
@@ -19,7 +18,6 @@ export default function TabOneScreen({
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
-      {/* <StationButton /> */}
       <HomeList />
     </View>
   );
