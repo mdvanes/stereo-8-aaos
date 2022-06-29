@@ -1,7 +1,7 @@
 import React from "react";
 // import { FlatList } from "react-native";
-// import { SubsonicButton } from "../SubsonicButton/SubsonicButton";
 import { StationButton } from "../StationButton/StationButton";
+import { SubsonicButton } from "../SubsonicButton/SubsonicButton";
 
 // const DATA = [
 //   {
@@ -19,6 +19,7 @@ export const HomeList = () => {
         without FlatList
       </Text>
       <StationButton />
+      <SubsonicButton />
       {/* <FlatList
         style={{ minWidth: "40vw" }}
         //   data={DATA}
