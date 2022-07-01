@@ -26,6 +26,30 @@ export interface SubsonicNowPlaying {
   playerName?: string;
 }
 
+export const getPlaylists = async () => {
+  try {
+    const response = await fetch(getAPI("getPlaylists"));
+    const json = await response.json();
+    const x = json["subsonic-response"];
+    if (x.playlists.playlist[10]) {
+      const { id, name } = x.playlists.playlist[10];
+      console.log(id, name);
+      const r2 = await fetch(getAPI("getPlaylist", `&id=${id}`)).then((data) =>
+        data.json()
+      );
+      const y = r2["subsonic-response"];
+      console.log(y);
+      const ids = y.playlist.entry.map((p: any) => {
+        console.log(p.title);
+        return p.id;
+      });
+      return ids[0];
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getNowPlaying = async ({
   remote,
 }: {
@@ -36,7 +60,7 @@ export const getNowPlaying = async ({
     const json = await response.json();
     const { nowPlaying } = json["subsonic-response"];
     const entry =
-      (nowPlaying?.entry as SubsonicNowPlaying[]).filter((p) => {
+      ((nowPlaying?.entry as SubsonicNowPlaying[]) ?? []).filter((p) => {
         if (remote) {
           return p.playerName !== PLAYER_NAME;
         } else {
