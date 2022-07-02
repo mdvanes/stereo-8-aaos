@@ -26,21 +26,37 @@ export interface SubsonicNowPlaying {
   playerName?: string;
 }
 
-export const getPlaylists1 = async () => {
+export interface IPlaylist {
+  id: string;
+  name: string;
+}
+
+export interface ISong {
+  id: string;
+  artist: string;
+  title: string;
+}
+
+export const getPlaylists = async (): Promise<IPlaylist[]> => {
   try {
     const response = await fetch(getAPI("getPlaylists")).then((data) =>
       data.json()
     );
-    const x = response["subsonic-response"];
-    if (x.playlists.playlist) {
-      return x.playlists.playlist.map((y: any) => ({ id: y.id, name: y.name }));
+    const { playlists } = response["subsonic-response"];
+    if (playlists.playlist) {
+      return (playlists.playlist as IPlaylist[]).map(({ id, name }) => ({
+        id,
+        name,
+      }));
     }
+    return [];
   } catch (err) {
     console.error(err);
+    return [];
   }
 };
 
-export const getPlaylist = async (id: string) => {
+export const getPlaylist = async (id: string): Promise<ISong[]> => {
   try {
     const response = await fetch(getAPI("getPlaylist", `&id=${id}`)).then(
       (data) => data.json()
@@ -48,43 +64,15 @@ export const getPlaylist = async (id: string) => {
     const { playlist } = response["subsonic-response"];
 
     if (playlist?.entry) {
-      const songs = playlist.entry.map(({ id, title }: any) => {
-        // console.log(p.title);
-        return { id, title };
+      const songs = (playlist.entry as ISong[]).map(({ id, artist, title }) => {
+        return { id, artist, title };
       });
       return songs;
     }
-    // const ids = y.playlist.entry.map((p: any) => {
-    //   console.log(p.title);
-    //   return p.id;
-    // });
-    // return ids[0];
+    return [];
   } catch (err) {
     console.error(err);
-  }
-};
-
-export const getPlaylists = async () => {
-  try {
-    const response = await fetch(getAPI("getPlaylists"));
-    const json = await response.json();
-    const x = json["subsonic-response"];
-    if (x.playlists.playlist[10]) {
-      const { id, name } = x.playlists.playlist[10];
-      console.log(id, name);
-      const r2 = await fetch(getAPI("getPlaylist", `&id=${id}`)).then((data) =>
-        data.json()
-      );
-      const y = r2["subsonic-response"];
-      console.log(y);
-      const ids = y.playlist.entry.map((p: any) => {
-        console.log(p.title);
-        return p.id;
-      });
-      return ids[0];
-    }
-  } catch (err) {
-    console.error(err);
+    return [];
   }
 };
 

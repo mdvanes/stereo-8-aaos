@@ -10,8 +10,9 @@ import {
   getNowPlaying,
   getPlaylist,
   getPlaylists,
-  getPlaylists1,
   hasValidSettings,
+  IPlaylist,
+  ISong,
   SubsonicNowPlaying,
 } from "./getSubsonic";
 
@@ -20,8 +21,8 @@ export const SubsonicButton: FC = () => {
   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
   const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
   const [error, setError] = useState<string>();
-  const [playlists, setPlaylists] = useState([]);
-  const [songs, setSongs] = useState([]);
+  const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
+  const [songs, setSongs] = useState<ISong[]>([]);
 
   const init = async () => {
     const id = await getCurrentRemotePlayingId();
@@ -34,7 +35,7 @@ export const SubsonicButton: FC = () => {
       { shouldPlay: false }
     );
     setPbo(playbackObject);
-    setPlaylists(await getPlaylists1());
+    setPlaylists(await getPlaylists());
   };
 
   useEffect(() => {
@@ -51,24 +52,6 @@ export const SubsonicButton: FC = () => {
       } else {
         await pbo.unloadAsync();
         const id = await getCurrentRemotePlayingId();
-        await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
-        await pbo.playAsync();
-      }
-      setIsPlaying(!isPlaying);
-      setTimeout(async () => {
-        const newMeta = await getNowPlaying({ remote: false });
-        setMeta(newMeta);
-      }, 500);
-    }
-  };
-
-  const onTogglePlaylist = async () => {
-    if (pbo) {
-      if (isPlaying) {
-        await pbo.pauseAsync();
-      } else {
-        await pbo.unloadAsync();
-        const id = await getPlaylists();
         await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
         await pbo.playAsync();
       }
@@ -124,59 +107,55 @@ export const SubsonicButton: FC = () => {
         onClick={onToggle}
       />
 
-      <ul style={{ color: "white" }}>
-        {playlists.map((playlist: any) => (
-          <li>
-            <View>
-              <Pressable
-                onPress={handleOpenPlaylist(playlist.id)}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
+      <div>
+        {playlists.map((playlist) => (
+          <View style={{ padding: 10 }}>
+            <Pressable
+              onPress={handleOpenPlaylist(playlist.id)}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <Text
+                style={styles.col}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
               >
-                <Text
-                  style={styles.col}
-                  lightColor="rgba(0,0,0,0.8)"
-                  darkColor="rgba(255,255,255,0.8)"
-                >
-                  {playlist.name}
-                </Text>
-              </Pressable>
-            </View>
-          </li>
+                {playlist.name}
+              </Text>
+            </Pressable>
+          </View>
         ))}
-      </ul>
+      </div>
 
-      <ul style={{ color: "white" }}>
-        {songs.map((song: any) => (
-          <li>
-            <View>
-              <Pressable
-                onPress={handlePlaySong(song.id)}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
+      <div style={{ maxHeight: "60vh", overflowY: "scroll" }}>
+        {songs.map((song) => (
+          <View style={{ padding: 10 }}>
+            <Pressable
+              onPress={handlePlaySong(song.id)}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <Text
+                style={styles.col}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
               >
-                <Text
-                  style={styles.col}
-                  lightColor="rgba(0,0,0,0.8)"
-                  darkColor="rgba(255,255,255,0.8)"
-                >
-                  {song.title}
-                </Text>
-              </Pressable>
-            </View>
-          </li>
+                {song.artist} - {song.title}
+              </Text>
+            </Pressable>
+          </View>
         ))}
-      </ul>
+      </div>
 
-      <ListItemButton
+      {/* <ListItemButton
         text={`Playlist Subsonic: ${
           meta ? `${meta.artist} - ${meta.title}` : "Nothing playing"
         }`}
         title={isPlaying ? "pause" : "play"}
         onClick={onTogglePlaylist}
-      />
+      /> */}
     </>
   );
 };
