@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { ListItemButton } from "./ListItemButton";
-import MediaMeta from "react-native-media-meta";
+// import MediaMeta from "react-native-media-meta";
 
 // const getMovies = async () => {
 //   try {
@@ -20,9 +20,9 @@ const getMediaMeta = async (channelURL: string): Promise<string> => {
   try {
     // console.log(MediaMeta.get(channelUrl));
     // return "";
-    const metadata = await MediaMeta.get(channelURL);
+    // const metadata = await MediaMeta.get(channelURL);
     // console.log(metadata);
-    return JSON.stringify(metadata);
+    return ""; // JSON.stringify(metadata);
   } catch (err) {
     console.error(err);
     return "No metadata";

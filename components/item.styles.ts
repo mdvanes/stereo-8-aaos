@@ -20,4 +20,7 @@ export const styles = StyleSheet.create({
   col: {
     flex: 3,
   },
+  line: {
+    fontSize: 24,
+  },
 });

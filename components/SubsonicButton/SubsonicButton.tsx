@@ -1,6 +1,13 @@
 import { Audio } from "expo-av";
 import React, { FC, useEffect, useState } from "react";
-import { Pressable, View } from "react-native";
+import {
+  Pressable,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  SectionList,
+  StatusBar,
+} from "react-native";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
@@ -15,6 +22,21 @@ import {
   ISong,
   SubsonicNowPlaying,
 } from "./getSubsonic";
+
+const Item = ({
+  id,
+  artist,
+  title,
+  onClick,
+}: ISong & { onClick: (id: string) => () => void }) => (
+  <View style={styles.item}>
+    <Pressable onPress={onClick(id)}>
+      <Text style={styles.line}>
+        {artist} - {title}
+      </Text>
+    </Pressable>
+  </View>
+);
 
 export const SubsonicButton: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -107,9 +129,9 @@ export const SubsonicButton: FC = () => {
         onClick={onToggle}
       />
 
-      <div>
+      <View>
         {playlists.map((playlist) => (
-          <View style={{ padding: 10 }}>
+          <View key={playlist.id} style={{ padding: 10 }}>
             <Pressable
               onPress={handleOpenPlaylist(playlist.id)}
               style={({ pressed }) => ({
@@ -117,7 +139,7 @@ export const SubsonicButton: FC = () => {
               })}
             >
               <Text
-                style={styles.col}
+                // style={styles.col}
                 lightColor="rgba(0,0,0,0.8)"
                 darkColor="rgba(255,255,255,0.8)"
               >
@@ -126,28 +148,53 @@ export const SubsonicButton: FC = () => {
             </Pressable>
           </View>
         ))}
-      </div>
+      </View>
 
-      <div style={{ maxHeight: "60vh", overflowY: "scroll" }}>
-        {songs.map((song) => (
-          <View style={{ padding: 10 }}>
-            <Pressable
-              onPress={handlePlaySong(song.id)}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
+      {songs.length > 0 && (
+        <SafeAreaView>
+          <SectionList
+            sections={[{ title: "?", data: songs }]}
+            keyExtractor={(item, index) => item.id + index}
+            renderItem={({ item }) => (
+              <Item onClick={handlePlaySong} {...item} />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
               <Text
-                style={styles.col}
-                lightColor="rgba(0,0,0,0.8)"
-                darkColor="rgba(255,255,255,0.8)"
+              // style={styles.header}
               >
-                {song.artist} - {song.title}
+                {title}
               </Text>
-            </Pressable>
-          </View>
-        ))}
-      </div>
+            )}
+          />
+        </SafeAreaView>
+        // <View
+        //   style={{
+        //     // maxHeight: "200px",
+        //     // maxHeight: "60vh", // TODO expo go crashes? needs plugin
+        //     // overflowY: "scroll" -> https://stackoverflow.com/questions/41912313/element-overflow-hidden-in-react-native-android
+        //     overflow: "scroll",
+        //   }}
+        // >
+        //   {songs.map((song) => (
+        //     <View key={song.id} style={{ padding: 10 }}>
+        //       <Pressable
+        //         onPress={handlePlaySong(song.id)}
+        //         style={({ pressed }) => ({
+        //           opacity: pressed ? 0.5 : 1,
+        //         })}
+        //       >
+        //         <Text
+        //           // style={styles.col}
+        //           lightColor="rgba(0,0,0,0.8)"
+        //           darkColor="rgba(255,255,255,0.8)"
+        //         >
+        //           {song.artist} - {song.title}
+        //         </Text>
+        //       </Pressable>
+        //     </View>
+        //   ))}
+        // </View>
+      )}
 
       {/* <ListItemButton
         text={`Playlist Subsonic: ${
