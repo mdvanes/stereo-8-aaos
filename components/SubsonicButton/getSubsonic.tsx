@@ -26,6 +26,44 @@ export interface SubsonicNowPlaying {
   playerName?: string;
 }
 
+export const getPlaylists1 = async () => {
+  try {
+    const response = await fetch(getAPI("getPlaylists")).then((data) =>
+      data.json()
+    );
+    const x = response["subsonic-response"];
+    if (x.playlists.playlist) {
+      return x.playlists.playlist.map((y: any) => ({ id: y.id, name: y.name }));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getPlaylist = async (id: string) => {
+  try {
+    const response = await fetch(getAPI("getPlaylist", `&id=${id}`)).then(
+      (data) => data.json()
+    );
+    const { playlist } = response["subsonic-response"];
+
+    if (playlist?.entry) {
+      const songs = playlist.entry.map(({ id, title }: any) => {
+        // console.log(p.title);
+        return { id, title };
+      });
+      return songs;
+    }
+    // const ids = y.playlist.entry.map((p: any) => {
+    //   console.log(p.title);
+    //   return p.id;
+    // });
+    // return ids[0];
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getPlaylists = async () => {
   try {
     const response = await fetch(getAPI("getPlaylists"));
