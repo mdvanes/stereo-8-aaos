@@ -18,6 +18,8 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
+import PlaylistsScreen from "../screens/PlaylistsScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import {
@@ -57,7 +59,7 @@ function RootNavigator() {
         <Stack.Group>
           <Stack.Screen
             name="Stereo 8"
-            component={TabOneScreen}
+            component={PlaylistsScreen}
             options={({ navigation }: RootStackScreenProps<"Stereo 8">) => ({
               // title: "Home",
               headerLeft: () => (
@@ -66,6 +68,58 @@ function RootNavigator() {
                   style={{ width: 50, height: 50 }}
                   source={require("../assets/images/icon.png")}
                 />
+              ),
+              headerRight: () => (
+                <>
+                  <Pressable
+                    onPress={() => navigation.navigate("Playlist")}
+                    style={({ pressed }) => ({
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                  >
+                    <FontAwesome
+                      name="arrow-left"
+                      size={25}
+                      color={Colors[colorScheme].text}
+                      style={{ marginRight: 15 }}
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => navigation.navigate("Modal")}
+                    style={({ pressed }) => ({
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                  >
+                    <FontAwesome
+                      name="cog"
+                      size={25}
+                      color={Colors[colorScheme].text}
+                      style={{ marginRight: 15 }}
+                    />
+                  </Pressable>
+                </>
+              ),
+            })}
+          />
+          <Stack.Screen
+            name="Playlist"
+            component={PlaylistScreen}
+            options={({ navigation }: RootStackScreenProps<"Playlist">) => ({
+              // title: "Home",
+              headerLeft: () => (
+                <Pressable
+                  onPress={() => navigation.navigate("Stereo 8")}
+                  style={({ pressed }) => ({
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                >
+                  <FontAwesome
+                    name="arrow-left"
+                    size={25}
+                    color={Colors[colorScheme].text}
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
               ),
               headerRight: () => (
                 <Pressable
