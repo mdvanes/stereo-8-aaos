@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   SectionList,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
@@ -22,6 +23,9 @@ import {
   ISong,
   SubsonicNowPlaying,
 } from "./getSubsonic";
+import useColorScheme from "../../hooks/useColorScheme";
+import { FontAwesome } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
 
 const Item = ({
   id,
@@ -45,8 +49,11 @@ export const SubsonicButton: FC = () => {
   const [error, setError] = useState<string>();
   const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
   const [songs, setSongs] = useState<ISong[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const colorScheme = useColorScheme();
 
   const init = async () => {
+    setIsLoading(true);
     const id = await getCurrentRemotePlayingId();
     await Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
@@ -58,6 +65,7 @@ export const SubsonicButton: FC = () => {
     );
     setPbo(playbackObject);
     setPlaylists(await getPlaylists());
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -130,6 +138,7 @@ export const SubsonicButton: FC = () => {
       />
 
       <View>
+        {isLoading && <ActivityIndicator size="large" />}
         {playlists.map((playlist) => (
           <View key={playlist.id} style={{ padding: 10 }}>
             <Pressable
@@ -203,6 +212,35 @@ export const SubsonicButton: FC = () => {
         title={isPlaying ? "pause" : "play"}
         onClick={onTogglePlaylist}
       /> */}
+      <View
+        style={{
+          backgroundColor: "#121212",
+          display: "flex",
+          width: "100%",
+          // color: "#e5e5e7"
+        }}
+      >
+        <View>
+          <Pressable
+            // onPress={() => navigation.navigate("Modal")}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+            })}
+          >
+            <FontAwesome
+              name="play-circle"
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginRight: 15 }}
+            />
+          </Pressable>
+        </View>
+        <Text
+        // style={styles.header}
+        >
+          Now playing...
+        </Text>
+      </View>
     </>
   );
 };
