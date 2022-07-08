@@ -153,7 +153,7 @@ export const SubsonicButton: FC = () => {
       {songs.length > 0 && (
         <SafeAreaView>
           <SectionList
-            sections={[{ title: "?", data: songs }]}
+            sections={[{ title: "Playlist Name TODO", data: songs }]}
             keyExtractor={(item, index) => item.id + index}
             renderItem={({ item }) => (
               <Item onClick={handlePlaySong} {...item} />
