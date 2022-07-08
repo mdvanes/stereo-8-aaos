@@ -1,5 +1,5 @@
 import { Audio } from "expo-av";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import {
   Pressable,
   View,
@@ -26,6 +26,7 @@ import {
 import useColorScheme from "../../hooks/useColorScheme";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { PlayContext } from "../context/play-context";
 
 // const PlaylistItem = ({
 //   id,
@@ -63,6 +64,7 @@ export const SongsInPlaylist: FC = () => {
   const [songs, setSongs] = useState<ISong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
+  const context = useContext(PlayContext);
 
   const init = async () => {
     setIsLoading(true);
@@ -76,7 +78,11 @@ export const SongsInPlaylist: FC = () => {
       { shouldPlay: false }
     );
     setPbo(playbackObject);
-    setPlaylists(await getPlaylists());
+    // setPlaylists(await getPlaylists());
+    const pid = context.playlistId;
+    if (pid) {
+      setSongs(await getPlaylist(pid));
+    }
     setIsLoading(false);
   };
 

@@ -5,6 +5,7 @@ export interface PlayValues {
   isLoading: boolean;
   title: string;
   artist: string;
+  playlistId: string | null;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -12,6 +13,7 @@ export const defaultPlayValues: PlayValues = {
   isLoading: false,
   title: "",
   artist: "",
+  playlistId: null,
 };
 
 export const PlayContext = createContext({
@@ -20,12 +22,15 @@ export const PlayContext = createContext({
   title: defaultPlayValues.title,
   setTitle: (_: string) => {},
   artist: defaultPlayValues.artist,
+  playlistId: defaultPlayValues.playlistId,
+  setPlaylistId: (_: string) => {},
 });
 
 export const PlayContextProvider: FC<{
   children?: ReactNode | undefined;
 }> = ({ children }) => {
   const [title, setTitle] = useState(defaultPlayValues.title);
+  const [playlistId, setPlaylistId] = useState(defaultPlayValues.playlistId);
 
   return (
     <PlayContext.Provider
@@ -35,6 +40,8 @@ export const PlayContextProvider: FC<{
         title,
         setTitle,
         artist: "",
+        playlistId,
+        setPlaylistId,
       }}
     >
       {children}

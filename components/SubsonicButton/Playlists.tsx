@@ -1,5 +1,5 @@
 import { Audio } from "expo-av";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import {
   Pressable,
   View,
@@ -27,6 +27,7 @@ import useColorScheme from "../../hooks/useColorScheme";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
+import { PlayContext } from "../context/play-context";
 
 const PlaylistItem = ({
   id,
@@ -65,6 +66,7 @@ export const Playlists: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
+  const context = useContext(PlayContext);
 
   const init = async () => {
     setIsLoading(true);
@@ -129,6 +131,7 @@ export const Playlists: FC = () => {
     // setPlaylists([]);
     // setSongs([]);
     // setSongs(await getPlaylist(id));
+    context.setPlaylistId(id);
     navigation.navigate("Playlist");
   };
 
