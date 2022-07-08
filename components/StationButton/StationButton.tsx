@@ -1,7 +1,21 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { ListItemButton } from "./ListItemButton";
+import {
+  Button,
+  FlatList,
+  View,
+  StyleSheet,
+  StatusBar,
+  Pressable,
+} from "react-native";
+import { Text } from "../Themed";
+import { styles } from "../item.styles";
 // import MediaMeta from "react-native-media-meta";
+import { FontAwesome } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import useColorScheme from "../../hooks/useColorScheme";
+import { PlayContext } from "../context/play-context";
 
 // const getMovies = async () => {
 //   try {
@@ -34,10 +48,15 @@ interface IStationButtonProps {
   channelName: string;
 }
 
-export const StationButton: FC<IStationButtonProps> = ({channelName, channelURL}) => {
+export const StationButton: FC<IStationButtonProps> = ({
+  channelName,
+  channelURL,
+}) => {
   const [meta, setMeta] = useState<string>("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+  const colorScheme = useColorScheme();
+  const context = useContext(PlayContext);
 
   const init = async () => {
     await Audio.setAudioModeAsync({
@@ -69,14 +88,34 @@ export const StationButton: FC<IStationButtonProps> = ({channelName, channelURL}
         await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
+      context.setTitle(channelName);
     }
   };
 
+  // return (
+  //   <ListItemButton
+  //     text={`${channelName}${meta && `: ${meta}`}`}
+  //     title={isPlaying ? "pause" : "play"}
+  //     onClick={onToggle}
+  //   />
+  // );
+
   return (
-    <ListItemButton
-      text={`${channelName}${meta && `: ${meta}`}`}
-      title={isPlaying ? "pause" : "play"}
-      onClick={onToggle}
-    />
+    <View
+    // style={styles.item}
+    >
+      <Pressable
+        onPress={onToggle}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <FontAwesome
+          name={isPlaying ? "pause-circle" : "play-circle"}
+          size={25}
+          color={Colors[colorScheme].text}
+        />
+      </Pressable>
+    </View>
   );
 };

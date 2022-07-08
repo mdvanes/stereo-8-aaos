@@ -13,6 +13,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable, Image, View } from "react-native";
+import { PlayContextProvider } from "../components/context/play-context";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -51,47 +52,49 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   const colorScheme = useColorScheme();
   return (
-    <Stack.Navigator>
-      <Stack.Group>
-        <Stack.Screen
-          name="Stereo 8"
-          component={TabOneScreen}
-          options={({ navigation }: RootStackScreenProps<"Stereo 8">) => ({
-            // title: "Home",
-            headerLeft: () => (
-              <Image
-                // style={styles.tinyLogo}
-                style={{ width: 50, height: 50 }}
-                source={require("../assets/images/icon.png")}
-              />
-            ),
-            headerRight: () => (
-              <Pressable
-                onPress={() => navigation.navigate("Modal")}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="cog"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
+    <PlayContextProvider>
+      <Stack.Navigator>
+        <Stack.Group>
+          <Stack.Screen
+            name="Stereo 8"
+            component={TabOneScreen}
+            options={({ navigation }: RootStackScreenProps<"Stereo 8">) => ({
+              // title: "Home",
+              headerLeft: () => (
+                <Image
+                  // style={styles.tinyLogo}
+                  style={{ width: 50, height: 50 }}
+                  source={require("../assets/images/icon.png")}
                 />
-              </Pressable>
-            ),
-          })}
+              ),
+              headerRight: () => (
+                <Pressable
+                  onPress={() => navigation.navigate("Modal")}
+                  style={({ pressed }) => ({
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                >
+                  <FontAwesome
+                    name="cog"
+                    size={25}
+                    color={Colors[colorScheme].text}
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              ),
+            })}
+          />
+        </Stack.Group>
+        <Stack.Screen
+          name="NotFound"
+          component={NotFoundScreen}
+          options={{ title: "Oops!" }}
         />
-      </Stack.Group>
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
-    </Stack.Navigator>
+        <Stack.Group screenOptions={{ presentation: "modal" }}>
+          <Stack.Screen name="Modal" component={ModalScreen} />
+        </Stack.Group>
+      </Stack.Navigator>
+    </PlayContextProvider>
   );
 }
 

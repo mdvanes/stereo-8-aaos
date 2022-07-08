@@ -212,35 +212,6 @@ export const SubsonicButton: FC = () => {
         title={isPlaying ? "pause" : "play"}
         onClick={onTogglePlaylist}
       /> */}
-      <View
-        style={{
-          backgroundColor: "#121212",
-          display: "flex",
-          width: "100%",
-          // color: "#e5e5e7"
-        }}
-      >
-        <View>
-          <Pressable
-            // onPress={() => navigation.navigate("Modal")}
-            style={({ pressed }) => ({
-              opacity: pressed ? 0.5 : 1,
-            })}
-          >
-            <FontAwesome
-              name="play-circle"
-              size={25}
-              color={Colors[colorScheme].text}
-              style={{ marginRight: 15 }}
-            />
-          </Pressable>
-        </View>
-        <Text
-        // style={styles.header}
-        >
-          Now playing...
-        </Text>
-      </View>
     </>
   );
 };

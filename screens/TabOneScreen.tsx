@@ -1,5 +1,7 @@
+import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { BottomBar } from "../components/BottomBar/BottomBar";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { HomeList } from "../components/HomeList/HomeList";
@@ -11,7 +13,7 @@ export default function TabOneScreen({
 }: RootTabScreenProps<"TabOne">) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Stereo 8</Text>
+      {/* <Text style={styles.title}>Stereo 8</Text> */}
       {/* <View
         style={styles.separator}
         lightColor="#eee"
@@ -19,6 +21,10 @@ export default function TabOneScreen({
       />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
       <HomeList />
+      <BottomBar />
+      {/* <BottomTabBar>
+
+      </BottomTabBar> */}
     </View>
   );
 }
@@ -27,7 +33,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 20,
