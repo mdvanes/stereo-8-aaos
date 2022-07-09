@@ -124,7 +124,7 @@ export const SongsInPlaylist: FC = () => {
       {context.queue && context.queue.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android: style={{ height: "calc(100vh - 150px)" }}
-          style={{ height: 600 }}
+          style={{ flex: 1 }}
         >
           <SectionList
             sections={[{ title: "", data: context.queue }]}

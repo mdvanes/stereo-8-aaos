@@ -24,11 +24,14 @@ export const SoundWrapper: FC = () => {
     } else {
       if (playbackStatus.isPlaying) {
         context.setProgress(playbackStatus.positionMillis);
+        // const nextSong = getNextSong();
+        // console.log("next:", nextSong);
       }
       if (playbackStatus.didJustFinish) {
         // console.log("finished song");
         const nextSong = getNextSong();
         if (nextSong) {
+          // console.log("next:", nextSong);
           context.setStartSongId(nextSong.id);
         }
         // playNext();
@@ -60,7 +63,7 @@ export const SoundWrapper: FC = () => {
   useEffect(() => {
     // Rebind with new values for context.queue
     context.pbo?.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-  }, [context.queue]);
+  }, [context.queue, context.startSongId]);
 
   useEffect(() => {
     if (!hasValidSettings()) {
