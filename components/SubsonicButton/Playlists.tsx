@@ -41,20 +41,20 @@ const PlaylistItem = ({
   </View>
 );
 
-const Item = ({
-  id,
-  artist,
-  title,
-  onClick,
-}: ISong & { onClick: (id: string) => () => void }) => (
-  <View style={styles.item}>
-    <Pressable onPress={onClick(id)}>
-      <Text style={styles.line}>
-        {artist} - {title}
-      </Text>
-    </Pressable>
-  </View>
-);
+// const Item = ({
+//   id,
+//   artist,
+//   title,
+//   onClick,
+// }: ISong & { onClick: (id: string) => () => void }) => (
+//   <View style={styles.item}>
+//     <Pressable onPress={onClick(id)}>
+//       <Text style={styles.line}>
+//         {artist} - {title}
+//       </Text>
+//     </Pressable>
+//   </View>
+// );
 
 export const Playlists: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -151,7 +151,7 @@ export const Playlists: FC = () => {
         <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
           <SectionList
             sections={[{ title: "", data: playlists }]}
-            keyExtractor={(item, index) => item.id + index}
+            keyExtractor={(item, index) => `${item.id}_${index}`}
             renderItem={({ item }) => (
               <PlaylistItem onClick={handleOpenPlaylist} {...item} />
             )}

@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { Pressable, SafeAreaView, SectionList, View } from "react-native";
@@ -42,6 +43,7 @@ export const SongsInPlaylist: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
+  const navigation = useNavigation();
 
   const init = async () => {
     setIsLoading(true);
@@ -58,6 +60,11 @@ export const SongsInPlaylist: FC = () => {
     const pid = context.playlist?.id;
     if (pid) {
       setSongs(await getPlaylist(pid));
+    } else {
+      console.warn(
+        "On the playlist page, the playlist ID was null, so redirecting back to playlists overview"
+      );
+      navigation.navigate("Playlists");
     }
     setIsLoading(false);
   };
@@ -76,7 +83,7 @@ export const SongsInPlaylist: FC = () => {
     //   title: "",
     // });
     // context.setIsPlaying(true);
-    context.setStartSongId(id)
+    context.setStartSongId(id);
     // if (pbo) {
     //   if (isPlaying) {
     //     await pbo.pauseAsync();
@@ -118,7 +125,7 @@ export const SongsInPlaylist: FC = () => {
         <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
           <SectionList
             sections={[{ title: "", data: songs }]}
-            keyExtractor={(item, index) => item.id + index}
+            keyExtractor={(item, index) => `${item.id}_${index}`}
             renderItem={({ item }) => (
               <Item onClick={handlePlaySong} {...item} />
             )}

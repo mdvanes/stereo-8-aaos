@@ -11,7 +11,7 @@ import { Text, View } from "react-native";
 
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
-//   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+  //   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
   const [error, setError] = useState<string>();
 
   const init = async () => {
@@ -42,17 +42,17 @@ export const SoundWrapper: FC = () => {
 
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {
-      if (context.isPlaying) {
-        console.log("pause!");
-        await context.pbo.pauseAsync();
-      } else {
-        console.log("play!");
-        await context.pbo.unloadAsync();
-        await context.pbo.loadAsync({
-          uri: getAPI("stream", `&id=${context.startSongId}`),
-        });
-        await context.pbo.playAsync();
-      }
+      //   if (context.isPlaying) {
+      //     // console.log("pause!");
+      //     await context.pbo.pauseAsync();
+      //   } else {
+      // console.log("play!");
+      await context.pbo.unloadAsync();
+      await context.pbo.loadAsync({
+        uri: getAPI("stream", `&id=${context.startSongId}`),
+      });
+      await context.pbo.playAsync();
+      //   }
       context.setIsPlaying(!context.isPlaying);
       setTimeout(async () => {
         const newMeta = await getNowPlaying({ remote: false });
