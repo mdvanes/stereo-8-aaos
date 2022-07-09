@@ -39,7 +39,7 @@ export const SongsInPlaylist: FC = () => {
   // const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
   const [error, setError] = useState<string>();
   // const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
-  const [songs, setSongs] = useState<ISong[]>([]);
+  // const [songs, setSongs] = useState<ISong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
@@ -59,7 +59,7 @@ export const SongsInPlaylist: FC = () => {
     // setPbo(playbackObject);
     const pid = context.playlist?.id;
     if (pid) {
-      setSongs(await getPlaylist(pid));
+      context.setQueue(await getPlaylist(pid));
     } else {
       console.warn(
         "On the playlist page, the playlist ID was null, so redirecting back to playlists overview"
@@ -121,13 +121,13 @@ export const SongsInPlaylist: FC = () => {
 
   return (
     <>
-      {songs.length > 0 && (
+      {context.queue && context.queue.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android: style={{ height: "calc(100vh - 150px)" }}
-          style={{ height: 500 }}
+          style={{ height: 600 }}
         >
           <SectionList
-            sections={[{ title: "", data: songs }]}
+            sections={[{ title: "", data: context.queue }]}
             keyExtractor={(item, index) => `${item.id}_${index}`}
             renderItem={({ item }) => (
               <Item onClick={handlePlaySong} {...item} />

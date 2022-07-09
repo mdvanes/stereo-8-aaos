@@ -6,13 +6,35 @@ import {
   getNowPlaying,
   hasValidSettings,
 } from "../SubsonicButton/getSubsonic";
-import { Audio } from "expo-av";
+import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
+import { useGetNextSong } from "./useGetNextSong";
 
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
-  //   const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+  const { getNextSong } = useGetNextSong();
   const [error, setError] = useState<string>();
+
+  const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+    if (!playbackStatus.isLoaded) {
+      if (playbackStatus.error) {
+        console.log("error");
+      }
+      return;
+    } else {
+      if (playbackStatus.isPlaying) {
+        context.setProgress(playbackStatus.positionMillis);
+      }
+      if (playbackStatus.didJustFinish) {
+        // console.log("finished song");
+        const nextSong = getNextSong();
+        if (nextSong) {
+          context.setStartSongId(nextSong.id);
+        }
+        // playNext();
+      }
+    }
+  };
 
   const init = async () => {
     context.setIsLoading(true);
@@ -23,8 +45,10 @@ export const SoundWrapper: FC = () => {
     });
     const { sound: playbackObject } = await Audio.Sound.createAsync(
       { uri: getAPI("stream", `&id=${id}`) },
-      { shouldPlay: false }
+      { shouldPlay: false, progressUpdateIntervalMillis: 800 }
     );
+    // playbackObject.setProgressUpdateIntervalAsync();
+    playbackObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
     context.setPbo(playbackObject);
     // const pid = context.playlist?.id;
     // if (pid) {
@@ -34,11 +58,32 @@ export const SoundWrapper: FC = () => {
   };
 
   useEffect(() => {
+    // Rebind with new values for context.queue
+    context.pbo?.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+  }, [context.queue]);
+
+  useEffect(() => {
     if (!hasValidSettings()) {
       setError("Settings not complete");
     }
     init();
   }, []);
+
+  // const playNext = () => {
+  //   console.log("start play next");
+  //   if (context.queue) {
+  //     const nextIndex =
+  //       (context.queue?.findIndex(
+  //         (queueItem) => queueItem.id === context.startSongId
+  //       ) ?? -1) + 1;
+  //     const nextSong =
+  //       context.queue.length > nextIndex + 1
+  //         ? context.queue[nextIndex]
+  //         : context.queue[0];
+  //     console.log("next song:", nextSong);
+  //     context.setStartSongId(nextSong.id);
+  //   }
+  // };
 
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {

@@ -8,8 +8,10 @@ export interface PlayValues {
   isLoading: boolean;
   playlist: IPlaylist | null;
   song: ISong | null;
+  queue: ISong[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
+  progress: number;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -18,8 +20,10 @@ export const defaultPlayValues: PlayValues = {
   isLoading: false,
   playlist: null,
   song: null,
+  queue: null,
   startSongId: null,
   pbo: null,
+  progress: 0,
 };
 
 export const PlayContext = createContext({
@@ -33,10 +37,14 @@ export const PlayContext = createContext({
   setPlaylist: (_: IPlaylist | null) => {},
   song: defaultPlayValues.song,
   setSong: (_: ISong | null) => {},
+  queue: defaultPlayValues.queue,
+  setQueue: (_: PlayValues["queue"]) => {},
   startSongId: defaultPlayValues.startSongId,
   setStartSongId: (_: PlayValues["startSongId"]) => {},
   pbo: defaultPlayValues.pbo,
   setPbo: (_: PlayValues["pbo"]) => {},
+  progress: defaultPlayValues.progress,
+  setProgress: (_: PlayValues["progress"]) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -48,9 +56,11 @@ export const PlayContextProvider: FC<{
   );
   const [isLoading, setIsLoading] = useState(defaultPlayValues.isPlaying);
   const [song, setSong] = useState(defaultPlayValues.song);
+  const [queue, setQueue] = useState(defaultPlayValues.queue);
   const [startSongId, setStartSongId] = useState(defaultPlayValues.startSongId);
   const [playlist, setPlaylist] = useState(defaultPlayValues.playlist);
-  const [pbo, setPbo] = useState<Audio.Sound | null>(defaultPlayValues.pbo);
+  const [pbo, setPbo] = useState<PlayValues['pbo']>(defaultPlayValues.pbo);
+  const [progress, setProgress] = useState<PlayValues['progress']>(defaultPlayValues.progress);
 
   return (
     <PlayContext.Provider
@@ -65,10 +75,13 @@ export const PlayContextProvider: FC<{
         setPlaylist,
         song,
         setSong,
+        queue,
+        setQueue,
         startSongId,
         setStartSongId,
         pbo,
         setPbo,
+        progress, setProgress
       }}
     >
       {children}

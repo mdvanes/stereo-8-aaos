@@ -41,28 +41,9 @@ const PlaylistItem = ({
   </View>
 );
 
-// const Item = ({
-//   id,
-//   artist,
-//   title,
-//   onClick,
-// }: ISong & { onClick: (id: string) => () => void }) => (
-//   <View style={styles.item}>
-//     <Pressable onPress={onClick(id)}>
-//       <Text style={styles.line}>
-//         {artist} - {title}
-//       </Text>
-//     </Pressable>
-//   </View>
-// );
-
 export const Playlists: FC = () => {
-  // const [isPlaying, setIsPlaying] = useState(false);
-  // const [pbo, setPbo] = useState<Audio.Sound | null>(null);
-  // const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
   const [error, setError] = useState<string>();
   const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
-  // const [songs, setSongs] = useState<ISong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
@@ -70,16 +51,6 @@ export const Playlists: FC = () => {
 
   const init = async () => {
     setIsLoading(true);
-    // const id = await getCurrentRemotePlayingId();
-    // await Audio.setAudioModeAsync({
-    //   playsInSilentModeIOS: true,
-    //   staysActiveInBackground: true,
-    // });
-    // const { sound: playbackObject } = await Audio.Sound.createAsync(
-    //   { uri: getAPI("stream", `&id=${id}`) },
-    //   { shouldPlay: false }
-    // );
-    // setPbo(playbackObject);
     setPlaylists(await getPlaylists());
     setIsLoading(false);
   };
@@ -91,46 +62,7 @@ export const Playlists: FC = () => {
     init();
   }, []);
 
-  // const onToggle = async () => {
-  //   if (pbo) {
-  //     if (isPlaying) {
-  //       await pbo.pauseAsync();
-  //     } else {
-  //       await pbo.unloadAsync();
-  //       const id = await getCurrentRemotePlayingId();
-  //       await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
-  //       await pbo.playAsync();
-  //     }
-  //     setIsPlaying(!isPlaying);
-  //     setTimeout(async () => {
-  //       const newMeta = await getNowPlaying({ remote: false });
-  //       setMeta(newMeta);
-  //     }, 500);
-  //   }
-  // };
-
-  // const handlePlaySong = (id: string) => async () => {
-  //   if (pbo) {
-  //     if (isPlaying) {
-  //       await pbo.pauseAsync();
-  //     } else {
-  //       await pbo.unloadAsync();
-  //       // const id = await getCurrentRemotePlayingId();
-  //       await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
-  //       await pbo.playAsync();
-  //     }
-  //     setIsPlaying(!isPlaying);
-  //     setTimeout(async () => {
-  //       const newMeta = await getNowPlaying({ remote: false });
-  //       setMeta(newMeta);
-  //     }, 500);
-  //   }
-  // };
-
   const handleOpenPlaylist = (p: IPlaylist) => async () => {
-    // setPlaylists([]);
-    // setSongs([]);
-    // setSongs(await getPlaylist(id));
     context.setPlaylist(p);
     navigation.navigate("Playlist");
   };
@@ -153,7 +85,7 @@ export const Playlists: FC = () => {
       {playlists.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android:  style={{ height: "calc(100vh - 150px)" }}
-          style={{ height: 500 }}
+          style={{ height: 600 }}
         >
           <SectionList
             sections={[{ title: "", data: playlists }]}

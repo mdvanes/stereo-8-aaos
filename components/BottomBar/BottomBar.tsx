@@ -7,6 +7,7 @@ import useColorScheme from "../../hooks/useColorScheme";
 import { PlayContext } from "../context/play-context";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
+import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 
 const formatSecToTime = (s: number): string => {
   const ss = s % 60;
@@ -16,9 +17,10 @@ const formatSecToTime = (s: number): string => {
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
+  const { getNextSong } = useGetNextSong();
   const context = useContext(PlayContext);
-  const [progress, setProgress] = useState(0);
-  const [timer, setTimer] = useState<ReturnType<typeof setInterval>>();
+  //   const [progress, setProgress] = useState(0);
+  //   const [timer, setTimer] = useState<ReturnType<typeof setInterval>>();
 
   const getByline = () => {
     if (context.song) {
@@ -36,7 +38,9 @@ export const BottomBar: FC = () => {
       const { duration } = context.song;
       const time =
         duration > 0
-          ? `${formatSecToTime(progress)} / ${formatSecToTime(duration)}`
+          ? `${formatSecToTime(
+              Math.floor(context.progress / 1000)
+            )} / ${formatSecToTime(duration)}`
           : "";
       return time;
     }
@@ -55,21 +59,28 @@ export const BottomBar: FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (context.isPlaying) {
-      const interval = setInterval(() => {
-        setProgress((old) => old + 1);
-      }, 1000);
-      setTimer(interval);
-    } else {
-      clearInterval(timer);
-    }
-  }, [context.isPlaying]);
+  //   useEffect(() => {
+  //     if (context.isPlaying) {
+  //       const interval = setInterval(() => {
+  //         setProgress((old) => old + 1);
+  //       }, 1000);
+  //       setTimer(interval);
+  //     } else {
+  //       clearInterval(timer);
+  //     }
+  //   }, [context.isPlaying]);
 
-  useEffect(() => {
-    clearInterval(timer);
-    setProgress(0);
-  }, [context.startSongId]);
+  //   useEffect(() => {
+  //     clearInterval(timer);
+  //     setProgress(0);
+  //   }, [context.startSongId]);
+
+  const handleNext = () => {
+    const nextSong = getNextSong();
+    if (nextSong) {
+      context.setStartSongId(nextSong.id);
+    }
+  };
 
   return (
     <View style={styles.top}>
@@ -88,13 +99,28 @@ export const BottomBar: FC = () => {
       </View>
       <View style={styles.rightAction}>
         <Pressable
+          onPress={handleNext}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.5 : 1,
+          })}
+        >
+          <FontAwesome
+            name={"arrow-right"}
+            size={25}
+            color={Colors[colorScheme].text}
+            style={{ marginRight: 15 }}
+          />
+        </Pressable>
+      </View>
+      <View style={styles.rightAction}>
+        <Pressable
           onPress={handlePlayPause}
           style={({ pressed }) => ({
             opacity: pressed ? 0.5 : 1,
           })}
         >
           <FontAwesome
-            name={context.isPlaying ? "play" : "pause"}
+            name={context.isPlaying ? "pause" : "play"}
             size={25}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
