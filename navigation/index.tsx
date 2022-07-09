@@ -18,6 +18,7 @@ import {
   PlayContextProvider,
 } from "../components/context/play-context";
 import { styles } from "../components/item.styles";
+import { SoundWrapper } from "../components/SoundWrapper/SoundWrapper";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -69,6 +70,7 @@ function RootNavigator() {
 
   return (
     <PlayContextProvider>
+      <SoundWrapper />
       <Stack.Navigator>
         <Stack.Group>
           <Stack.Screen
@@ -110,6 +112,7 @@ function RootNavigator() {
                   onPress={() => navigation.navigate("Playlists")}
                   style={({ pressed }) => ({
                     opacity: pressed ? 0.5 : 1,
+                    padding: "1rem",
                   })}
                 >
                   <FontAwesome

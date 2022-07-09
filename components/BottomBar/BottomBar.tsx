@@ -23,6 +23,17 @@ export const BottomBar: FC = () => {
     return "";
   };
 
+  const handlePlayPause = async () => {
+    if (context.pbo && context.startSongId) {
+      if (context.isPlaying) {
+        await context.pbo.pauseAsync();
+      } else {
+        await context.pbo.playAsync();
+      }
+      context.setIsPlaying(!context.isPlaying);
+    }
+  };
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
@@ -39,13 +50,13 @@ export const BottomBar: FC = () => {
       </View>
       <View style={styles.rightAction}>
         <Pressable
-          // onPress={() => navigation.navigate("Modal")}
+          onPress={handlePlayPause}
           style={({ pressed }) => ({
             opacity: pressed ? 0.5 : 1,
           })}
         >
           <FontAwesome
-            name="play"
+            name={context.isPlaying ? "play" : "pause"}
             size={25}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
