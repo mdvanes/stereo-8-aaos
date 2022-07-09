@@ -27,7 +27,12 @@ export const styles = StyleSheet.create({
     color: "rgb(229, 229, 231)",
     fontSize: 18,
     fontWeight: "500",
-    fontFamily:
-      ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    // fontFamily:
+    //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
   },
 });

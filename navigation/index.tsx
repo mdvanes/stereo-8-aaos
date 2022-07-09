@@ -80,8 +80,7 @@ function RootNavigator() {
               title: "Stereo 8 by mdworld.nl",
               headerLeft: () => (
                 <Image
-                  // style={styles.tinyLogo}
-                  style={{ width: 50, height: 50 }}
+                  style={styles.logo}
                   source={require("../assets/images/icon.png")}
                 />
               ),
@@ -107,22 +106,22 @@ function RootNavigator() {
             component={PlaylistScreen}
             options={({ navigation }: RootStackScreenProps<"Playlist">) => ({
               headerTitle: () => <PlaylistTitle />,
-              headerLeft: () => (
-                <Pressable
-                  onPress={() => navigation.navigate("Playlists")}
-                  style={({ pressed }) => ({
-                    opacity: pressed ? 0.5 : 1,
-                    padding: "1rem",
-                  })}
-                >
-                  <FontAwesome
-                    name="arrow-left"
-                    size={25}
-                    color={Colors[colorScheme].text}
-                    style={{ marginRight: 15 }}
-                  />
-                </Pressable>
-              ),
+              // headerLeft: () => (
+              //   <Pressable
+              //     onPress={() => navigation.navigate("Playlists")}
+              //     style={({ pressed }) => ({
+              //       opacity: pressed ? 0.5 : 1,
+              //       padding: 15,
+              //     })}
+              //   >
+              //     <FontAwesome
+              //       name="arrow-left"
+              //       size={25}
+              //       color={Colors[colorScheme].text}
+              //       style={{ marginRight: 15 }}
+              //     />
+              //   </Pressable>
+              // ),
               headerRight: () => (
                 <Pressable
                   onPress={() => navigation.navigate("Modal")}

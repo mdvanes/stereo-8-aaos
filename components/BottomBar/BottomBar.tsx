@@ -46,7 +46,9 @@ export const BottomBar: FC = () => {
         <Text style={styles.statusH1}>
           {context.song?.title || "Now playing..."}
         </Text>
-        <Text style={styles.statusH2}>{getByline()}</Text>
+        <Text style={styles.statusH2}>
+          {getByline()} {"1:23 / 4:56"}
+        </Text>
       </View>
       <View style={styles.rightAction}>
         <Pressable
@@ -75,19 +77,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   leftAction: {
-    padding: "1.5rem",
+    padding: 15,
   },
   status: {
     flex: 1,
-    padding: "0.5rem",
+    padding: 7,
     color: "rgb(229, 229, 231)",
     fontWeight: "500",
-    fontFamily:
-      ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    // fontFamily:
+    //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   statusH1: {
     fontSize: 18,
-    paddingTop: "0.5rem",
+    paddingTop: 7,
     paddingBottom: 0,
   },
   statusH2: {
@@ -95,6 +97,6 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   rightAction: {
-    padding: "1.5rem",
+    padding: 15,
   },
 });

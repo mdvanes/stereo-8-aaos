@@ -148,7 +148,10 @@ export const Playlists: FC = () => {
   return (
     <>
       {playlists.length > 0 && (
-        <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
+        <SafeAreaView
+          // TODO not allowed on Android:  style={{ height: "calc(100vh - 150px)" }}
+          style={{ height: 500 }}
+        >
           <SectionList
             sections={[{ title: "", data: playlists }]}
             keyExtractor={(item, index) => `${item.id}_${index}`}
