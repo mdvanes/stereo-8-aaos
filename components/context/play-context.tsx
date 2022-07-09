@@ -17,6 +17,7 @@ export const defaultPlayValues: PlayValues = {
 
 export const PlayContext = createContext({
   isPlaying: defaultPlayValues.isPlaying,
+  setIsPlaying: (_: boolean) => {},
   isLoading: defaultPlayValues.isLoading,
   playlist: defaultPlayValues.playlist,
   setPlaylist: (_: IPlaylist | null) => {},
@@ -27,13 +28,15 @@ export const PlayContext = createContext({
 export const PlayContextProvider: FC<{
   children?: ReactNode | undefined;
 }> = ({ children }) => {
+  const [isPlaying, setIsPlaying] = useState(defaultPlayValues.isPlaying);
   const [song, setSong] = useState(defaultPlayValues.song);
   const [playlist, setPlaylist] = useState(defaultPlayValues.playlist);
 
   return (
     <PlayContext.Provider
       value={{
-        isPlaying: false,
+        isPlaying,
+        setIsPlaying,
         isLoading: false,
         playlist,
         setPlaylist,

@@ -88,7 +88,7 @@ export const StationButton: FC<IStationButtonProps> = ({
         await pbo.playAsync();
       }
       setIsPlaying(!isPlaying);
-      context.setTitle(channelName);
+      context.setSong({ id: "0", title: channelName, artist: "" });
     }
   };
 
@@ -111,7 +111,7 @@ export const StationButton: FC<IStationButtonProps> = ({
         })}
       >
         <FontAwesome
-          name={isPlaying ? "pause-circle" : "play-circle"}
+          name={isPlaying ? "pause-circle" : "music"}
           size={25}
           color={Colors[colorScheme].text}
         />

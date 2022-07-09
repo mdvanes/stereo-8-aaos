@@ -17,6 +17,7 @@ import {
   PlayContext,
   PlayContextProvider,
 } from "../components/context/play-context";
+import { styles } from "../components/item.styles";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -58,17 +59,7 @@ const PlaylistTitle = () => {
   const context = React.useContext(PlayContext);
   return (
     <View>
-      <h1
-        style={{
-          color: "rgb(229, 229, 231)",
-          fontSize: "18px",
-          fontWeight: 500,
-          fontFamily:
-            ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-        }}
-      >
-        {context.playlist?.name}
-      </h1>
+      <Text style={styles.topbarTitle}>{context.playlist?.name}</Text>
     </View>
   );
 };

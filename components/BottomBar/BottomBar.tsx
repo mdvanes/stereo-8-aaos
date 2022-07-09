@@ -1,22 +1,12 @@
-import { Audio } from "expo-av";
-import React, { FC, useContext, useEffect, useState } from "react";
-import {
-  Pressable,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  SectionList,
-  StatusBar,
-  ActivityIndicator,
-} from "react-native";
+import React, { FC, useContext } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 // import { styles } from "../item.styles";
-import { ListItemButton } from "../StationButton/ListItemButton";
-import { Text } from "../Themed";
-import useColorScheme from "../../hooks/useColorScheme";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import useColorScheme from "../../hooks/useColorScheme";
 import { PlayContext } from "../context/play-context";
 import { StationButton } from "../StationButton/StationButton";
+import { Text } from "../Themed";
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
@@ -40,33 +30,12 @@ export const BottomBar: FC = () => {
           channelName="NPO Radio 2"
           channelURL="https://icecast.omroep.nl/radio2-bb-mp3"
         />
-        {/* <Pressable
-          onPress={() => {
-            context.setTitle("Playing NPO Radio 2");
-          }}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}
-        >
-          <FontAwesome
-            name="play-circle"
-            size={25}
-            color={Colors[colorScheme].text}
-            style={{ marginRight: 15 }}
-          />
-        </Pressable> */}
       </View>
       <View style={styles.status}>
-        <Text
-        // style={styles.header}
-        >
+        <Text style={styles.statusH1}>
           {context.song?.title || "Now playing..."}
         </Text>
-        <Text
-        // style={styles.header}
-        >
-          {getByline()}
-        </Text>
+        <Text style={styles.statusH2}>{getByline()}</Text>
       </View>
       <View style={styles.rightAction}>
         <Pressable
@@ -97,7 +66,23 @@ const styles = StyleSheet.create({
   leftAction: {
     padding: "1.5rem",
   },
-  status: { flex: 1, padding: "0.5rem" },
+  status: {
+    flex: 1,
+    padding: "0.5rem",
+    color: "rgb(229, 229, 231)",
+    fontWeight: "500",
+    fontFamily:
+      ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  },
+  statusH1: {
+    fontSize: 18,
+    paddingTop: "0.5rem",
+    paddingBottom: 0,
+  },
+  statusH2: {
+    fontSize: 14,
+    paddingTop: 0,
+  },
   rightAction: {
     padding: "1.5rem",
   },

@@ -1,14 +1,11 @@
 import { Audio } from "expo-av";
 import React, { FC, useContext, useEffect, useState } from "react";
 import {
-  Pressable,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  SectionList,
-  StatusBar,
-  ActivityIndicator,
+  Pressable, SafeAreaView,
+  SectionList, View
 } from "react-native";
+import useColorScheme from "../../hooks/useColorScheme";
+import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
@@ -16,29 +13,11 @@ import {
   getAPI,
   getCurrentRemotePlayingId,
   getNowPlaying,
-  getPlaylist,
-  getPlaylists,
-  hasValidSettings,
+  getPlaylist, hasValidSettings,
   IPlaylist,
   ISong,
-  SubsonicNowPlaying,
+  SubsonicNowPlaying
 } from "./getSubsonic";
-import useColorScheme from "../../hooks/useColorScheme";
-import { FontAwesome } from "@expo/vector-icons";
-import Colors from "../../constants/Colors";
-import { PlayContext } from "../context/play-context";
-
-// const PlaylistItem = ({
-//   id,
-//   name,
-//   onClick,
-// }: IPlaylist & { onClick: (id: string) => () => void }) => (
-//   <View style={styles.item}>
-//     <Pressable onPress={onClick(id)}>
-//       <Text style={styles.line}>{name}</Text>
-//     </Pressable>
-//   </View>
-// );
 
 const Item = ({
   id,
@@ -78,7 +57,6 @@ export const SongsInPlaylist: FC = () => {
       { shouldPlay: false }
     );
     setPbo(playbackObject);
-    // setPlaylists(await getPlaylists());
     const pid = context.playlist?.id;
     if (pid) {
       setSongs(await getPlaylist(pid));
@@ -93,31 +71,12 @@ export const SongsInPlaylist: FC = () => {
     init();
   }, []);
 
-  // const onToggle = async () => {
-  //   if (pbo) {
-  //     if (isPlaying) {
-  //       await pbo.pauseAsync();
-  //     } else {
-  //       await pbo.unloadAsync();
-  //       const id = await getCurrentRemotePlayingId();
-  //       await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
-  //       await pbo.playAsync();
-  //     }
-  //     setIsPlaying(!isPlaying);
-  //     setTimeout(async () => {
-  //       const newMeta = await getNowPlaying({ remote: false });
-  //       setMeta(newMeta);
-  //     }, 500);
-  //   }
-  // };
-
   const handlePlaySong = (id: string) => async () => {
     if (pbo) {
       if (isPlaying) {
         await pbo.pauseAsync();
       } else {
         await pbo.unloadAsync();
-        // const id = await getCurrentRemotePlayingId();
         await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
         await pbo.playAsync();
       }
@@ -136,12 +95,6 @@ export const SongsInPlaylist: FC = () => {
       }, 500);
     }
   };
-
-  // const handleOpenPlaylist = (id: string) => async () => {
-  //   setPlaylists([]);
-  //   setSongs([]);
-  //   setSongs(await getPlaylist(id));
-  // };
 
   if (error) {
     return (
