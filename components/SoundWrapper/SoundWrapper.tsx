@@ -42,6 +42,7 @@ export const SoundWrapper: FC = () => {
 
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {
+      context.setIsRadioPlaying(false);
       //   if (context.isPlaying) {
       //     // console.log("pause!");
       //     await context.pbo.pauseAsync();
@@ -71,7 +72,7 @@ export const SoundWrapper: FC = () => {
   };
 
   useEffect(() => {
-    console.log(context);
+    // console.log(context);
     handlePlaySong();
   }, [context.startSongId]);
 

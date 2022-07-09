@@ -57,12 +57,12 @@ const PlaylistItem = ({
 // );
 
 export const Playlists: FC = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [pbo, setPbo] = useState<Audio.Sound | null>(null);
-  const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
+  // const [isPlaying, setIsPlaying] = useState(false);
+  // const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+  // const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
   const [error, setError] = useState<string>();
   const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
-  const [songs, setSongs] = useState<ISong[]>([]);
+  // const [songs, setSongs] = useState<ISong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
@@ -70,16 +70,16 @@ export const Playlists: FC = () => {
 
   const init = async () => {
     setIsLoading(true);
-    const id = await getCurrentRemotePlayingId();
-    await Audio.setAudioModeAsync({
-      playsInSilentModeIOS: true,
-      staysActiveInBackground: true,
-    });
-    const { sound: playbackObject } = await Audio.Sound.createAsync(
-      { uri: getAPI("stream", `&id=${id}`) },
-      { shouldPlay: false }
-    );
-    setPbo(playbackObject);
+    // const id = await getCurrentRemotePlayingId();
+    // await Audio.setAudioModeAsync({
+    //   playsInSilentModeIOS: true,
+    //   staysActiveInBackground: true,
+    // });
+    // const { sound: playbackObject } = await Audio.Sound.createAsync(
+    //   { uri: getAPI("stream", `&id=${id}`) },
+    //   { shouldPlay: false }
+    // );
+    // setPbo(playbackObject);
     setPlaylists(await getPlaylists());
     setIsLoading(false);
   };
@@ -147,6 +147,9 @@ export const Playlists: FC = () => {
 
   return (
     <>
+      {isLoading && (
+        <ActivityIndicator size="large" style={{ height: 300, width: 300 }} />
+      )}
       {playlists.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android:  style={{ height: "calc(100vh - 150px)" }}
@@ -159,11 +162,7 @@ export const Playlists: FC = () => {
               <PlaylistItem onClick={handleOpenPlaylist} {...item} />
             )}
             renderSectionHeader={({ section: { title } }) => (
-              <Text
-              // style={styles.header}
-              >
-                {title}
-              </Text>
+              <Text>{title}</Text>
             )}
           />
         </SafeAreaView>

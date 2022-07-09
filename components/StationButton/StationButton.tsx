@@ -52,53 +52,57 @@ export const StationButton: FC<IStationButtonProps> = ({
   channelName,
   channelURL,
 }) => {
-  const [meta, setMeta] = useState<string>("");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+  // const [meta, setMeta] = useState<string>("");
+  // const [isPlaying, setIsPlaying] = useState(false);
+  // const [pbo, setPbo] = useState<Audio.Sound | null>(null);
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
 
-  const init = async () => {
-    await Audio.setAudioModeAsync({
-      playsInSilentModeIOS: true,
-      staysActiveInBackground: true,
-    });
-    const { sound: playbackObject } = await Audio.Sound.createAsync(
-      { uri: channelURL },
-      { shouldPlay: false }
-    );
-    playbackObject.setOnMetadataUpdate((title) => {
-      setMeta(`pbometa ${title}`);
-    });
-    setPbo(playbackObject);
-    const newMeta = await getMediaMeta(channelURL);
-    setMeta(newMeta);
-  };
+  // const init = async () => {
+  // await Audio.setAudioModeAsync({
+  //   playsInSilentModeIOS: true,
+  //   staysActiveInBackground: true,
+  // });
+  // const { sound: playbackObject } = await Audio.Sound.createAsync(
+  //   { uri: channelURL },
+  //   { shouldPlay: false }
+  // );
+  // playbackObject.setOnMetadataUpdate((title) => {
+  //   setMeta(`pbometa ${title}`);
+  // });
+  // setPbo(playbackObject);
+  // const newMeta = await getMediaMeta(channelURL);
+  // setMeta(newMeta);
+  // };
 
-  useEffect(() => {
-    init();
-    // getMovies();
-  }, []);
+  // useEffect(() => {
+  //   init();
+  // getMovies();
+  // }, []);
 
   const onToggle = async () => {
-    if (pbo) {
-      if (isPlaying) {
-        await pbo.pauseAsync();
+    if (context.pbo) {
+      console.log(context);
+      // Stop playing songs, get ready for stream
+      context.setStartSongId(null);
+      context.setIsPlaying(false);
+      if (context.isRadioPlaying) {
+        await context.pbo.pauseAsync();
       } else {
-        await pbo.playAsync();
+        await context.pbo.unloadAsync();
+        await context.pbo.loadAsync({
+          uri: channelURL,
+        });
+        await context.pbo.playAsync();
       }
-      setIsPlaying(!isPlaying);
-      context.setSong({ id: "0", title: channelName, artist: "" });
+      context.setSong({
+        id: "0",
+        title: channelName,
+        artist: "",
+      });
+      context.setIsRadioPlaying(!context.isRadioPlaying);
     }
   };
-
-  // return (
-  //   <ListItemButton
-  //     text={`${channelName}${meta && `: ${meta}`}`}
-  //     title={isPlaying ? "pause" : "play"}
-  //     onClick={onToggle}
-  //   />
-  // );
 
   return (
     <View
@@ -111,7 +115,7 @@ export const StationButton: FC<IStationButtonProps> = ({
         })}
       >
         <FontAwesome
-          name={isPlaying ? "pause-circle" : "music"}
+          name={context.isRadioPlaying ? "pause-circle" : "music"}
           size={25}
           color={Colors[colorScheme].text}
         />

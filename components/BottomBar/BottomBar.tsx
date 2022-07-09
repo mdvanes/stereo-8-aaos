@@ -25,7 +25,8 @@ export const BottomBar: FC = () => {
 
   const handlePlayPause = async () => {
     if (context.pbo && context.startSongId) {
-      if (context.isPlaying) {
+      context.setIsRadioPlaying(false);
+      if (context.isPlaying || context.isRadioPlaying) {
         await context.pbo.pauseAsync();
       } else {
         await context.pbo.playAsync();
@@ -43,11 +44,9 @@ export const BottomBar: FC = () => {
         />
       </View>
       <View style={styles.status}>
-        <Text style={styles.statusH1}>
-          {context.song?.title || "Now playing..."}
-        </Text>
+        <Text style={styles.statusH1}>{context.song?.title || ""}</Text>
         <Text style={styles.statusH2}>
-          {getByline()} {"1:23 / 4:56"}
+          {getByline()} {"1:23 / 4:56"} //
         </Text>
       </View>
       <View style={styles.rightAction}>
