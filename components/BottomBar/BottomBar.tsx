@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 // import { styles } from "../item.styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -8,9 +8,17 @@ import { PlayContext } from "../context/play-context";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
 
+const formatSecToTime = (s: number): string => {
+  const ss = s % 60;
+  const mm = (s - ss) / 60;
+  return `${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
+};
+
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
+  const [progress, setProgress] = useState(0);
+  const [timer, setTimer] = useState<ReturnType<typeof setInterval>>();
 
   const getByline = () => {
     if (context.song) {
@@ -19,6 +27,18 @@ export const BottomBar: FC = () => {
       //     return `${artist} (${album})`;
       //   }
       return artist;
+    }
+    return "";
+  };
+
+  const getProgress = () => {
+    if (context.song) {
+      const { duration } = context.song;
+      const time =
+        duration > 0
+          ? `${formatSecToTime(progress)} / ${formatSecToTime(duration)}`
+          : "";
+      return time;
     }
     return "";
   };
@@ -35,6 +55,22 @@ export const BottomBar: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (context.isPlaying) {
+      const interval = setInterval(() => {
+        setProgress((old) => old + 1);
+      }, 1000);
+      setTimer(interval);
+    } else {
+      clearInterval(timer);
+    }
+  }, [context.isPlaying]);
+
+  useEffect(() => {
+    clearInterval(timer);
+    setProgress(0);
+  }, [context.startSongId]);
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
@@ -45,9 +81,10 @@ export const BottomBar: FC = () => {
       </View>
       <View style={styles.status}>
         <Text style={styles.statusH1}>{context.song?.title || ""}</Text>
-        <Text style={styles.statusH2}>
-          {getByline()} {"1:23 / 4:56"} //
-        </Text>
+        <Text style={styles.statusH2}>{getByline()}</Text>
+      </View>
+      <View style={styles.progress}>
+        <Text style={{ fontFamily: "monospace" }}>{getProgress()}</Text>
       </View>
       <View style={styles.rightAction}>
         <Pressable
@@ -77,6 +114,8 @@ const styles = StyleSheet.create({
   },
   leftAction: {
     padding: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   status: {
     flex: 1,
@@ -95,7 +134,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 0,
   },
+  progress: {
+    // padding: 7,
+    fontFamily: "monospace",
+    justifyContent: "center",
+  },
   rightAction: {
     padding: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
 });

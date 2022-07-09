@@ -57,14 +57,14 @@ export const SoundWrapper: FC = () => {
       context.setIsPlaying(!context.isPlaying);
       setTimeout(async () => {
         const newMeta = await getNowPlaying({ remote: false });
-        // setMeta(newMeta);
-        if (newMeta && newMeta.id && newMeta.artist && newMeta.title) {
+        if (newMeta && newMeta.id) {
           context.setIsPlaying(true);
           context.setSong({
             id: newMeta.id,
             artist: newMeta.artist,
             title: newMeta.title,
             album: newMeta.album,
+            duration: newMeta.duration,
           });
         }
       }, 500);

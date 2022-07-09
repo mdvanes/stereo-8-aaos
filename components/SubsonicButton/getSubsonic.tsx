@@ -23,6 +23,7 @@ export interface SubsonicNowPlaying {
   title: string;
   album: string;
   artist: string;
+  duration: number;
   playerName?: string;
 }
 
@@ -35,6 +36,7 @@ export interface ISong {
   id: string;
   artist: string;
   title: string;
+  duration: number;
   album?: string;
 }
 
@@ -65,9 +67,11 @@ export const getPlaylist = async (id: string): Promise<ISong[]> => {
     const { playlist } = response["subsonic-response"];
 
     if (playlist?.entry) {
-      const songs = (playlist.entry as ISong[]).map(({ id, artist, title }) => {
-        return { id, artist, title };
-      });
+      const songs = (playlist.entry as ISong[]).map(
+        ({ id, artist, title, duration }) => {
+          return { id, artist, title, duration };
+        }
+      );
       return songs;
     }
     return [];

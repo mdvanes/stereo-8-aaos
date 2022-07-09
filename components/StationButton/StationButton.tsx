@@ -99,6 +99,7 @@ export const StationButton: FC<IStationButtonProps> = ({
         id: "0",
         title: channelName,
         artist: "",
+        duration: -1,
       });
       context.setIsRadioPlaying(!context.isRadioPlaying);
     }
