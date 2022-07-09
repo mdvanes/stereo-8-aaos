@@ -1,11 +1,12 @@
 import { createContext, FC, ReactNode, useState } from "react";
+import { IPlaylist } from "../SubsonicButton/getSubsonic";
 
 export interface PlayValues {
   isPlaying: boolean;
   isLoading: boolean;
   title: string;
   artist: string;
-  playlistId: string | null;
+  playlist: IPlaylist | null;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -13,7 +14,7 @@ export const defaultPlayValues: PlayValues = {
   isLoading: false,
   title: "",
   artist: "",
-  playlistId: null,
+  playlist: null,
 };
 
 export const PlayContext = createContext({
@@ -22,15 +23,15 @@ export const PlayContext = createContext({
   title: defaultPlayValues.title,
   setTitle: (_: string) => {},
   artist: defaultPlayValues.artist,
-  playlistId: defaultPlayValues.playlistId,
-  setPlaylistId: (_: string) => {},
+  playlist: defaultPlayValues.playlist,
+  setPlaylist: (_: IPlaylist | null) => {},
 });
 
 export const PlayContextProvider: FC<{
   children?: ReactNode | undefined;
 }> = ({ children }) => {
   const [title, setTitle] = useState(defaultPlayValues.title);
-  const [playlistId, setPlaylistId] = useState(defaultPlayValues.playlistId);
+  const [playlist, setPlaylist] = useState(defaultPlayValues.playlist);
 
   return (
     <PlayContext.Provider
@@ -40,8 +41,8 @@ export const PlayContextProvider: FC<{
         title,
         setTitle,
         artist: "",
-        playlistId,
-        setPlaylistId,
+        playlist,
+        setPlaylist,
       }}
     >
       {children}

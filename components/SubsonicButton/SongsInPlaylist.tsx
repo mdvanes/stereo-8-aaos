@@ -79,7 +79,7 @@ export const SongsInPlaylist: FC = () => {
     );
     setPbo(playbackObject);
     // setPlaylists(await getPlaylists());
-    const pid = context.playlistId;
+    const pid = context.playlist?.id;
     if (pid) {
       setSongs(await getPlaylist(pid));
     }
@@ -150,7 +150,7 @@ export const SongsInPlaylist: FC = () => {
       {songs.length > 0 && (
         <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
           <SectionList
-            sections={[{ title: "Playlist Name TODO", data: songs }]}
+            sections={[{ title: "", data: songs }]}
             keyExtractor={(item, index) => item.id + index}
             renderItem={({ item }) => (
               <Item onClick={handlePlaySong} {...item} />

@@ -17,7 +17,7 @@ declare global {
 }
 
 export type RootStackParamList = {
-  "Stereo 8": NavigatorScreenParams<undefined> | undefined;
+  Playlists: NavigatorScreenParams<undefined> | undefined;
   Playlist: NavigatorScreenParams<undefined> | undefined;
   // Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

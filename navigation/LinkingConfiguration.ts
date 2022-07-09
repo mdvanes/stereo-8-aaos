@@ -13,7 +13,8 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
-      'Stereo 8': 'home',
+      Playlists: 'playlists',
+      Playlist: 'playlist',
       // Root: {
       //   screens: {
       //     TabOne: {

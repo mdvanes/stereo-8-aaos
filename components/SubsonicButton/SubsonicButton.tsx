@@ -27,6 +27,18 @@ import useColorScheme from "../../hooks/useColorScheme";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
+const PlaylistItem = ({
+  id,
+  name,
+  onClick,
+}: IPlaylist & { onClick: (id: string) => () => void }) => (
+  <View style={styles.item}>
+    <Pressable onPress={onClick(id)}>
+      <Text style={styles.line}>{name}</Text>
+    </Pressable>
+  </View>
+);
+
 const Item = ({
   id,
   artist,
@@ -129,15 +141,15 @@ export const SubsonicButton: FC = () => {
 
   return (
     <>
-      <ListItemButton
+      {/* <ListItemButton
         text={`Random Subsonic: ${
           meta ? `${meta.artist} - ${meta.title}` : "Nothing playing"
         }`}
         title={isPlaying ? "pause" : "play"}
         onClick={onToggle}
-      />
+      /> */}
 
-      <View>
+      {/* <View>
         {isLoading && <ActivityIndicator size="large" />}
         {playlists.map((playlist) => (
           <View key={playlist.id} style={{ padding: 10 }}>
@@ -157,10 +169,29 @@ export const SubsonicButton: FC = () => {
             </Pressable>
           </View>
         ))}
-      </View>
+      </View> */}
+
+      {playlists.length > 0 && (
+        <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
+          <SectionList
+            sections={[{ title: "", data: playlists }]}
+            keyExtractor={(item, index) => item.id + index}
+            renderItem={({ item }) => (
+              <PlaylistItem onClick={handleOpenPlaylist} {...item} />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text
+              // style={styles.header}
+              >
+                {title}
+              </Text>
+            )}
+          />
+        </SafeAreaView>
+      )}
 
       {songs.length > 0 && (
-        <SafeAreaView>
+        <SafeAreaView style={{ height: "calc(100vh - 150px)" }}>
           <SectionList
             sections={[{ title: "Playlist Name TODO", data: songs }]}
             keyExtractor={(item, index) => item.id + index}

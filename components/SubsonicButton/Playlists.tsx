@@ -33,9 +33,9 @@ const PlaylistItem = ({
   id,
   name,
   onClick,
-}: IPlaylist & { onClick: (id: string) => () => void }) => (
+}: IPlaylist & { onClick: (p: IPlaylist) => () => void }) => (
   <View style={styles.item}>
-    <Pressable onPress={onClick(id)}>
+    <Pressable onPress={onClick({ id, name })}>
       <Text style={styles.line}>{name}</Text>
     </Pressable>
   </View>
@@ -127,11 +127,11 @@ export const Playlists: FC = () => {
   //   }
   // };
 
-  const handleOpenPlaylist = (id: string) => async () => {
+  const handleOpenPlaylist = (p: IPlaylist) => async () => {
     // setPlaylists([]);
     // setSongs([]);
     // setSongs(await getPlaylist(id));
-    context.setPlaylistId(id);
+    context.setPlaylist(p);
     navigation.navigate("Playlist");
   };
 

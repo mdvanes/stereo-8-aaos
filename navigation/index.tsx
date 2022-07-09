@@ -12,8 +12,11 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable, Image, View } from "react-native";
-import { PlayContextProvider } from "../components/context/play-context";
+import { ColorSchemeName, Pressable, Image, View, Text } from "react-native";
+import {
+  PlayContext,
+  PlayContextProvider,
+} from "../components/context/play-context";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -51,17 +54,37 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const PlaylistTitle = () => {
+  const context = React.useContext(PlayContext);
+  return (
+    <View>
+      <h1
+        style={{
+          color: "rgb(229, 229, 231)",
+          fontSize: "18px",
+          fontWeight: 500,
+          fontFamily:
+            ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        }}
+      >
+        {context.playlist?.name}
+      </h1>
+    </View>
+  );
+};
+
 function RootNavigator() {
   const colorScheme = useColorScheme();
+
   return (
     <PlayContextProvider>
       <Stack.Navigator>
         <Stack.Group>
           <Stack.Screen
-            name="Stereo 8"
+            name="Playlists"
             component={PlaylistsScreen}
-            options={({ navigation }: RootStackScreenProps<"Stereo 8">) => ({
-              // title: "Home",
+            options={({ navigation }: RootStackScreenProps<"Playlists">) => ({
+              title: "Stereo 8 by mdworld.nl",
               headerLeft: () => (
                 <Image
                   // style={styles.tinyLogo}
@@ -70,34 +93,19 @@ function RootNavigator() {
                 />
               ),
               headerRight: () => (
-                <>
-                  <Pressable
-                    onPress={() => navigation.navigate("Playlist")}
-                    style={({ pressed }) => ({
-                      opacity: pressed ? 0.5 : 1,
-                    })}
-                  >
-                    <FontAwesome
-                      name="arrow-left"
-                      size={25}
-                      color={Colors[colorScheme].text}
-                      style={{ marginRight: 15 }}
-                    />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => navigation.navigate("Modal")}
-                    style={({ pressed }) => ({
-                      opacity: pressed ? 0.5 : 1,
-                    })}
-                  >
-                    <FontAwesome
-                      name="cog"
-                      size={25}
-                      color={Colors[colorScheme].text}
-                      style={{ marginRight: 15 }}
-                    />
-                  </Pressable>
-                </>
+                <Pressable
+                  onPress={() => navigation.navigate("Modal")}
+                  style={({ pressed }) => ({
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                >
+                  <FontAwesome
+                    name="cog"
+                    size={25}
+                    color={Colors[colorScheme].text}
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
               ),
             })}
           />
@@ -105,10 +113,10 @@ function RootNavigator() {
             name="Playlist"
             component={PlaylistScreen}
             options={({ navigation }: RootStackScreenProps<"Playlist">) => ({
-              // title: "Home",
+              headerTitle: () => <PlaylistTitle />,
               headerLeft: () => (
                 <Pressable
-                  onPress={() => navigation.navigate("Stereo 8")}
+                  onPress={() => navigation.navigate("Playlists")}
                   style={({ pressed }) => ({
                     opacity: pressed ? 0.5 : 1,
                   })}
