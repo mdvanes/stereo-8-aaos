@@ -35,6 +35,7 @@ export interface ISong {
   id: string;
   artist: string;
   title: string;
+  album?: string;
 }
 
 export const getPlaylists = async (): Promise<IPlaylist[]> => {

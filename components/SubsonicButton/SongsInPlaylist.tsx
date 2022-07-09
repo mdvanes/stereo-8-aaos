@@ -125,6 +125,14 @@ export const SongsInPlaylist: FC = () => {
       setTimeout(async () => {
         const newMeta = await getNowPlaying({ remote: false });
         setMeta(newMeta);
+        if (newMeta && newMeta.id && newMeta.artist && newMeta.title) {
+          context.setSong({
+            id: newMeta.id,
+            artist: newMeta.artist,
+            title: newMeta.title,
+            album: newMeta.album,
+          });
+        }
       }, 500);
     }
   };

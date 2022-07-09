@@ -22,6 +22,17 @@ export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
 
+  const getByline = () => {
+    if (context.song) {
+      const { artist, album } = context.song;
+      //   if (album) {
+      //     return `${artist} (${album})`;
+      //   }
+      return artist;
+    }
+    return "";
+  };
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
@@ -49,12 +60,12 @@ export const BottomBar: FC = () => {
         <Text
         // style={styles.header}
         >
-          Now playing... {context.title}
+          {context.song?.title || "Now playing..."}
         </Text>
         <Text
         // style={styles.header}
         >
-          Artist...
+          {getByline()}
         </Text>
       </View>
       <View style={styles.rightAction}>
