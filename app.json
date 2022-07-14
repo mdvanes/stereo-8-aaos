@@ -28,7 +28,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.mdworld.stereo8aaos",
-      "versionCode": 12
+      "versionCode": 15
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

@@ -1,8 +1,10 @@
 const fs = require("fs");
+const jq = require("node-jq");
 
 const buildGradlePath = "./android/app/build.gradle";
+const appJsonPath = "./app.json";
 
-const bumpGradle = () => {
+const bumpGradle = (versionCode) => {
   const data = fs.readFileSync(buildGradlePath, {
     encoding: "utf-8",
     flag: "r",
@@ -17,15 +19,11 @@ const bumpGradle = () => {
       matched = true;
       inject = true;
     }
-    if (matched) {
-      console.log(line);
-    }
-
     if (inject) {
       inject = false;
       return `        /* start versions */
-        versionCode 1999
-        versionName "1.0.1999"      
+        versionCode ${versionCode}
+        versionName "1.0.${versionCode}"      
         /* end versions */`;
     }
     if (!matched) {
@@ -34,14 +32,35 @@ const bumpGradle = () => {
     if (line === "        /* end versions */") {
       matched = false;
     }
-    return "";
+    return undefined;
   });
-  console.log(newLines);
-  fs.writeFileSync(buildGradlePath, newLines.join("\n"));
+  fs.writeFileSync(
+    buildGradlePath,
+    newLines.filter((n) => typeof n !== "undefined").join("\n")
+  );
 };
 
-const run = () => {
-  bumpGradle();
+const bumpAppJson = async (versionCode) => {
+  const data = await jq.run(
+    `.=(.expo.android.versionCode=${versionCode})`,
+    appJsonPath
+  );
+  fs.writeFileSync(appJsonPath, data + "\n");
+};
+
+const run = async () => {
+  console.log("Start bumping version code...");
+  if (process.argv.length > 2) {
+    const versionCode = process.argv[2];
+    console.log("Setting version code to:", versionCode);
+    console.log("Bumping gradle...");
+    bumpGradle(versionCode);
+    console.log("Bumping app.json...");
+    await bumpAppJson(versionCode);
+  } else {
+    console.error("You must set versionCode as param!");
+  }
+  console.log("Done");
 };
 
 run();
