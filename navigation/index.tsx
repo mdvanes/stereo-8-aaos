@@ -146,7 +146,11 @@ function RootNavigator() {
           options={{ title: "Oops!" }}
         />
         <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen name="Modal" component={ModalScreen} />
+          <Stack.Screen
+            name="Modal"
+            component={ModalScreen}
+            options={{ title: "Settings" }}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </PlayContextProvider>
