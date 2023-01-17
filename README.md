@@ -4,7 +4,7 @@ There are very few AAOS apps and the ones that are there have weird limitations 
 
 Made with [React Native](https://reactnative.dev)
 
-Requires `npm i -g expo-cli`
+Requires `npm i -g expo-cli eas-cli`
 
 ## Develop
 
@@ -16,11 +16,8 @@ Test on Android: install https://play.google.com/store/apps/details?id=host.exp.
 
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
-- `npm i -g eas-cli`
-- update version code in app.json
-  - expo.version
-  - expo.android.versionCode (for Google Play)
-- update version code in EditScreenInfo.tsx
+- update version: `npm run bump`
+- manually update version code in EditScreenInfo.tsx
 - `eas build -p android`
 - use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
 - push and tag on Github

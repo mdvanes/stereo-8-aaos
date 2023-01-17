@@ -46,6 +46,11 @@ const bumpAppJson = async (versionCode) => {
     appJsonPath
   );
   fs.writeFileSync(appJsonPath, data + "\n");
+  const data1 = await jq.run(
+    `.=(.expo.version="1.0.${versionCode}")`,
+    appJsonPath
+  );
+  fs.writeFileSync(appJsonPath, data1 + "\n");
 };
 
 const run = async () => {
