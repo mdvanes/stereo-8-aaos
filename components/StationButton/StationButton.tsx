@@ -117,7 +117,7 @@ export const StationButton: FC<IStationButtonProps> = ({
       >
         <FontAwesome
           name={context.isRadioPlaying ? "pause-circle" : "music"}
-          size={25}
+          size={60}
           color={Colors[colorScheme].text}
         />
       </Pressable>

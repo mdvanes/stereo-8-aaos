@@ -95,7 +95,9 @@ export const BottomBar: FC = () => {
         <Text style={styles.statusH2}>{getByline()}</Text>
       </View>
       <View style={styles.progress}>
-        <Text style={{ fontFamily: "monospace" }}>{getProgress()}</Text>
+        <Text style={{ fontFamily: "sans-serif", fontSize: 28, fontVariant: ['tabular-nums'] }}>
+          {getProgress()}
+        </Text>
       </View>
       <View style={styles.rightAction}>
         <Pressable
@@ -106,7 +108,7 @@ export const BottomBar: FC = () => {
         >
           <FontAwesome
             name={"arrow-right"}
-            size={25}
+            size={60}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
           />
@@ -121,7 +123,7 @@ export const BottomBar: FC = () => {
         >
           <FontAwesome
             name={context.isPlaying ? "pause" : "play"}
-            size={25}
+            size={60}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
           />
@@ -152,17 +154,18 @@ const styles = StyleSheet.create({
     //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   statusH1: {
-    fontSize: 18,
+    fontSize: 36,
     paddingTop: 7,
     paddingBottom: 0,
   },
   statusH2: {
-    fontSize: 14,
+    fontSize: 28,
     paddingTop: 0,
   },
   progress: {
     // padding: 7,
     fontFamily: "monospace",
+    fontSize: 28,
     justifyContent: "center",
   },
   rightAction: {

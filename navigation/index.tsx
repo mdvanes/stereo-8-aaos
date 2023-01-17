@@ -78,6 +78,9 @@ function RootNavigator() {
             component={PlaylistsScreen}
             options={({ navigation }: RootStackScreenProps<"Playlists">) => ({
               title: "Stereo 8 by mdworld.nl",
+              headerTitleStyle: {
+                fontSize: 38,
+              },
               headerLeft: () => (
                 <Image
                   style={styles.logo}
@@ -93,9 +96,9 @@ function RootNavigator() {
                 >
                   <FontAwesome
                     name="cog"
-                    size={25}
+                    size={60}
                     color={Colors[colorScheme].text}
-                    style={{ marginRight: 15 }}
+                    style={{ marginRight: 15, marginVertical: 10 }}
                   />
                 </Pressable>
               ),
@@ -131,7 +134,7 @@ function RootNavigator() {
                 >
                   <FontAwesome
                     name="cog"
-                    size={25}
+                    size={60}
                     color={Colors[colorScheme].text}
                     style={{ marginRight: 15 }}
                   />
@@ -149,7 +152,7 @@ function RootNavigator() {
           <Stack.Screen
             name="Modal"
             component={ModalScreen}
-            options={{ title: "Settings" }}
+            options={{ title: "Settings", headerTitleStyle: { fontSize: 38 } }}
           />
         </Stack.Group>
       </Stack.Navigator>

@@ -98,6 +98,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
           } catch (err) {}
         }}
       />
+      <Text style={{ marginTop: 32, fontSize: 28 }}>v1.0.16</Text>
       {saved && <Text>Saved!</Text>}
       {/* <TextInput
         // style={styles.input}

@@ -25,14 +25,14 @@ export const styles = StyleSheet.create({
   },
   topbarTitle: {
     color: "rgb(229, 229, 231)",
-    fontSize: 18,
+    fontSize: 36,
     fontWeight: "500",
     // fontFamily:
     //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 15,
   },
 });
