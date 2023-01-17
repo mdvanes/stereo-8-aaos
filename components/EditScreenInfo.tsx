@@ -11,6 +11,7 @@ import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import appJson from '../app.json';
 
 const urlStoreKey = "@subsonicUrl";
 const userStoreKey = "@subsonicUser";
@@ -98,7 +99,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
           } catch (err) {}
         }}
       />
-      <Text style={{ marginTop: 32, fontSize: 28 }}>v1.0.16</Text>
+      <Text style={{ marginTop: 32, fontSize: 28 }}>v{appJson.expo.version}</Text>
       {saved && <Text>Saved!</Text>}
       {/* <TextInput
         // style={styles.input}
