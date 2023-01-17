@@ -6,20 +6,31 @@ Made with [React Native](https://reactnative.dev)
 
 Requires `npm i -g expo-cli`
 
-Develop: Run with `npm start` and press `w`
+## Develop
+
+Run with `npm start` and press `w`
 
 Test on Android: install https://play.google.com/store/apps/details?id=host.exp.exponent and run `npm start` and scan the QR code in terminal with the App.
 
-Build: 
+## Build
 
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
-- npm i -g eas-cli
+- `npm i -g eas-cli`
 - update version code in app.json
-- eas build -p android
-- log into expo.dev dashboard and download AAB (under Builds or just use the URL listed by the CLI)
+- update version code in modal
+- `eas build -p android`
+- use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
 
-## Publish to Google Play Store
+## Publish to Google Play Store (Closed Testing)
+
+- go to https://play.google.com/console
+- Testing > Closed Testing
+- in the top bar, switch the dropdown to "Automotive OS only" and click on the "manage track" behind Active Track below: "Closed testing - Stereo8Testing"
+- click "Create new release"
+- ...
+
+## Publish to Google Play Store (Notes)
 
 I have not done this fully, because I'm the only user. So I just go to https://play.google.com/console and do a "Start testing now" alpha release for my own account.
 
@@ -52,6 +63,14 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
     * Try Closed testing (initial review time ca. 1 week). When finished with the Interal Testing process, click "promote release" and select create new track.
 * The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
 
+To run on Android phone, in AndroidManifest.xml turn on:
+
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+</intent-filter>
+```
 
 ### set up Android studio
 
@@ -64,3 +83,9 @@ APKs or Android App Bundles in this track must require the following features:an
 Building with Expo does not set up an AndroidManifest.xml
 
 https://reactnative.dev/docs/environment-setup
+
+
+## TODO
+
+* bottom buttons 2x bigger
+* force dark mode (or fix light mode)
