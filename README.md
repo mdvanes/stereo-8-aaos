@@ -18,9 +18,12 @@ Building is done online at [Expo](https://expo.dev/). This requires an account.
 
 - `npm i -g eas-cli`
 - update version code in app.json
-- update version code in modal
+  - expo.version
+  - expo.android.versionCode (for Google Play)
+- update version code in EditScreenInfo.tsx
 - `eas build -p android`
 - use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
+- push and tag on Github
 
 ## Publish to Google Play Store (Closed Testing)
 
@@ -44,24 +47,25 @@ After releasing for internal testing go to the "Testers" tab and use the "copy l
 
 A normal release: Left menu bar > "Internal testing"
 
-A AAOS release: Left menu bar > "Advanced Settings" > "Release types" > "Release an Android Automotive OS app bundle or APK to a test track >" > "Review and roll out release" 
+A AAOS release: Left menu bar > "Advanced Settings" > "Release types" > "Release an Android Automotive OS app bundle or APK to a test track >" > "Review and roll out release"
 This now fails with "APKs or Android App Bundles in this track must require the following features:android.hardware.type.automotive."
 See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-features
-* Expo is managing ios and android files internally. Try `react-native eject`
-    * Eject: `expo eject`
-    * dir is created: android/
-    * update `version code` in `android/app/build.gradle` and `app.json`
-    * settings.json is in gitigore, set on expo like this: 
-        * `base64 settings.json`
-        * `eas secret:create` with SETTINGS_BASE64
-    * still build with: `eas build -p android` (requires `npm i -g eas-cli`)
-    * build only APK: `eas build -p android --profile previewApk`
-    * NOT NEEDED build with: cd android/ && ./gradlew
-    * NOT NEEDED result in android/app/?
-    * (source: https://moleman1024.github.io/audiowagon/developers.html) Internal testing does not work: Right now “Internal Testing” is not supported for apps using AAOS features. My experience: everything works, you can select "install on device" but it never shows up in the car.
-    * AAOS is listed under Release > Setup > Advanced settings > Release types. Then "Automotive OS only" is available on the Internal testing release page.
-    * Try Closed testing (initial review time ca. 1 week). When finished with the Interal Testing process, click "promote release" and select create new track.
-* The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
+
+- Expo is managing ios and android files internally. Try `react-native eject`
+  - Eject: `expo eject`
+  - dir is created: android/
+  - update `version code` in `android/app/build.gradle` and `app.json`
+  - settings.json is in gitigore, set on expo like this:
+    - `base64 settings.json`
+    - `eas secret:create` with SETTINGS_BASE64
+  - still build with: `eas build -p android` (requires `npm i -g eas-cli`)
+  - build only APK: `eas build -p android --profile previewApk`
+  - NOT NEEDED build with: cd android/ && ./gradlew
+  - NOT NEEDED result in android/app/?
+  - (source: https://moleman1024.github.io/audiowagon/developers.html) Internal testing does not work: Right now “Internal Testing” is not supported for apps using AAOS features. My experience: everything works, you can select "install on device" but it never shows up in the car.
+  - AAOS is listed under Release > Setup > Advanced settings > Release types. Then "Automotive OS only" is available on the Internal testing release page.
+  - Try Closed testing (initial review time ca. 1 week). When finished with the Interal Testing process, click "promote release" and select create new track.
+- The bundle build from Android Studio fails with: You uploaded an APK or Android App Bundle that was signed in debug mode. You need to sign your APK or Android App Bundle in release mode. Then you need: https://reactnative.dev/docs/signed-apk-android
 
 To run on Android phone, in AndroidManifest.xml turn on:
 
@@ -84,8 +88,6 @@ Building with Expo does not set up an AndroidManifest.xml
 
 https://reactnative.dev/docs/environment-setup
 
+## Notes
 
-## TODO
-
-* bottom buttons 2x bigger
-* force dark mode (or fix light mode)
+- Dark mode is forced by setting `userInterfaceStyle` to `dark` in `app.json` instead of `automatic`. Also see https://docs.expo.dev/guides/color-schemes/
