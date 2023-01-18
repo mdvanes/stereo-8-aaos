@@ -23,11 +23,15 @@ Building is done online at [Expo](https://expo.dev/). This requires an account.
 
 ## Publish to Google Play Store (Closed Testing)
 
-- go to https://play.google.com/console
+- Go to https://play.google.com/console
 - Testing > Closed Testing
-- in the top bar, switch the dropdown to "Automotive OS only" and click on the "manage track" behind Active Track below: "Closed testing - Stereo8Testing"
-- click "Create new release"
-- ...
+- In the top bar, switch the dropdown to "Automotive OS only" and click on the "manage track" behind Active Track below: "Closed testing - Stereo8Testing"
+- Click "Create new release"
+- Drag the AAB file in
+- Click "Review Release"
+- Click "Start rollout to Closed Testing..."
+- (Is this needed?) Go to Publishing Overview and click "Send 1 change for review"
+- Wait 2 weeks...
 
 ## Publish to Google Play Store (Notes)
 
