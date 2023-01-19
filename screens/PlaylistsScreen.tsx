@@ -23,8 +23,9 @@ export default function PlaylistsScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
+    width: "100%",
   },
   title: {
     fontSize: 20,

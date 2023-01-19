@@ -35,7 +35,7 @@ const PlaylistItem = ({
   onClick,
 }: IPlaylist & { onClick: (p: IPlaylist) => () => void }) => (
   <View style={styles.item}>
-    <Pressable onPress={onClick({ id, name })}>
+    <Pressable style={styles.item_pressable} onPress={onClick({ id, name })}>
       <Text style={styles.line}>{name}</Text>
     </Pressable>
   </View>
@@ -86,7 +86,7 @@ export const Playlists: FC = () => {
         <SafeAreaView
           // TODO not allowed on Android:  style={{ height: "calc(100vh - 150px)" }}
           // style={{ height: 600 }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, width: "100%" }}
         >
           <SectionList
             sections={[{ title: "", data: playlists }]}

@@ -6,13 +6,8 @@ export const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    // backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
     display: "flex",
     flexDirection: "row",
-    gap: 8,
   },
   title: {
     fontSize: 32,
@@ -22,6 +17,16 @@ export const styles = StyleSheet.create({
   },
   line: {
     fontSize: 24,
+    padding: 28, 
+    marginHorizontal: 16,
+    display: "flex",
+    width: "100%",
+    borderBottomColor: "#222",
+    borderBottomWidth: 1
+  },
+  item_pressable: {
+    display: "flex",
+    width: "100%",
   },
   topbarTitle: {
     color: "rgb(229, 229, 231)",

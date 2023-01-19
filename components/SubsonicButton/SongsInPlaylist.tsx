@@ -25,7 +25,7 @@ const Item = ({
   onClick,
 }: ISong & { onClick: (id: string) => () => void }) => (
   <View style={styles.item}>
-    <Pressable onPress={onClick(id)}>
+    <Pressable style={styles.item_pressable} onPress={onClick(id)}>
       <Text style={styles.line}>
         {artist} - {title}
       </Text>
@@ -124,7 +124,7 @@ export const SongsInPlaylist: FC = () => {
       {context.queue && context.queue.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android: style={{ height: "calc(100vh - 150px)" }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, width: "100%" }}
         >
           <SectionList
             sections={[{ title: "", data: context.queue }]}
