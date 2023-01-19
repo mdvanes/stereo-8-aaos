@@ -10,7 +10,12 @@ Requires `npm i -g expo-cli eas-cli`
 
 Run with `npm start` and press `w`
 
-Test on Android: install https://play.google.com/store/apps/details?id=host.exp.exponent and run `npm start` and scan the QR code in terminal with the App.
+Test on Android:
+
+- install https://play.google.com/store/apps/details?id=host.exp.exponent
+- TODO requires adb on the path
+- run `npm start`
+- scan the QR code in terminal with the App.
 
 ## Build
 
@@ -91,3 +96,14 @@ https://reactnative.dev/docs/environment-setup
 ## Notes
 
 - Dark mode is forced by setting `userInterfaceStyle` to `dark` in `app.json` instead of `automatic`. Also see https://docs.expo.dev/guides/color-schemes/
+
+## TODO
+
+- bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
+- enhancement: playlists etc are centered, should be left aligned
+- test radio 2 now playing?
+- bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
+- bug: mail after publish with eligibility issues
+- enhancement: add offline mode
+- enhancement: browse "favorite" folders (or all folders) instead of only playlists
+- enhancement: allow use of hardware buttons
