@@ -8,6 +8,9 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
+  <uses-feature android:name="android.hardware.wifi" android:required="false" />
+  <uses-feature android:name="android.hardware.screen.portrait" android:required="false" />
+  <uses-feature android:name="android.hardware.screen.landscape" android:required="false" />
 
   <queries>
     <intent>
