@@ -28,6 +28,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { PlayContext } from "../context/play-context";
+import { TestFs } from "../TestFs/TestFs";
 
 const PlaylistItem = ({
   id,
@@ -54,6 +55,8 @@ export const Playlists: FC = () => {
     setPlaylists(await getPlaylists());
     setIsLoading(false);
   };
+
+ 
 
   useEffect(() => {
     if (!hasValidSettings()) {
@@ -88,6 +91,7 @@ export const Playlists: FC = () => {
           // style={{ height: 600 }}
           style={{ flex: 1, width: "100%" }}
         >
+          <TestFs />
           <SectionList
             sections={[{ title: "", data: playlists }]}
             keyExtractor={(item, index) => `${item.id}_${index}`}

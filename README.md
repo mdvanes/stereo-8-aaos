@@ -15,13 +15,14 @@ Test on Android:
 - install https://play.google.com/store/apps/details?id=host.exp.exponent
 - TODO requires adb on the path
 - run `npm start`
-- scan the QR code in terminal with the App.
+- scan the QR code in terminal with the App
+- when an old version shows, try "pull down to refresh"
 
 ## Build
 
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
-- update version: `npm run bump`
+- update version: `npm run bump XX`
 - `eas build -p android`
 - use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
 - push and tag on Github
@@ -99,11 +100,14 @@ https://reactnative.dev/docs/environment-setup
 
 ## TODO
 
-- bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
-- enhancement: playlists etc are centered, should be left aligned
-- test radio 2 now playing?
+- FIXED v1.0.17: enhancement: playlists etc are centered, should be left aligned
+- FIXED v1.0.17: bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
 - bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
+- feat: read config from JSON on (external) storage (e.g. USB drive)
+- enhancement: fix radio nowplaying getMediaMeta with HR endpoint
 - bug: mail after publish with eligibility issues
 - enhancement: add offline mode
 - enhancement: browse "favorite" folders (or all folders) instead of only playlists
 - enhancement: allow use of hardware buttons
+
+- updating icons/force dark mode does not work because app.json is not processed? Try expo build:android ? npx expo prebuild? https://stackoverflow.com/questions/53697882/change-expo-generated-application-icon
