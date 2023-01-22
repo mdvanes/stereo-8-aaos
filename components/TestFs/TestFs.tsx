@@ -11,6 +11,7 @@ const RNFSManager = require("react-native").NativeModules.RNFSManager;
 export const TestFs = () => {
   const [externalDirectory, setExternalDirectory] = useState("");
   const [files, setFiles] = useState([]);
+  const [fileData, setFileData] = useState();
 
   //   const colorScheme = useColorScheme();
 
@@ -35,6 +36,17 @@ export const TestFs = () => {
       getFileContent(RNFS.ExternalStorageDirectoryPath);
     } else {
       setExternalDirectory("NO RNFS");
+    }
+  };
+
+  const readFile = async () => {
+    if (RNFSManager) {
+      const RNFS = require("react-native-fs");
+      const filePath = RNFS.DocumentDirectoryPath + "/stereo8config.json";
+      const response = await RNFS.readFile(filePath);
+      setFileData(response); //set the value of response to the fileData Hook.
+    } else {
+      setFileData("NO RNFS");
     }
   };
 
@@ -66,11 +78,6 @@ export const TestFs = () => {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        {/* <FontAwesome
-          name={"test fs"}
-          size={60}
-          color={Colors[colorScheme].text}
-        /> */}
         <Text style={{ fontSize: 36 }}>Test FS</Text>
       </Pressable>
       <Text>External storage: {externalDirectory}</Text>
@@ -79,6 +86,17 @@ export const TestFs = () => {
         renderItem={renderItem}
         keyExtractor={(item: any) => item.name}
       />
+      <Pressable
+        onPress={() => {
+          readFile();
+        }}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <Text style={{ fontSize: 36 }}>Load Config</Text>
+      </Pressable>
+      <Text>{fileData}</Text>
     </>
   );
 };
