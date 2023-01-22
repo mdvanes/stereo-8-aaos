@@ -1,9 +1,5 @@
-import { FontAwesome } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-// import RNFS from "react-native-fs";
-import Colors from "../../constants/Colors";
-import useColorScheme from "../../hooks/useColorScheme";
 import { Text } from "../Themed";
 
 const RNFSManager = require("react-native").NativeModules.RNFSManager;
@@ -11,17 +7,7 @@ const RNFSManager = require("react-native").NativeModules.RNFSManager;
 export const TestFs = () => {
   const [externalDirectory, setExternalDirectory] = useState("");
   const [files, setFiles] = useState([]);
-  const [fileData, setFileData] = useState();
-
-  //   const colorScheme = useColorScheme();
-
-  //   const x = RNFSManager;
-
-  //   useEffect(() => {
-  //     //get user's file paths from react-native-fs
-  //     // setDownloadsFolder(RNFS.DownloadDirectoryPath);
-  //     // setDocumentsFolder(RNFS.DocumentDirectoryPath); //alternative to MainBundleDirectory.
-  //   }, []);
+  const [fileData, setFileData] = useState("");
 
   const onToggle = () => {
     if (RNFSManager) {
@@ -44,7 +30,7 @@ export const TestFs = () => {
       const RNFS = require("react-native-fs");
       const filePath = RNFS.DocumentDirectoryPath + "/stereo8config.json";
       const response = await RNFS.readFile(filePath);
-      setFileData(response); //set the value of response to the fileData Hook.
+      setFileData(response);
     } else {
       setFileData("NO RNFS");
     }
