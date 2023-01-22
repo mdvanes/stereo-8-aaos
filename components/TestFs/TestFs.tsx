@@ -32,7 +32,7 @@ export const TestFs = () => {
       const response = await RNFS.readFile(filePath);
       setFileData(response);
     } else {
-      setFileData("NO RNFS");
+      setFileData("rf NO RNFS");
     }
   };
 
@@ -59,20 +59,6 @@ export const TestFs = () => {
   return (
     <>
       <Pressable
-        onPress={onToggle}
-        style={({ pressed }) => ({
-          opacity: pressed ? 0.5 : 1,
-        })}
-      >
-        <Text style={{ fontSize: 36 }}>Test FS</Text>
-      </Pressable>
-      <Text>External storage: {externalDirectory}</Text>
-      <FlatList
-        data={files}
-        renderItem={renderItem}
-        keyExtractor={(item: any) => item.name}
-      />
-      <Pressable
         onPress={() => {
           readFile();
         }}
@@ -80,9 +66,24 @@ export const TestFs = () => {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        <Text style={{ fontSize: 36 }}>Load Config</Text>
+        <Text style={{ fontSize: 24 }}>Load Config</Text>
+      </Pressable>
+      <Pressable
+        onPress={onToggle}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <Text style={{ fontSize: 24 }}>Test FS</Text>
       </Pressable>
       <Text>{fileData}</Text>
+      <Text>External storage: {externalDirectory}</Text>
+      <FlatList
+        style={{ height: 300, maxHeight: 300 }}
+        data={files}
+        renderItem={renderItem}
+        keyExtractor={(item: any) => item.name}
+      />
     </>
   );
 };
