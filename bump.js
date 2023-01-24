@@ -3,6 +3,9 @@ const jq = require("node-jq");
 
 const buildGradlePath = "./android/app/build.gradle";
 const appJsonPath = "./app.json";
+const packageJsonPath = "./package.json";
+
+const getVersion = (versionCode) => `1.0.${versionCode}`;
 
 const bumpGradle = (versionCode) => {
   const data = fs.readFileSync(buildGradlePath, {
@@ -23,7 +26,7 @@ const bumpGradle = (versionCode) => {
       inject = false;
       return `        /* start versions */
         versionCode ${versionCode}
-        versionName "1.0.${versionCode}"      
+        versionName "${getVersion(versionCode)}"      
         /* end versions */`;
     }
     if (!matched) {
@@ -40,17 +43,16 @@ const bumpGradle = (versionCode) => {
   );
 };
 
+const writeJq = async (path, filter) => {
+  const data = await jq.run(filter, path);
+  fs.writeFileSync(path, data + "\n");
+};
+
 const bumpAppJson = async (versionCode) => {
-  const data = await jq.run(
-    `.=(.expo.android.versionCode=${versionCode})`,
-    appJsonPath
-  );
-  fs.writeFileSync(appJsonPath, data + "\n");
-  const data1 = await jq.run(
-    `.=(.expo.version="1.0.${versionCode}")`,
-    appJsonPath
-  );
-  fs.writeFileSync(appJsonPath, data1 + "\n");
+  await writeJq(appJsonPath, `.=(.expo.android.versionCode=${versionCode})`);
+  await writeJq(appJsonPath, `.=(.expo.version="${getVersion(versionCode)}")`);
+
+  await writeJq(packageJsonPath, `.=(.version="${getVersion(versionCode)}")`);
 };
 
 const run = async () => {
@@ -60,7 +62,7 @@ const run = async () => {
     console.log("Setting version code to:", versionCode);
     console.log("Bumping gradle...");
     bumpGradle(versionCode);
-    console.log("Bumping app.json...");
+    console.log("Bumping app.json & package.json...");
     await bumpAppJson(versionCode);
   } else {
     console.error("You must set versionCode as param!");
