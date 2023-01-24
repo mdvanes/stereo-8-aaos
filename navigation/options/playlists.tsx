@@ -1,8 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
-import * as React from "react";
+import React from "react";
 import { ColorSchemeName, Image, Pressable } from "react-native";
 import { styles } from "../../components/item.styles";
 import Colors from "../../constants/Colors";
+import { HEADER_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 import { RootStackScreenProps } from "../../types";
 
 export const stackScreenPlaylistsOptions =
@@ -10,7 +11,7 @@ export const stackScreenPlaylistsOptions =
   ({ navigation }: RootStackScreenProps<"Playlists">) => ({
     title: "Stereo 8 by mdworld.nl",
     headerTitleStyle: {
-      fontSize: 38,
+      fontSize: HEADER_FONT_SIZE,
     },
     headerLeft: () => (
       <Image
@@ -27,7 +28,7 @@ export const stackScreenPlaylistsOptions =
       >
         <FontAwesome
           name="cog"
-          size={60}
+          size={HEADER_ICON_SIZE}
           color={Colors[colorScheme].text}
           style={{ marginRight: 15, marginVertical: 10 }}
         />

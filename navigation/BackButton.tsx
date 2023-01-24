@@ -1,7 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
-import * as React from "react";
+import React from "react";
 import { Pressable } from "react-native";
 import Colors from "../constants/Colors";
+import { HEADER_ICON_SIZE } from "../constants/Layout";
 import useColorScheme from "../hooks/useColorScheme";
 
 // Needed because the font-size of the built-in backbutton can't be overridden
@@ -20,7 +21,7 @@ export const BackButton = ({
     >
       <FontAwesome
         name="arrow-left"
-        size={50}
+        size={HEADER_ICON_SIZE}
         color={Colors[colorScheme].text}
         style={{ marginHorizontal: 15, marginVertical: 10 }}
       />

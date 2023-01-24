@@ -1,4 +1,5 @@
-import { Button, FlatList, View, StyleSheet, StatusBar } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
+import { HEADER_FONT_SIZE, HEADER_ICON_SIZE } from "../constants/Layout";
 
 export const styles = StyleSheet.create({
   container: {
@@ -17,12 +18,12 @@ export const styles = StyleSheet.create({
   },
   line: {
     fontSize: 24,
-    padding: 28, 
+    padding: 28,
     marginHorizontal: 16,
     display: "flex",
     width: "100%",
     borderBottomColor: "#222",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   item_pressable: {
     display: "flex",
@@ -30,14 +31,14 @@ export const styles = StyleSheet.create({
   },
   topbarTitle: {
     color: "rgb(229, 229, 231)",
-    fontSize: 36,
+    fontSize: HEADER_FONT_SIZE,
     fontWeight: "500",
     // fontFamily:
     //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: HEADER_ICON_SIZE,
+    height: HEADER_ICON_SIZE,
     marginHorizontal: 15,
   },
 });

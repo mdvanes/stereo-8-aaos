@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
-import * as React from "react";
+import React from "react";
 import { ColorSchemeName, Pressable, Text, View } from "react-native";
 import { PlayContext } from "../../components/context/play-context";
 import { styles } from "../../components/item.styles";
 import Colors from "../../constants/Colors";
+import { HEADER_ICON_SIZE } from "../../constants/Layout";
 import { RootStackScreenProps } from "../../types";
 import { BackButton } from "../BackButton";
 
@@ -30,7 +31,7 @@ export const stackScreenPlaylistOptions =
       >
         <FontAwesome
           name="cog"
-          size={60}
+          size={HEADER_ICON_SIZE}
           color={Colors[colorScheme].text}
           style={{ marginRight: 15 }}
         />

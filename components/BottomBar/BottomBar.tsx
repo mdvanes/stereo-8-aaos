@@ -8,6 +8,7 @@ import { PlayContext } from "../context/play-context";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
+import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 
 const formatSecToTime = (s: number): string => {
   const ss = s % 60;
@@ -95,7 +96,13 @@ export const BottomBar: FC = () => {
         <Text style={styles.statusH2}>{getByline()}</Text>
       </View>
       <View style={styles.progress}>
-        <Text style={{ fontFamily: "sans-serif", fontSize: 28, fontVariant: ['tabular-nums'] }}>
+        <Text
+          style={{
+            fontFamily: "sans-serif",
+            fontSize: BOTTOM_FONT_SIZE,
+            fontVariant: ["tabular-nums"],
+          }}
+        >
           {getProgress()}
         </Text>
       </View>
@@ -108,7 +115,7 @@ export const BottomBar: FC = () => {
         >
           <FontAwesome
             name={"arrow-right"}
-            size={60}
+            size={HEADER_ICON_SIZE}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
           />
@@ -123,7 +130,7 @@ export const BottomBar: FC = () => {
         >
           <FontAwesome
             name={context.isPlaying ? "pause" : "play"}
-            size={60}
+            size={HEADER_ICON_SIZE}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}
           />
@@ -154,12 +161,13 @@ const styles = StyleSheet.create({
     //   ' -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   statusH1: {
-    fontSize: 36,
+    fontSize: BOTTOM_FONT_SIZE * 1.145,
     paddingTop: 7,
     paddingBottom: 0,
   },
   statusH2: {
-    fontSize: 28,
+    fontSize: BOTTOM_FONT_SIZE,
+    fontStyle: "italic",
     paddingTop: 0,
   },
   progress: {

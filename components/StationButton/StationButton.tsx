@@ -16,6 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
 import { PlayContext } from "../context/play-context";
+import { HEADER_ICON_SIZE } from "../../constants/Layout";
 
 // const getMovies = async () => {
 //   try {
@@ -117,7 +118,7 @@ export const StationButton: FC<IStationButtonProps> = ({
       >
         <FontAwesome
           name={context.isRadioPlaying ? "pause-circle" : "music"}
-          size={60}
+          size={HEADER_ICON_SIZE}
           color={Colors[colorScheme].text}
         />
       </Pressable>
