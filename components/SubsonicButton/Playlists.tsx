@@ -1,33 +1,18 @@
-import { Audio } from "expo-av";
+import { useNavigation } from "@react-navigation/native";
 import React, { FC, useContext, useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Pressable,
-  View,
-  StyleSheet,
   SafeAreaView,
   SectionList,
-  StatusBar,
-  ActivityIndicator,
+  View,
 } from "react-native";
+import useColorScheme from "../../hooks/useColorScheme";
+import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
-import {
-  getAPI,
-  getCurrentRemotePlayingId,
-  getNowPlaying,
-  getPlaylist,
-  getPlaylists,
-  hasValidSettings,
-  IPlaylist,
-  ISong,
-  SubsonicNowPlaying,
-} from "./getSubsonic";
-import useColorScheme from "../../hooks/useColorScheme";
-import { FontAwesome } from "@expo/vector-icons";
-import Colors from "../../constants/Colors";
-import { useNavigation } from "@react-navigation/native";
-import { PlayContext } from "../context/play-context";
+import { getPlaylists, hasValidSettings, IPlaylist } from "./getSubsonic";
 
 const PlaylistItem = ({
   id,
@@ -54,8 +39,6 @@ export const Playlists: FC = () => {
     setPlaylists(await getPlaylists());
     setIsLoading(false);
   };
-
- 
 
   useEffect(() => {
     if (!hasValidSettings()) {

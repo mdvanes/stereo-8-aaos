@@ -1,12 +1,8 @@
-import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { BottomBar } from "../components/BottomBar/BottomBar";
-import EditScreenInfo from "../components/EditScreenInfo";
-import { HomeList } from "../components/HomeList/HomeList";
 import { Playlists } from "../components/SubsonicButton/Playlists";
-import { SongsInPlaylist } from "../components/SubsonicButton/SongsInPlaylist";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
 export default function PlaylistsScreen({
