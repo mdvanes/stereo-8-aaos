@@ -1,9 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
 import { ColorSchemeName, Image, Pressable } from "react-native";
-import { styles } from "../components/item.styles";
-import Colors from "../constants/Colors";
-import { RootStackScreenProps } from "../types";
+import { styles } from "../../components/item.styles";
+import Colors from "../../constants/Colors";
+import { RootStackScreenProps } from "../../types";
 
 export const stackScreenPlaylistsOptions =
   (colorScheme: NonNullable<ColorSchemeName>) =>
@@ -15,7 +15,7 @@ export const stackScreenPlaylistsOptions =
     headerLeft: () => (
       <Image
         style={styles.logo}
-        source={require("../assets/images/adaptive-icon.png")}
+        source={require("../../assets/images/adaptive-icon.png")}
       />
     ),
     headerRight: () => (
