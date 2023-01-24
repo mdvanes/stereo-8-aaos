@@ -2,7 +2,7 @@
   "expo": {
     "name": "stereo-8-aaos",
     "slug": "stereo-8-aaos",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -28,7 +28,7 @@
         "backgroundColor": "#111111"
       },
       "package": "com.mdworld.stereo8aaos",
-      "versionCode": 19
+      "versionCode": 20
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
