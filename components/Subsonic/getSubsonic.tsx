@@ -3,12 +3,11 @@ import { getSettings, ISettings } from "../../getSettings";
 
 const PLAYER_NAME = "Stereo8";
 
-// TODO clean up file
-let API_DOMAIN = ""; //  = settings?.subsonic?.domain ?? "";
-let API_USER; //  = settings?.subsonic?.user ?? "";
-let API_SALT; //  = settings?.subsonic?.salt ?? "";
-let API_TOKEN; //  = md5((settings?.subsonic?.password ?? "") + API_SALT);
-let API_CONFIG = ""; //  = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
+let API_DOMAIN = "";
+let API_USER;
+let API_SALT;
+let API_TOKEN;
+let API_CONFIG = "";
 
 const run = async () => {
   const settings: ISettings = await getSettings();
@@ -49,6 +48,7 @@ export interface ISong {
   title: string;
   duration: number;
   album?: string;
+  img?: string;
 }
 
 export const testConnection = async (): Promise<void> => {
@@ -124,16 +124,11 @@ export const getNowPlaying = async ({
     console.error(error);
     return null;
   }
-  //  finally {
-  //   //  setLoading(false);
-  //   return
-  // }
 };
 
-export const getCurrentRemotePlayingId = async (): Promise<string> => {
+export const getCurrentRemotePlayingId = async (): Promise<
+  string | undefined
+> => {
   const newMeta = await getNowPlaying({ remote: true });
-  // Between 1000 and 5716
-  const randomId = `${Math.floor(Math.random() * 4716) + 1000}`;
-  const id = newMeta?.id ?? randomId;
-  return id;
+  return newMeta?.id;
 };

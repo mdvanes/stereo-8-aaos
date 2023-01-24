@@ -10,6 +10,7 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";
 
+// TODO clean up this file
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
   const { getNextSong } = useGetNextSong();
@@ -42,6 +43,9 @@ export const SoundWrapper: FC = () => {
   const init = async () => {
     context.setIsLoading(true);
     const id = await getCurrentRemotePlayingId();
+    // if (!id) {
+    //   setError("CurrentRemotePlayingId is empty");
+    // }
     await Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       staysActiveInBackground: true,

@@ -1,89 +1,95 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { Audio } from "expo-av";
-import { ListItemButton } from "./ListItemButton";
-import {
-  Button,
-  FlatList,
-  View,
-  StyleSheet,
-  StatusBar,
-  Pressable,
-} from "react-native";
-import { Text } from "../Themed";
-import { styles } from "../item.styles";
-// import MediaMeta from "react-native-media-meta";
 import { FontAwesome } from "@expo/vector-icons";
+import React, { FC, useContext, useState } from "react";
+import { Pressable, View, Image } from "react-native";
 import Colors from "../../constants/Colors";
+import { HEADER_ICON_SIZE } from "../../constants/Layout";
+import { IRadioSetting, ISettings } from "../../getSettings";
 import useColorScheme from "../../hooks/useColorScheme";
 import { PlayContext } from "../context/play-context";
-import { HEADER_ICON_SIZE } from "../../constants/Layout";
 
-// const getMovies = async () => {
-//   try {
-//     const response = await fetch("https://reactnative.dev/movies.json");
-//     const json = await response.json();
-//     console.log(json);
-//     //  setData(json.movies);
-//   } catch (error) {
-//     console.error(error);
-//   } finally {
-//     //  setLoading(false);
-//   }
-// };
+interface NowPlayingResponse {
+  artist: string;
+  title: string;
+  last_updated: string;
+  songImageUrl: string;
+  name: string;
+  imageUrl: string;
+}
 
-const getMediaMeta = async (channelURL: string): Promise<string> => {
+interface TracksResponse {
+  data: [
+    {
+      artist: string;
+      title: string;
+      image_url_400x400?: string;
+      enddatetime: string;
+    }
+  ];
+}
+
+interface BroadcastResponse {
+  data: [{ title: string; presenters?: string; image_url_400x400?: string }];
+}
+
+const getMeta = async (
+  tracksURL: string,
+  broadcastUrl: string
+): Promise<NowPlayingResponse | null> => {
   try {
-    // console.log(MediaMeta.get(channelUrl));
-    // return "";
-    // const metadata = await MediaMeta.get(channelURL);
-    // console.log(metadata);
-    return ""; // JSON.stringify(metadata);
+    const nowonairResponse: TracksResponse = await fetch(tracksURL).then(
+      (data) => data.json()
+    );
+
+    const {
+      artist,
+      title,
+      image_url_400x400: songImg,
+      enddatetime,
+    } = nowonairResponse.data[0];
+
+    const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
+      (data) => data.json()
+    );
+
+    const {
+      title: name,
+      presenters,
+      image_url_400x400: presenterImg,
+    } = broadcastResponse.data[0];
+
+    const presentersSuffix = presenters ? ` / ${presenters}` : "";
+
+    return {
+      artist,
+      title,
+      last_updated: enddatetime,
+      songImageUrl: songImg ?? "",
+      name: `${name}${presentersSuffix}`,
+      imageUrl: presenterImg ?? "",
+    };
   } catch (err) {
     console.error(err);
-    return "No metadata";
+    return null;
   }
 };
 
 interface IStationButtonProps {
-  channelURL: string;
-  channelName: string;
+  config: IRadioSetting;
 }
 
-export const StationButton: FC<IStationButtonProps> = ({
-  channelName,
-  channelURL,
-}) => {
-  // const [meta, setMeta] = useState<string>("");
-  // const [isPlaying, setIsPlaying] = useState(false);
-  // const [pbo, setPbo] = useState<Audio.Sound | null>(null);
+export const StationButton: FC<IStationButtonProps> = ({ config }) => {
+  const {
+    name: channelName,
+    channelUrl,
+    metaTracksUrl,
+    metaBroadcastUrl,
+  } = config;
   const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
 
-  // const init = async () => {
-  // await Audio.setAudioModeAsync({
-  //   playsInSilentModeIOS: true,
-  //   staysActiveInBackground: true,
-  // });
-  // const { sound: playbackObject } = await Audio.Sound.createAsync(
-  //   { uri: channelURL },
-  //   { shouldPlay: false }
-  // );
-  // playbackObject.setOnMetadataUpdate((title) => {
-  //   setMeta(`pbometa ${title}`);
-  // });
-  // setPbo(playbackObject);
-  // const newMeta = await getMediaMeta(channelURL);
-  // setMeta(newMeta);
-  // };
-
-  // useEffect(() => {
-  //   init();
-  // getMovies();
-  // }, []);
-
   const onToggle = async () => {
+    const meta = await getMeta(metaTracksUrl, metaBroadcastUrl);
     if (context.pbo) {
-      console.log(context);
       // Stop playing songs, get ready for stream
       context.setStartSongId(null);
       context.setIsPlaying(false);
@@ -92,24 +98,23 @@ export const StationButton: FC<IStationButtonProps> = ({
       } else {
         await context.pbo.unloadAsync();
         await context.pbo.loadAsync({
-          uri: channelURL,
+          uri: channelUrl,
         });
         await context.pbo.playAsync();
       }
       context.setSong({
         id: "0",
-        title: channelName,
-        artist: "",
+        title: meta?.title || channelName,
+        artist: `${meta?.artist} (${meta?.name})`,
         duration: -1,
+        img: meta ? meta.songImageUrl ?? meta.imageUrl : undefined,
       });
       context.setIsRadioPlaying(!context.isRadioPlaying);
     }
   };
 
   return (
-    <View
-    // style={styles.item}
-    >
+    <View>
       <Pressable
         onPress={onToggle}
         style={({ pressed }) => ({

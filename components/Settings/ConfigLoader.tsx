@@ -11,6 +11,18 @@ const formatConfig = (configSettings: ISettings | undefined) => {
 Subsonic URL: ${configSettings.subsonic?.domain}
 Subsonic user: ${configSettings.subsonic?.user}
 Subsonic password: ${configSettings.subsonic?.password ? "***" : ""}
+
+Radio stations: ${configSettings.radio?.length}
+Radio channel 1: ${
+    configSettings.radio?.length && configSettings.radio.length > 0
+      ? configSettings.radio[0].name
+      : ""
+  }
+${
+  configSettings.radio?.length && configSettings.radio.length > 0
+    ? configSettings.radio[0].channelUrl
+    : ""
+}
    `;
 };
 
@@ -26,6 +38,7 @@ export const ConfigLoader: FC<{
   const readFromUrl = async (url: string) => {
     // NOTE: there is no CORS in native apps! https://reactnative.dev/docs/network#using-other-networking-libraries
 
+    setError("");
     setIsLoading(true);
     try {
       const response: ISettings = await fetch(url).then((data) => data.json());

@@ -4,5 +4,13 @@
     "user": "my_username",
     "salt": "some_salt",
     "password": "my_password"
-  }
+  },
+  "radio": [
+    {
+      "name": "channel name",
+      "channelUrl": "https://my.domain",
+      "metaTracksUrl": "https://my.domain",
+      "metaBroadcastUrl": "https://my.domain"
+    }
+  ]
 }

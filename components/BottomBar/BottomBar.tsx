@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-// import { styles } from "../item.styles";
+import { Pressable, StyleSheet, View, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
@@ -9,6 +8,7 @@ import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
+import { getSettings, IRadioSetting, ISettings } from "../../getSettings";
 
 const formatSecToTime = (s: number): string => {
   const ss = s % 60;
@@ -20,15 +20,21 @@ export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
   const { getNextSong } = useGetNextSong();
   const context = useContext(PlayContext);
-  //   const [progress, setProgress] = useState(0);
-  //   const [timer, setTimer] = useState<ReturnType<typeof setInterval>>();
+  const [radioSetting, setRadioSetting] = useState<IRadioSetting>();
+
+  useEffect(() => {
+    const run = async () => {
+      const settings: ISettings = await getSettings();
+      if (settings.radio && settings.radio.length > 0) {
+        setRadioSetting(settings.radio[0]);
+      }
+    };
+    run();
+  }, []);
 
   const getByline = () => {
     if (context.song) {
-      const { artist, album } = context.song;
-      //   if (album) {
-      //     return `${artist} (${album})`;
-      //   }
+      const { artist } = context.song;
       return artist;
     }
     return "";
@@ -60,22 +66,6 @@ export const BottomBar: FC = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     if (context.isPlaying) {
-  //       const interval = setInterval(() => {
-  //         setProgress((old) => old + 1);
-  //       }, 1000);
-  //       setTimer(interval);
-  //     } else {
-  //       clearInterval(timer);
-  //     }
-  //   }, [context.isPlaying]);
-
-  //   useEffect(() => {
-  //     clearInterval(timer);
-  //     setProgress(0);
-  //   }, [context.startSongId]);
-
   const handleNext = () => {
     const nextSong = getNextSong();
     if (nextSong) {
@@ -83,19 +73,21 @@ export const BottomBar: FC = () => {
     }
   };
 
+  console.log(context.song?.img);
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
-        <StationButton
-          channelName="NPO Radio 2"
-          channelURL="https://icecast.omroep.nl/radio2-bb-mp3"
-        />
+        {radioSetting && <StationButton config={radioSetting} />}
       </View>
       <View style={styles.status}>
         <Text style={styles.statusH1}>{context.song?.title || ""}</Text>
         <Text style={styles.statusH2}>{getByline()}</Text>
       </View>
       <View style={styles.progress}>
+        {context.song?.img && (
+          <Image style={styles.image} source={{ uri: context.song.img }} />
+        )}
         <Text
           style={{
             fontFamily: "sans-serif",
@@ -175,6 +167,11 @@ const styles = StyleSheet.create({
     fontFamily: "monospace",
     fontSize: 28,
     justifyContent: "center",
+  },
+  image: {
+    width: HEADER_ICON_SIZE * 1.67,
+    height: HEADER_ICON_SIZE * 1.67,
+    marginHorizontal: 15,
   },
   rightAction: {
     padding: 15,
