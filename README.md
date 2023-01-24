@@ -8,6 +8,8 @@ Requires `npm i -g expo-cli eas-cli`
 
 ## Develop
 
+Make sure a settings.json (see settings.json.example) exists on some public URL and load + save it from the Settings page to be able to connect to your server.
+
 Run with `npm start` and press `w`
 
 Test on Android:
@@ -23,7 +25,7 @@ Test on Android:
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
 - update version: `npm run bump XX`
-- `eas build -p android`
+- `eas build -p android` (NOTE: build only APK: `eas build -p android --profile previewApk`)
 - use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
 - push and tag on Github
 
@@ -103,11 +105,12 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.17: enhancement: playlists etc are centered, should be left aligned
 - FIXED v1.0.17: bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
 - bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
-- feat: read config from JSON on (external) storage (e.g. USB drive)
+- feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call?
 - enhancement: fix radio nowplaying getMediaMeta with HR endpoint
 - bug: mail after publish with eligibility issues
 - enhancement: add offline mode
 - enhancement: browse "favorite" folders (or all folders) instead of only playlists
-- enhancement: allow use of hardware buttons
+- enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver
+- enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator
 
 - updating icons/force dark mode does not work because app.json is not processed? Try expo build:android ? npx expo prebuild? https://stackoverflow.com/questions/53697882/change-expo-generated-application-icon
