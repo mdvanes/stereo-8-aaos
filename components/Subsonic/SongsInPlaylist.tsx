@@ -1,22 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
-import { Audio } from "expo-av";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Pressable, SafeAreaView, SectionList, View } from "react-native";
-import useColorScheme from "../../hooks/useColorScheme";
+import {
+  ActivityIndicator,
+  Pressable,
+  SafeAreaView,
+  SectionList,
+  View,
+} from "react-native";
 import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
-import {
-  getAPI,
-  getCurrentRemotePlayingId,
-  getNowPlaying,
-  getPlaylist,
-  hasValidSettings,
-  IPlaylist,
-  ISong,
-  SubsonicNowPlaying,
-} from "./getSubsonic";
+import { getPlaylist, hasValidSettings, ISong } from "./getSubsonic";
 
 const Item = ({
   id,
@@ -34,29 +29,14 @@ const Item = ({
 );
 
 export const SongsInPlaylist: FC = () => {
-  // const [isPlaying, setIsPlaying] = useState(false);
-  // const [pbo, setPbo] = useState<Audio.Sound | null>(null);
-  // const [meta, setMeta] = useState<SubsonicNowPlaying | null>(null);
   const [error, setError] = useState<string>();
-  // const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
-  // const [songs, setSongs] = useState<ISong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const colorScheme = useColorScheme();
   const context = useContext(PlayContext);
   const navigation = useNavigation();
 
   const init = async () => {
     setIsLoading(true);
-    // const id = await getCurrentRemotePlayingId();
-    // await Audio.setAudioModeAsync({
-    //   playsInSilentModeIOS: true,
-    //   staysActiveInBackground: true,
-    // });
-    // const { sound: playbackObject } = await Audio.Sound.createAsync(
-    //   { uri: getAPI("stream", `&id=${id}`) },
-    //   { shouldPlay: false }
-    // );
-    // setPbo(playbackObject);
+
     const pid = context.playlist?.id;
     if (pid) {
       context.setQueue(await getPlaylist(pid));
@@ -77,36 +57,7 @@ export const SongsInPlaylist: FC = () => {
   }, []);
 
   const handlePlaySong = (id: string) => async () => {
-    // context.setSong({
-    //   id,
-    //   artist: "",
-    //   title: "",
-    // });
-    // context.setIsPlaying(true);
     context.setStartSongId(id);
-    // if (pbo) {
-    //   if (isPlaying) {
-    //     await pbo.pauseAsync();
-    //   } else {
-    //     await pbo.unloadAsync();
-    //     await pbo.loadAsync({ uri: getAPI("stream", `&id=${id}`) });
-    //     await pbo.playAsync();
-    //   }
-    //   setIsPlaying(!isPlaying);
-    //   setTimeout(async () => {
-    //     const newMeta = await getNowPlaying({ remote: false });
-    //     setMeta(newMeta);
-    //     if (newMeta && newMeta.id && newMeta.artist && newMeta.title) {
-    //       context.setIsPlaying(true);
-    //       context.setSong({
-    //         id: newMeta.id,
-    //         artist: newMeta.artist,
-    //         title: newMeta.title,
-    //         album: newMeta.album,
-    //       });
-    //     }
-    //   }, 500);
-    // }
   };
 
   if (error) {
@@ -121,6 +72,9 @@ export const SongsInPlaylist: FC = () => {
 
   return (
     <>
+      {isLoading && (
+        <ActivityIndicator size="large" style={{ height: 300, width: 300 }} />
+      )}
       {context.queue && context.queue.length > 0 && (
         <SafeAreaView
           // TODO not allowed on Android: style={{ height: "calc(100vh - 150px)" }}
@@ -133,11 +87,7 @@ export const SongsInPlaylist: FC = () => {
               <Item onClick={handlePlaySong} {...item} />
             )}
             renderSectionHeader={({ section: { title } }) => (
-              <Text
-              // style={styles.header}
-              >
-                {title}
-              </Text>
+              <Text>{title}</Text>
             )}
           />
         </SafeAreaView>

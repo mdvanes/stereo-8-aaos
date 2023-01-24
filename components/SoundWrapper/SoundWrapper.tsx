@@ -5,7 +5,7 @@ import {
   getCurrentRemotePlayingId,
   getNowPlaying,
   hasValidSettings,
-} from "../SubsonicButton/getSubsonic";
+} from "../Subsonic/getSubsonic";
 import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";

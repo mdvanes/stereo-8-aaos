@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { PlayContext } from "../context/play-context";
-import { ISong } from "../SubsonicButton/getSubsonic";
+import { ISong } from "../Subsonic/getSubsonic";
 
 export const useGetNextSong = () => {
   const context = useContext(PlayContext);

@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useState } from "react";
-import { IPlaylist, ISong } from "../SubsonicButton/getSubsonic";
+import { IPlaylist, ISong } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
 
 export interface PlayValues {

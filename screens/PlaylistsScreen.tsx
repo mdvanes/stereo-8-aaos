@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { BottomBar } from "../components/BottomBar/BottomBar";
-import { Playlists } from "../components/SubsonicButton/Playlists";
+import { Playlists } from "../components/Subsonic/Playlists";
 import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
