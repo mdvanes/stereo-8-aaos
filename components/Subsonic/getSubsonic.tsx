@@ -1,15 +1,26 @@
 import md5 from "md5";
-import { getSettings } from "../../getSettings";
+import { getSettings, ISettings } from "../../getSettings";
 
 const PLAYER_NAME = "Stereo8";
 
-const settings = getSettings();
+// TODO clean up file
+let API_DOMAIN = ""; //  = settings?.subsonic?.domain ?? "";
+let API_USER; //  = settings?.subsonic?.user ?? "";
+let API_SALT; //  = settings?.subsonic?.salt ?? "";
+let API_TOKEN; //  = md5((settings?.subsonic?.password ?? "") + API_SALT);
+let API_CONFIG = ""; //  = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
 
-const API_DOMAIN = settings?.subsonic?.domain ?? "";
-const API_USER = settings?.subsonic?.user ?? "";
-const API_SALT = settings?.subsonic?.salt ?? "";
-const API_TOKEN = md5((settings?.subsonic?.password ?? "") + API_SALT);
-const API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
+const run = async () => {
+  const settings: ISettings = await getSettings();
+
+  API_DOMAIN = settings?.subsonic?.domain ?? "";
+  API_USER = settings?.subsonic?.user ?? "";
+  API_SALT = settings?.subsonic?.salt ?? "";
+  API_TOKEN = md5((settings?.subsonic?.password ?? "") + API_SALT);
+  API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
+};
+
+run();
 
 export const getAPI = (method: string, option = "") =>
   API_DOMAIN + method + API_CONFIG + option;
@@ -39,6 +50,10 @@ export interface ISong {
   duration: number;
   album?: string;
 }
+
+export const testConnection = async (): Promise<void> => {
+  await fetch(getAPI("getPlaylists")).then((data) => data.json());
+};
 
 export const getPlaylists = async (): Promise<IPlaylist[]> => {
   try {

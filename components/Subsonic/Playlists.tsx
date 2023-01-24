@@ -12,7 +12,12 @@ import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
-import { getPlaylists, hasValidSettings, IPlaylist } from "./getSubsonic";
+import {
+  getPlaylists,
+  hasValidSettings,
+  IPlaylist,
+  testConnection,
+} from "./getSubsonic";
 
 const PlaylistItem = ({
   id,
@@ -43,8 +48,20 @@ export const Playlists: FC = () => {
   useEffect(() => {
     if (!hasValidSettings()) {
       setError("Settings not complete");
+      return;
     }
-    init();
+
+    const run = async () => {
+      try {
+        await testConnection();
+      } catch (err) {
+        setError("Settings invalid");
+        return;
+      }
+      init();
+    };
+
+    run();
   }, []);
 
   const handleOpenPlaylist = (p: IPlaylist) => async () => {
