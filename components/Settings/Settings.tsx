@@ -1,18 +1,9 @@
-import * as WebBrowser from "expo-web-browser";
-import React, { useEffect } from "react";
-import {
-  Button,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import Colors from "../constants/Colors";
-import { MonoText } from "./StyledText";
-import { Text, View } from "./Themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import appJson from "../app.json";
-import { TestFs } from "./TestFs/TestFs";
+import React, { useEffect } from "react";
+import { Button, SafeAreaView, StyleSheet, TextInput } from "react-native";
+import appJson from "../../app.json";
+import { TestFs } from "../TestFs/TestFs";
+import { Text } from "../Themed";
 
 const urlStoreKey = "@subsonicUrl";
 const userStoreKey = "@subsonicUser";
@@ -42,13 +33,13 @@ const getData = async () => {
   }
 };
 
-export default function EditScreenInfo({ path }: { path: string }) {
+// TODO rename to Settings
+export default function Settings({ path }: { path: string }) {
   const [subsonicUrl, onChangeSubsonicUrl] = React.useState("");
   const [subsonicUser, onChangeSubsonicUser] = React.useState("");
   // TODO don't store plaintext password, but salted
   const [subsonicPassword, onChangeSubsonicPassword] = React.useState("");
   const [saved, setSaved] = React.useState(false);
-  // const [number, onChangeNumber] = React.useState(null);
 
   useEffect(() => {
     getData().then((data) => {
@@ -62,7 +53,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ width: "100%" }}>
       <Text style={styles.label}>Subsonic URL</Text>
       <TextInput
         style={styles.input}
@@ -71,7 +62,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         placeholder="domain.com"
         placeholderTextColor="rgba(255,255,255,0.8)"
       />
-      <Text style={styles.label}>Subsonic Username</Text>
+      {/* TODO restore: <Text style={styles.label}>Subsonic Username</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeSubsonicUser}
@@ -87,7 +78,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         placeholder="secret"
         placeholderTextColor="rgba(255,255,255,0.8)"
         secureTextEntry
-      />
+      /> */}
       <Button
         title="save"
         onPress={async () => {
@@ -104,31 +95,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
         v{appJson.expo.version}
       </Text>
       {saved && <Text>Saved!</Text>}
-      {/* <TextInput
-        // style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        // keyboardType="numeric"
-      /> */}
       <TestFs />
     </SafeAreaView>
-    // <View>
-    //   <View style={styles.helpContainer}>
-    //     <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-    //       <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-    //         Tap here if your app doesn't automatically update after making
-    //         changes
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
   );
 }
 
