@@ -8,9 +8,10 @@ import {
   TextInput,
 } from "react-native";
 import appJson from "../../app.json";
+import Layout from "../../constants/Layout";
 import { ISettings } from "../../getSettings";
-import { ConfigLoader } from "./ConfigLoader";
 import { Text } from "../Themed";
+import { ConfigLoader } from "./ConfigLoader";
 
 const configUrlStoreKey = "@configUrl";
 const configSettingsStoreKey = "@configSettings";
@@ -40,9 +41,9 @@ const storeData = async (data: {
 };
 
 export const getStoredData = async () => {
+  const configUrl = await AsyncStorage.getItem(configUrlStoreKey);
+  const response = await AsyncStorage.getItem(configSettingsStoreKey);
   try {
-    const configUrl = await AsyncStorage.getItem(configUrlStoreKey);
-    const response = await AsyncStorage.getItem(configSettingsStoreKey);
     const configSettings: ISettings = response ? JSON.parse(response) : "";
     return { configUrl, configSettings };
     // const subsonicUrl = await AsyncStorage.getItem(urlStoreKey);
@@ -50,33 +51,41 @@ export const getStoredData = async () => {
     // return { configUrl, configSettings, subsonicUrl, subsonicUser };
   } catch (e) {
     // error reading value
+    throw Error("invalid json" + response);
   }
 };
 
 export default function Settings({ path }: { path: string }) {
-  const [configUrl, onChangeConfigUrl] = React.useState("");
+  const [configUrl, onChangeConfigUrl] = useState("");
   // const [subsonicUrl, onChangeSubsonicUrl] = React.useState("");
   // const [subsonicUser, onChangeSubsonicUser] = React.useState("");
   // const [subsonicPassword, onChangeSubsonicPassword] = React.useState("");
-  const [saved, setSaved] = React.useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
   const [configSettings, setConfigSettings] = useState<ISettings>();
 
   useEffect(() => {
-    getStoredData().then((data) => {
-      console.log(data);
-      if (data?.configUrl) {
-        onChangeConfigUrl(data.configUrl);
+    const run = async () => {
+      try {
+        const data = await getStoredData();
+        console.log(data);
+        if (data?.configUrl) {
+          onChangeConfigUrl(data.configUrl);
+        }
+        if (data?.configSettings) {
+          setConfigSettings(data.configSettings);
+        }
+        // if (data?.subsonicUrl) {
+        //   onChangeSubsonicUrl(data.subsonicUrl);
+        // }
+        // if (data?.subsonicUser) {
+        //   onChangeSubsonicUser(data.subsonicUser);
+        // }
+      } catch (err) {
+        setError((err as Error).toString());
       }
-      if (data?.configSettings) {
-        setConfigSettings(data.configSettings);
-      }
-      // if (data?.subsonicUrl) {
-      //   onChangeSubsonicUrl(data.subsonicUrl);
-      // }
-      // if (data?.subsonicUser) {
-      //   onChangeSubsonicUser(data.subsonicUser);
-      // }
-    });
+    };
+    run();
   }, []);
 
   return (
@@ -138,7 +147,9 @@ export default function Settings({ path }: { path: string }) {
           } catch (err) {}
         }}
       />
-      {saved && <Text>Saved!</Text>}
+
+      {Boolean(saved) && <Text>Saved!</Text>}
+      {Boolean(error) && <Text>{error}</Text>}
 
       <Text style={{ marginTop: 32, fontSize: 28 }}>
         v{appJson.expo.version}
@@ -146,10 +157,22 @@ export default function Settings({ path }: { path: string }) {
 
       <Text>
         {Math.round(Dimensions.get("window").width)} x{" "}
-        {Math.round(Dimensions.get("window").height)}
+        {Math.round(Dimensions.get("window").height)} (
+        {Layout.isBigDevice ? "big" : "small"})
       </Text>
 
-      {__DEV__ && <Text>!IN DEV MODE!</Text>}
+      {__DEV__ && (
+        <Text
+          style={{
+            borderColor: "green",
+            borderWidth: 1,
+            padding: 10,
+            marginTop: 20,
+          }}
+        >
+          !IN DEV MODE!
+        </Text>
+      )}
     </SafeAreaView>
   );
 }

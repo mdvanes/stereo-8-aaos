@@ -105,7 +105,9 @@ export const ConfigLoader: FC<{
       {isLoading && (
         <ActivityIndicator size="large" style={{ height: 100, width: 100 }} />
       )}
-      {error && <Text style={{ color: "red" }}>{error}</Text>}
+
+      {Boolean(error) && <Text style={{ color: "red" }}>{error}</Text>}
+
       {!isLoading && <Text>Config: {formatConfig(configSettings)}</Text>}
     </>
   );
