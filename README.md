@@ -71,7 +71,7 @@ See https://developer.android.com/guide/topics/manifest/uses-feature-element#hw-
   - Eject: `expo eject`
   - dir is created: android/
   - update `version code` in `android/app/build.gradle` and `app.json`
-  - settings.json is in gitigore, set on expo like this:
+  - OUTDATED (settings are loaded in the app now): settings.json is in gitigore, set on expo like this:
     - `base64 settings.json`
     - `eas secret:create` with SETTINGS_BASE64
   - still build with: `eas build -p android` (requires `npm i -g eas-cli`)
@@ -107,6 +107,7 @@ https://reactnative.dev/docs/environment-setup
 ## Notes
 
 - Dark mode is forced by setting `userInterfaceStyle` to `dark` in `app.json` instead of `automatic`. Also see https://docs.expo.dev/guides/color-schemes/, updating icons/force dark mode does not work because app.json is not processed. https://stackoverflow.com/questions/53697882/change-expo-generated-application-icon. It's now fixed by hard coding the value of the useColorSchema hook.
+- Previously used this in package.json: "eas-build-pre-install": "echo $SETTINGS_BASE64 | base64 --decode > settings.json",
 
 ## TODO
 

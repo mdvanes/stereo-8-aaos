@@ -9,7 +9,6 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "eas-build-pre-install": "echo $SETTINGS_BASE64 | base64 --decode > settings.json",
     "bump": "node bump.js"
   },
   "jest": {
