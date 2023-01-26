@@ -98,19 +98,27 @@ https://reactnative.dev/docs/environment-setup
 
 ## Notes
 
-- Dark mode is forced by setting `userInterfaceStyle` to `dark` in `app.json` instead of `automatic`. Also see https://docs.expo.dev/guides/color-schemes/
+- Dark mode is forced by setting `userInterfaceStyle` to `dark` in `app.json` instead of `automatic`. Also see https://docs.expo.dev/guides/color-schemes/, updating icons/force dark mode does not work because app.json is not processed. https://stackoverflow.com/questions/53697882/change-expo-generated-application-icon. It's now fixed by hard coding the value of the useColorSchema hook.
 
 ## TODO
 
 - FIXED v1.0.17: enhancement: playlists etc are centered, should be left aligned
 - FIXED v1.0.17: bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
-- bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
-- feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call?
-- enhancement: fix radio nowplaying getMediaMeta with HR endpoint
-- bug: mail after publish with eligibility issues
-- enhancement: add offline mode
-- enhancement: browse "favorite" folders (or all folders) instead of only playlists
-- enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver
+- FIXED v1.0.19: bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
+- v1.0.20: feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call?
+- v1.0.20: feat: fix radio nowplaying
+- bug: play button (/ click on row) does not work
+- debt: remove salt from config and store only salt + salted pw in Async store
+- bug: see mail after publish with eligibility issues
+- bug: double back button (only on playlist, works well on modal!)
+- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
+- enhancement: browse all "artists > albums > songs" instead of only playlists
+- enhancement: mark an album as "local favorite"
+- enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
 - enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator
+- enhancement: multiple radio stations
+- enhancement: show something on the car home screen instead of just the app name
 
-- updating icons/force dark mode does not work because app.json is not processed? Try expo build:android ? npx expo prebuild? https://stackoverflow.com/questions/53697882/change-expo-generated-application-icon
+
+
+TODO: remove settings.json from build! 
