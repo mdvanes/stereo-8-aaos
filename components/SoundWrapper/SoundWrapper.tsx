@@ -10,6 +10,8 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";
 
+const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
+
 // TODO clean up this file
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
@@ -43,15 +45,17 @@ export const SoundWrapper: FC = () => {
   const init = async () => {
     context.setIsLoading(true);
     const id = await getCurrentRemotePlayingId();
-    // if (!id) {
-    //   setError("CurrentRemotePlayingId is empty");
-    // }
+
+    // createAsync must initialize with a valid uri!
+    const uri = id ? getAPI("stream", `&id=${id}`) : fallbackUrl;
+
     await Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       staysActiveInBackground: true,
     });
+
     const { sound: playbackObject } = await Audio.Sound.createAsync(
-      { uri: getAPI("stream", `&id=${id}`) },
+      { uri },
       { shouldPlay: false, progressUpdateIntervalMillis: 800 }
     );
     // playbackObject.setProgressUpdateIntervalAsync();

@@ -20,6 +20,14 @@ Test on Android:
 - scan the QR code in terminal with the App
 - when an old version shows, try "pull down to refresh"
 
+on emulator:
+
+- run `npm start`
+- press "a"
+- install the devbuild.apk (drag into emulator)
+- fetch development servers
+- click URL in the dev app
+
 ## Build
 
 Building is done online at [Expo](https://expo.dev/). This requires an account.
@@ -108,6 +116,7 @@ https://reactnative.dev/docs/environment-setup
 - v1.0.20: feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call?
 - v1.0.20: feat: fix radio nowplaying
 - bug: play button (/ click on row) does not work
+- bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
 - debt: remove salt from config and store only salt + salted pw in Async store
 - bug: see mail after publish with eligibility issues
 - bug: double back button (only on playlist, works well on modal!)
@@ -118,7 +127,3 @@ https://reactnative.dev/docs/environment-setup
 - enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator
 - enhancement: multiple radio stations
 - enhancement: show something on the car home screen instead of just the app name
-
-
-
-TODO: remove settings.json from build! 

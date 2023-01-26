@@ -73,7 +73,7 @@ export const BottomBar: FC = () => {
     }
   };
 
-  console.log(context.song?.img);
+  // console.log(context.song?.img);
 
   return (
     <View style={styles.top}>
