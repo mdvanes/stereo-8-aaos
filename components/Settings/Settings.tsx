@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
+  View,
 } from "react-native";
 import appJson from "../../app.json";
 import Layout from "../../constants/Layout";
@@ -15,16 +16,10 @@ import { ConfigLoader } from "./ConfigLoader";
 
 const configUrlStoreKey = "@configUrl";
 const configSettingsStoreKey = "@configSettings";
-// const urlStoreKey = "@subsonicUrl";
-// const userStoreKey = "@subsonicUser";
-// const hashStoreKey = "@subsonicHash";
 
-// TODO clean up file
 const storeData = async (data: {
   configUrl: string;
   configSettings: ISettings | undefined;
-  // subsonicUrl: string;
-  // subsonicUser: string;
 }) => {
   try {
     await AsyncStorage.setItem(configUrlStoreKey, data.configUrl);
@@ -32,11 +27,9 @@ const storeData = async (data: {
       configSettingsStoreKey,
       JSON.stringify(data.configSettings)
     );
-    // await AsyncStorage.setItem(urlStoreKey, data.subsonicUrl);
-    // await AsyncStorage.setItem(userStoreKey, data.subsonicUser);
     console.log("done");
   } catch (error) {
-    // Error saving data
+    alert("Error saving data");
   }
 };
 
@@ -46,20 +39,13 @@ export const getStoredData = async () => {
   try {
     const configSettings: ISettings = response ? JSON.parse(response) : "";
     return { configUrl, configSettings };
-    // const subsonicUrl = await AsyncStorage.getItem(urlStoreKey);
-    // const subsonicUser = await AsyncStorage.getItem(userStoreKey);
-    // return { configUrl, configSettings, subsonicUrl, subsonicUser };
   } catch (e) {
-    // error reading value
     throw Error("invalid json" + response);
   }
 };
 
 export default function Settings({ path }: { path: string }) {
   const [configUrl, onChangeConfigUrl] = useState("");
-  // const [subsonicUrl, onChangeSubsonicUrl] = React.useState("");
-  // const [subsonicUser, onChangeSubsonicUser] = React.useState("");
-  // const [subsonicPassword, onChangeSubsonicPassword] = React.useState("");
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const [configSettings, setConfigSettings] = useState<ISettings>();
@@ -75,12 +61,6 @@ export default function Settings({ path }: { path: string }) {
         if (data?.configSettings) {
           setConfigSettings(data.configSettings);
         }
-        // if (data?.subsonicUrl) {
-        //   onChangeSubsonicUrl(data.subsonicUrl);
-        // }
-        // if (data?.subsonicUser) {
-        //   onChangeSubsonicUser(data.subsonicUser);
-        // }
       } catch (err) {
         setError((err as Error).toString());
       }
@@ -88,48 +68,35 @@ export default function Settings({ path }: { path: string }) {
     run();
   }, []);
 
+  // @ts-expect-error userAgentData is very new
+  const isBrowser = window.navigator?.userAgentData?.brands.some(
+    (b: { brand: string }) => b.brand === "Google Chrome"
+  );
+
   return (
     <SafeAreaView style={{ width: "100%" }}>
       <Text style={styles.label}>Config URL</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeConfigUrl}
-        value={configUrl}
-        placeholder="skip https://"
-        placeholderTextColor="rgba(255,255,255,0.8)"
-      />
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", width: "100%" }}
+      >
+        <Text style={{ fontSize: 18 }}>https://</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeConfigUrl}
+          value={configUrl}
+          placeholder="skip https://"
+          placeholderTextColor="rgba(255,255,255,0.8)"
+        />
+      </View>
 
       <ConfigLoader
         configUrl={configUrl}
         configSettings={configSettings}
+        isBrowser={isBrowser}
         setConfigSettings={setConfigSettings}
       />
 
-      {/* <Text style={styles.label}>Subsonic URL</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeSubsonicUrl}
-        value={subsonicUrl}
-        placeholder="domain.com"
-        placeholderTextColor="rgba(255,255,255,0.8)"
-        />
-        <Text style={styles.label}>Subsonic Username</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeSubsonicUser}
-        value={subsonicUser}
-        placeholder="me"
-        placeholderTextColor="rgba(255,255,255,0.8)"
-      />
-      <Text style={styles.label}>Subsonic Password</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeSubsonicPassword}
-        value={subsonicPassword}
-        placeholder="secret"
-        placeholderTextColor="rgba(255,255,255,0.8)"
-        secureTextEntry
-      /> */}
       <Button
         title="save"
         onPress={async () => {
@@ -137,8 +104,6 @@ export default function Settings({ path }: { path: string }) {
             await storeData({
               configUrl,
               configSettings,
-              // subsonicUrl,
-              // subsonicUser,
             });
             setSaved(true);
             setTimeout(() => {
@@ -161,18 +126,36 @@ export default function Settings({ path }: { path: string }) {
         {Layout.isBigDevice ? "big" : "small"})
       </Text>
 
-      {__DEV__ && (
+      <View style={{ flexDirection: "row" }}>
+        {__DEV__ && (
+          <Text
+            style={{
+              backgroundColor: "green",
+              color: "white",
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              marginTop: 20,
+              marginRight: 20,
+              fontWeight: "bold",
+            }}
+          >
+            DEV MODE
+          </Text>
+        )}
+
         <Text
           style={{
-            borderColor: "green",
-            borderWidth: 1,
-            padding: 10,
+            backgroundColor: isBrowser ? "green" : "#2196f3",
+            color: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
             marginTop: 20,
+            fontWeight: "bold",
           }}
         >
-          !IN DEV MODE!
+          {Boolean(isBrowser) ? "BROWSER" : "APP"} MODE
         </Text>
-      )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -189,6 +172,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: "rgba(255,255,255,0.8)",
     fontSize: 18,
+    flex: 1,
   },
   getStartedContainer: {
     alignItems: "center",
