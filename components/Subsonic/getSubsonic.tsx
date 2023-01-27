@@ -1,4 +1,3 @@
-import md5 from "md5";
 import { getSettings, ISettings } from "../../getSettings";
 
 const PLAYER_NAME = "Stereo8";
@@ -15,7 +14,7 @@ const run = async () => {
   API_DOMAIN = settings?.subsonic?.domain ?? "";
   API_USER = settings?.subsonic?.user ?? "";
   API_SALT = settings?.subsonic?.salt ?? "";
-  API_TOKEN = md5((settings?.subsonic?.password ?? "") + API_SALT);
+  API_TOKEN = settings?.subsonic?.saltedPassword ?? "";
   API_CONFIG = `?u=${API_USER}&t=${API_TOKEN}&s=${API_SALT}&v=1.16.0&c=${PLAYER_NAME}&f=json`;
 };
 

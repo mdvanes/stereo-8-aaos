@@ -1,37 +1,24 @@
+import md5 from "md5";
 import React, { FC, useState } from "react";
-import { ActivityIndicator, Button, Pressable, View } from "react-native";
-import { ISettings } from "../../getSettings";
+import { ActivityIndicator, Button } from "react-native";
+import { ISettings, ISettingsResponse } from "../../getSettings";
 import { Text } from "../Themed";
+import { formatConfig } from "./formatConfig";
+import { getSalt } from "./getSalt";
 
-const formatConfig = (configSettings: ISettings | undefined) => {
-  if (!configSettings) {
-    return "";
-  }
-  return `
-Subsonic URL: ${configSettings.subsonic?.domain}
-Subsonic user: ${configSettings.subsonic?.user}
-Subsonic password: ${configSettings.subsonic?.password ? "***" : ""}
-
-Radio stations: ${configSettings.radio?.length}
-Radio channel 1: ${
-    configSettings.radio?.length && configSettings.radio.length > 0
-      ? configSettings.radio[0].name
-      : ""
-  }
-${
-  configSettings.radio?.length && configSettings.radio.length > 0
-    ? configSettings.radio[0].channelUrl
-    : ""
-}
-   `;
-};
-
-// TODO clean up file
-export const ConfigLoader: FC<{
+interface ConfigLoaderProps {
   configUrl: string;
   configSettings: ISettings | undefined;
   setConfigSettings: (_: ISettings) => void;
-}> = ({ configUrl, configSettings, setConfigSettings }) => {
+  isBrowser: boolean;
+}
+
+export const ConfigLoader: FC<ConfigLoaderProps> = ({
+  configUrl,
+  configSettings,
+  isBrowser,
+  setConfigSettings,
+}) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,8 +28,26 @@ export const ConfigLoader: FC<{
     setError("");
     setIsLoading(true);
     try {
-      const response: ISettings = await fetch(url).then((data) => data.json());
-      setConfigSettings(response);
+      const response: ISettingsResponse = await fetch(url).then((data) =>
+        data.json()
+      );
+
+      const salt = getSalt();
+      const saltedPassword = response?.subsonic?.password
+        ? md5(`${response.subsonic.password}${salt}`)
+        : undefined;
+
+      setConfigSettings({
+        ...response,
+        subsonic: response.subsonic
+          ? {
+              domain: response.subsonic.domain,
+              user: response.subsonic.user,
+              salt,
+              saltedPassword,
+            }
+          : undefined,
+      });
     } catch (err) {
       setError("Err " + (err as Error).toString());
     }
@@ -57,50 +62,18 @@ export const ConfigLoader: FC<{
   //   );
   // };
 
+  const configUrlByPlatform = isBrowser
+    ? `http://localhost:9009/?get=https://${configUrl}`
+    : `https://${configUrl}`;
+
   return (
     <>
       <Button
         title="Get config from URL"
         onPress={() => {
-          readFromUrl(`https://${configUrl}`);
+          readFromUrl(configUrlByPlatform);
         }}
       />
-      {/* <View style={{ flexDirection: "row" }}>
-        <Pressable
-          onPress={() => {
-            readFromUrl(`http://localhost:3000/?get=https://${configUrl}`);
-          }}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-            marginHorizontal: 20,
-          })}
-        >
-          <Text style={{ fontSize: 24 }}>Web</Text>
-        </Pressable>
-
-        <Pressable
-          onPress={() => {
-            readFromUrl(`https://${configUrl}`);
-          }}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-            marginHorizontal: 20,
-          })}
-        >
-          <Text style={{ fontSize: 24 }}>Load</Text>
-        </Pressable>
-      </View> */}
-      <Pressable
-        onPress={() => {
-          readFromUrl(`http://localhost:3000/?get=https://${configUrl}`);
-        }}
-        style={({ pressed }) => ({
-          opacity: pressed ? 0.5 : 1,
-          marginHorizontal: 20,
-        })}
-      >
-        <Text style={{ fontSize: 24 }}>Web</Text>
-      </Pressable>
 
       {isLoading && (
         <ActivityIndicator size="large" style={{ height: 100, width: 100 }} />

@@ -7,11 +7,20 @@ export interface IRadioSetting {
   metaBroadcastUrl: string;
 }
 
+interface ISubsonicSetting {
+  domain?: string;
+  user?: string;
+  salt?: string;
+  saltedPassword?: string;
+}
+
 export interface ISettings {
-  subsonic?: {
-    domain?: string;
-    user?: string;
-    salt?: string;
+  subsonic?: ISubsonicSetting;
+  radio?: IRadioSetting[];
+}
+
+export interface ISettingsResponse {
+  subsonic?: Omit<ISubsonicSetting, "salt" | "saltedPassword"> & {
     password?: string;
   };
   radio?: IRadioSetting[];
