@@ -114,13 +114,14 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.17: enhancement: playlists etc are centered, should be left aligned
 - FIXED v1.0.17: bug: driver distraction mode goes on when driving. try adding `<meta-data android:name="distractionOptimized" android:value="true"/>` https://source.android.com/docs/devices/automotive/driver_distraction/guidelines#do
 - FIXED v1.0.19: bug: still switches to light mode: reproducable when using cmd+shift+P > emulate CSS prefers color light
-- v1.0.20: feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call?
-- v1.0.20: feat: fix radio nowplaying
-- bug: play button (/ click on row) does not work
+- FIXED v1.0.20: feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call
+- FIXED v1.0.20: feat: fix radio nowplaying
+- FIXED v1.0.21: bug: play button (/ click on row) does not work
+- v1.0.22 debt: remove salt from config and store only salt + salted pw in Async store
+- v1.0.22 bug: double back button (only on playlist, works well on modal!)
+- v1.0.22 restyle bottombar, image on background and poll radio meta data
 - bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
-- debt: remove salt from config and store only salt + salted pw in Async store
 - bug: see mail after publish with eligibility issues
-- bug: double back button (only on playlist, works well on modal!)
 - enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
 - enhancement: browse all "artists > albums > songs" instead of only playlists
 - enhancement: mark an album as "local favorite"

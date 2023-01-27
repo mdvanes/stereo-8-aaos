@@ -1,5 +1,4 @@
-// / @ts-expect-error
-// import icy from "icy";
+import { ISong } from "../Subsonic/getSubsonic";
 
 interface NowPlayingResponse {
   artist: string;
@@ -10,37 +9,82 @@ interface NowPlayingResponse {
   imageUrl: string;
 }
 
-// const getMetadata = (name: string, url: string) =>
-//   new Promise<NowPlayingResponse>((resolve) => {
-//     // connect to the remote stream
-//     icy.get(url, function (res: any) {
-//       // log the HTTP response headers
-//       console.error(res.headers);
+interface TracksResponse {
+  data: [
+    {
+      artist: string;
+      title: string;
+      image_url_400x400?: string;
+      enddatetime: string;
+    }
+  ];
+}
 
-//       // log any "metadata" events that happen
-//       res.on("metadata", function (metadata: any) {
-//         // TODO this could be kept open and send updates back over web socket, but you would need to build on icy.Client() instead of icy.get
-//         var parsed = icy.parse(metadata);
-//         const now = Date.now();
-//         console.error(now, parsed);
+interface BroadcastResponse {
+  data: [{ title: string; presenters?: string; image_url_400x400?: string }];
+}
 
-//         // RADIO 2
-//         // alternates: { StreamTitle: 'NPO Radio 2 - Soul Night met Shay & Morad - BNNVARA ' }
-//         // and: { StreamTitle: 'Ryan Shaw - Do The 45' }
-//         const [artist, title] = parsed.StreamTitle.split(" - ");
+const getMeta = async (
+  tracksURL: string,
+  broadcastUrl: string
+): Promise<NowPlayingResponse | null> => {
+  try {
+    const nowonairResponse: TracksResponse = await fetch(tracksURL).then(
+      (data) => data.json()
+    );
 
-//         resolve({
-//           title,
-//           artist,
-//           name,
-//           imageUrl: "/skyradio.jpg",
-//           songImageUrl: "",
-//           last_updated: now.toString(),
-//         });
-//       });
+    const {
+      artist,
+      title,
+      image_url_400x400: songImg,
+      enddatetime,
+    } = nowonairResponse.data[0];
 
-//       // Let's play the music (assuming MP3 data).
-//       // lame decodes and Speaker sends to speakers!
-//       // res.pipe(new lame.Decoder()).pipe(new Speaker());
-//     });
-//   });
+    const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
+      (data) => data.json()
+    );
+
+    const {
+      title: name,
+      presenters,
+      image_url_400x400: presenterImg,
+    } = broadcastResponse.data[0];
+
+    const presentersSuffix = presenters ? ` / ${presenters}` : "";
+
+    return {
+      artist,
+      title,
+      last_updated: enddatetime,
+      songImageUrl: songImg ?? "",
+      name: `${name}${presentersSuffix}`,
+      imageUrl: presenterImg ?? "",
+    };
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const updateMeta = async ({
+  context,
+  metaTracksUrl,
+  metaBroadcastUrl,
+  channelName,
+}: {
+  context: {
+    setSong: (_: ISong | null) => void;
+  };
+  metaTracksUrl: string;
+  metaBroadcastUrl: string;
+  channelName: string;
+}) => {
+  const meta = await getMeta(metaTracksUrl, metaBroadcastUrl);
+  context.setSong({
+    id: "0",
+    title: meta?.title || channelName,
+    artist: `${meta?.artist} (${meta?.name})`,
+    duration: -1,
+    img: meta ? meta.songImageUrl ?? meta.imageUrl : undefined,
+  });
+};
