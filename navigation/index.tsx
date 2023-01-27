@@ -46,19 +46,21 @@ function RootNavigator() {
   return (
     <PlayContextProvider>
       <SoundWrapper />
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name="Playlists"
-            component={PlaylistsScreen}
-            options={stackScreenPlaylistsOptions(colorScheme)}
-          />
-          <Stack.Screen
-            name="Playlist"
-            component={PlaylistScreen}
-            options={stackScreenPlaylistOptions(colorScheme)}
-          />
-        </Stack.Group>
+      <Stack.Navigator
+        screenOptions={{
+          headerBackVisible: false,
+        }}
+      >
+        <Stack.Screen
+          name="Playlists"
+          component={PlaylistsScreen}
+          options={stackScreenPlaylistsOptions(colorScheme)}
+        />
+        <Stack.Screen
+          name="Playlist"
+          component={PlaylistScreen}
+          options={stackScreenPlaylistOptions(colorScheme)}
+        />
         <Stack.Screen
           name="NotFound"
           component={NotFoundScreen}

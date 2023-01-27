@@ -7,7 +7,7 @@ import { RootTabScreenProps } from "../types";
 
 export default function PlaylistScreen({
   navigation,
-}: RootTabScreenProps<"TabOne">) {
+}: RootTabScreenProps<"Playlist">) {
   return (
     <View style={styles.container}>
       <SongsInPlaylist />

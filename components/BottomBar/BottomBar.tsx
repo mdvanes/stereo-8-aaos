@@ -73,8 +73,6 @@ export const BottomBar: FC = () => {
     }
   };
 
-  // console.log(context.song?.img);
-
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
@@ -106,7 +104,7 @@ export const BottomBar: FC = () => {
           })}
         >
           <FontAwesome
-            name={"arrow-right"}
+            name="forward"
             size={HEADER_ICON_SIZE}
             color={Colors[colorScheme].text}
             style={{ marginRight: 15 }}

@@ -4,10 +4,7 @@
  */
 
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import {
-  CompositeScreenProps,
-  NavigatorScreenParams,
-} from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 declare global {
@@ -16,9 +13,10 @@ declare global {
   }
 }
 
+// See: https://reactnavigation.org/docs/typescript
 export type RootStackParamList = {
-  Playlists: NavigatorScreenParams<undefined> | undefined;
-  Playlist: NavigatorScreenParams<undefined> | undefined;
+  Playlists: undefined; // NavigatorScreenParams<RootTabParamList> | undefined;
+  Playlist: undefined; // NavigatorScreenParams<undefined> | undefined;
   // Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
@@ -28,8 +26,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Playlists: undefined;
   Playlist: undefined;
 };
 
