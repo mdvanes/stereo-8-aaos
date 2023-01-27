@@ -2,7 +2,6 @@
   "subsonic": {
     "domain": "https://my.domain/rest/",
     "user": "my_username",
-    "salt": "some_salt",
     "password": "my_password"
   },
   "radio": [
