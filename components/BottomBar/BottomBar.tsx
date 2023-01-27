@@ -73,58 +73,70 @@ export const BottomBar: FC = () => {
     }
   };
 
+  const progressView = (
+    <View style={styles.progress}>
+      {/* {context.song?.img && (
+    <Image style={styles.image} source={{ uri: context.song.img }} />
+  )} */}
+      <Text style={styles.progressText}>{getProgress()}</Text>
+    </View>
+  );
+
+  const ffwdView = (
+    <View style={styles.rightAction}>
+      <Pressable
+        onPress={handleNext}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <FontAwesome
+          name="forward"
+          size={HEADER_ICON_SIZE}
+          color={Colors[colorScheme].text}
+          style={{ marginRight: 15 }}
+        />
+      </Pressable>
+    </View>
+  );
+
+  const playView = (
+    <View style={styles.rightAction}>
+      <Pressable
+        onPress={handlePlayPause}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <FontAwesome
+          name={context.isPlaying ? "pause" : "play"}
+          size={HEADER_ICON_SIZE}
+          color={Colors[colorScheme].text}
+          style={{ marginRight: 15 }}
+        />
+      </Pressable>
+    </View>
+  );
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
         {radioSetting && <StationButton config={radioSetting} />}
       </View>
+
       <View style={styles.status}>
-        <Text style={styles.statusH1}>{context.song?.title || ""}</Text>
-        <Text style={styles.statusH2}>{getByline()}</Text>
-      </View>
-      <View style={styles.progress}>
-        {context.song?.img && (
-          <Image style={styles.image} source={{ uri: context.song.img }} />
-        )}
-        <Text
-          style={{
-            fontFamily: "sans-serif",
-            fontSize: BOTTOM_FONT_SIZE,
-            fontVariant: ["tabular-nums"],
-          }}
-        >
-          {getProgress()}
+        <Text style={styles.statusH1}>
+          {(context.song?.title || "").slice(0, 70)}
         </Text>
+        <Text style={styles.statusH2}>{getByline().slice(0, 70)}</Text>
       </View>
-      <View style={styles.rightAction}>
-        <Pressable
-          onPress={handleNext}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}
-        >
-          <FontAwesome
-            name="forward"
-            size={HEADER_ICON_SIZE}
-            color={Colors[colorScheme].text}
-            style={{ marginRight: 15 }}
-          />
-        </Pressable>
-      </View>
-      <View style={styles.rightAction}>
-        <Pressable
-          onPress={handlePlayPause}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}
-        >
-          <FontAwesome
-            name={context.isPlaying ? "pause" : "play"}
-            size={HEADER_ICON_SIZE}
-            color={Colors[colorScheme].text}
-            style={{ marginRight: 15 }}
-          />
-        </Pressable>
+
+      <View>
+        {progressView}
+        <View style={{ flexDirection: "row" }}>
+          {ffwdView}
+          {playView}
+        </View>
       </View>
     </View>
   );
@@ -136,6 +148,7 @@ const styles = StyleSheet.create({
     display: "flex",
     width: "100%",
     flexDirection: "row",
+    alignItems: "flex-end",
   },
   leftAction: {
     padding: 15,
@@ -161,10 +174,12 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   progress: {
-    // padding: 7,
-    fontFamily: "monospace",
-    fontSize: 28,
-    justifyContent: "center",
+    marginLeft: 15,
+  },
+  progressText: {
+    fontFamily: "sans-serif",
+    fontSize: BOTTOM_FONT_SIZE * 0.9,
+    fontVariant: ["tabular-nums"],
   },
   image: {
     width: HEADER_ICON_SIZE * 1.67,

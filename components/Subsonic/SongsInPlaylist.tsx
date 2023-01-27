@@ -7,6 +7,7 @@ import {
   SectionList,
   View,
 } from "react-native";
+import { ConditionalImageBackground } from "../ConditionalImageBackground";
 import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
@@ -80,16 +81,18 @@ export const SongsInPlaylist: FC = () => {
           // TODO not allowed on Android: style={{ height: "calc(100vh - 150px)" }}
           style={{ flex: 1, width: "100%" }}
         >
-          <SectionList
-            sections={[{ title: "", data: context.queue }]}
-            keyExtractor={(item, index) => `${item.id}_${index}`}
-            renderItem={({ item }) => (
-              <Item onClick={handlePlaySong} {...item} />
-            )}
-            renderSectionHeader={({ section: { title } }) => (
-              <Text>{title}</Text>
-            )}
-          />
+          <ConditionalImageBackground img={context.song?.img}>
+            <SectionList
+              sections={[{ title: "", data: context.queue }]}
+              keyExtractor={(item, index) => `${item.id}_${index}`}
+              renderItem={({ item }) => (
+                <Item onClick={handlePlaySong} {...item} />
+              )}
+              renderSectionHeader={({ section: { title } }) => (
+                <Text>{title}</Text>
+              )}
+            />
+          </ConditionalImageBackground>
         </SafeAreaView>
       )}
     </>
