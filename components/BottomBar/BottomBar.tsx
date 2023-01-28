@@ -9,12 +9,7 @@ import { Text } from "../Themed";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 import { getSettings, IRadioSetting, ISettings } from "../../getSettings";
-
-const formatSecToTime = (s: number): string => {
-  const ss = s % 60;
-  const mm = (s - ss) / 60;
-  return `${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
-};
+import { ProgressClock } from "./ProgressClock";
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
@@ -40,20 +35,6 @@ export const BottomBar: FC = () => {
     return "";
   };
 
-  const getProgress = () => {
-    if (context.song) {
-      const { duration } = context.song;
-      const time =
-        duration > 0
-          ? `${formatSecToTime(
-              Math.floor(context.progress / 1000)
-            )} / ${formatSecToTime(duration)}`
-          : "";
-      return time;
-    }
-    return "";
-  };
-
   const handlePlayPause = async () => {
     if (context.pbo && context.startSongId) {
       context.setIsRadioPlaying(false);
@@ -72,15 +53,6 @@ export const BottomBar: FC = () => {
       context.setStartSongId(nextSong.id);
     }
   };
-
-  const progressView = (
-    <View style={styles.progress}>
-      {/* {context.song?.img && (
-    <Image style={styles.image} source={{ uri: context.song.img }} />
-  )} */}
-      <Text style={styles.progressText}>{getProgress()}</Text>
-    </View>
-  );
 
   const ffwdView = (
     <View style={styles.rightAction}>
@@ -132,7 +104,7 @@ export const BottomBar: FC = () => {
       </View>
 
       <View>
-        {progressView}
+        <ProgressClock />
         <View style={{ flexDirection: "row" }}>
           {ffwdView}
           {playView}
@@ -172,14 +144,6 @@ const styles = StyleSheet.create({
     fontSize: BOTTOM_FONT_SIZE,
     fontStyle: "italic",
     paddingTop: 0,
-  },
-  progress: {
-    marginLeft: 15,
-  },
-  progressText: {
-    fontFamily: "sans-serif",
-    fontSize: BOTTOM_FONT_SIZE * 0.9,
-    fontVariant: ["tabular-nums"],
   },
   image: {
     width: HEADER_ICON_SIZE * 1.67,

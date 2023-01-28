@@ -9,11 +9,13 @@ import {
 import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";
+import { ProgressContext } from "../context/progress-context";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
+  const progressContext = useContext(ProgressContext);
   const { getNextSong } = useGetNextSong();
   const [error, setError] = useState<string>();
 
@@ -25,7 +27,7 @@ export const SoundWrapper: FC = () => {
       return;
     } else {
       if (playbackStatus.isPlaying) {
-        context.setProgress(playbackStatus.positionMillis);
+        progressContext.setProgress(playbackStatus.positionMillis);
       }
       if (playbackStatus.didJustFinish) {
         const nextSong = getNextSong();

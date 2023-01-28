@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import { PlayContextProvider } from "../components/context/play-context";
+import { ProgressContextProvider } from "../components/context/progress-context";
 import { SoundWrapper } from "../components/SoundWrapper/SoundWrapper";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -45,35 +46,37 @@ function RootNavigator() {
 
   return (
     <PlayContextProvider>
-      <SoundWrapper />
-      <Stack.Navigator
-        screenOptions={{
-          headerBackVisible: false,
-        }}
-      >
-        <Stack.Screen
-          name="Playlists"
-          component={PlaylistsScreen}
-          options={stackScreenPlaylistsOptions(colorScheme)}
-        />
-        <Stack.Screen
-          name="Playlist"
-          component={PlaylistScreen}
-          options={stackScreenPlaylistOptions(colorScheme)}
-        />
-        <Stack.Screen
-          name="NotFound"
-          component={NotFoundScreen}
-          options={{ title: "Oops!" }}
-        />
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
+      <ProgressContextProvider>
+        <SoundWrapper />
+        <Stack.Navigator
+          screenOptions={{
+            headerBackVisible: false,
+          }}
+        >
           <Stack.Screen
-            name="Modal"
-            component={ModalScreen}
-            options={stackScreenModalOptions(colorScheme)}
+            name="Playlists"
+            component={PlaylistsScreen}
+            options={stackScreenPlaylistsOptions(colorScheme)}
           />
-        </Stack.Group>
-      </Stack.Navigator>
+          <Stack.Screen
+            name="Playlist"
+            component={PlaylistScreen}
+            options={stackScreenPlaylistOptions(colorScheme)}
+          />
+          <Stack.Screen
+            name="NotFound"
+            component={NotFoundScreen}
+            options={{ title: "Oops!" }}
+          />
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen
+              name="Modal"
+              component={ModalScreen}
+              options={stackScreenModalOptions(colorScheme)}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </ProgressContextProvider>
     </PlayContextProvider>
   );
 }

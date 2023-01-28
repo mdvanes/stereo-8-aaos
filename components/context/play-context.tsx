@@ -11,7 +11,6 @@ export interface PlayValues {
   queue: ISong[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
-  progress: number;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -23,7 +22,6 @@ export const defaultPlayValues: PlayValues = {
   queue: null,
   startSongId: null,
   pbo: null,
-  progress: 0,
 };
 
 export const PlayContext = createContext({
@@ -43,8 +41,6 @@ export const PlayContext = createContext({
   setStartSongId: (_: PlayValues["startSongId"]) => {},
   pbo: defaultPlayValues.pbo,
   setPbo: (_: PlayValues["pbo"]) => {},
-  progress: defaultPlayValues.progress,
-  setProgress: (_: PlayValues["progress"]) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -59,8 +55,7 @@ export const PlayContextProvider: FC<{
   const [queue, setQueue] = useState(defaultPlayValues.queue);
   const [startSongId, setStartSongId] = useState(defaultPlayValues.startSongId);
   const [playlist, setPlaylist] = useState(defaultPlayValues.playlist);
-  const [pbo, setPbo] = useState<PlayValues['pbo']>(defaultPlayValues.pbo);
-  const [progress, setProgress] = useState<PlayValues['progress']>(defaultPlayValues.progress);
+  const [pbo, setPbo] = useState<PlayValues["pbo"]>(defaultPlayValues.pbo);
 
   return (
     <PlayContext.Provider
@@ -81,7 +76,6 @@ export const PlayContextProvider: FC<{
         setStartSongId,
         pbo,
         setPbo,
-        progress, setProgress
       }}
     >
       {children}
