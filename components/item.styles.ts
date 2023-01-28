@@ -10,6 +10,9 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
+  item__active: {
+    backgroundColor: "rgba(33,150,243,0.2)",
+  },
   title: {
     fontSize: 32,
   },

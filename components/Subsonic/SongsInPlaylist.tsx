@@ -19,8 +19,11 @@ const Item = ({
   artist,
   title,
   onClick,
-}: ISong & { onClick: (id: string) => () => void }) => (
-  <View style={styles.item}>
+  activeId,
+}: ISong & { onClick: (id: string) => () => void; activeId?: string }) => (
+  <View
+    style={activeId === id ? [styles.item, styles.item__active] : styles.item}
+  >
     <Pressable style={styles.item_pressable} onPress={onClick(id)}>
       <Text style={styles.line}>
         {artist} - {title}
@@ -36,6 +39,7 @@ export const SongsInPlaylist: FC = () => {
   const navigation = useNavigation();
 
   const init = async () => {
+    context.setQueue([]);
     setIsLoading(true);
 
     const pid = context.playlist?.id;
@@ -86,7 +90,11 @@ export const SongsInPlaylist: FC = () => {
               sections={[{ title: "", data: context.queue }]}
               keyExtractor={(item, index) => `${item.id}_${index}`}
               renderItem={({ item }) => (
-                <Item onClick={handlePlaySong} {...item} />
+                <Item
+                  onClick={handlePlaySong}
+                  activeId={context.song?.id}
+                  {...item}
+                />
               )}
               renderSectionHeader={({ section: { title } }) => (
                 <Text>{title}</Text>
