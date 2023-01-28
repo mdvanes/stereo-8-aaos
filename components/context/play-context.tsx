@@ -11,6 +11,7 @@ export interface PlayValues {
   queue: ISong[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
+  previouslyPlayed: string | null;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -22,6 +23,7 @@ export const defaultPlayValues: PlayValues = {
   queue: null,
   startSongId: null,
   pbo: null,
+  previouslyPlayed: null,
 };
 
 export const PlayContext = createContext({
@@ -41,6 +43,8 @@ export const PlayContext = createContext({
   setStartSongId: (_: PlayValues["startSongId"]) => {},
   pbo: defaultPlayValues.pbo,
   setPbo: (_: PlayValues["pbo"]) => {},
+  previouslyPlayed: defaultPlayValues.previouslyPlayed,
+  setPreviouslyPlayed: (_: PlayValues["previouslyPlayed"]) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -56,6 +60,9 @@ export const PlayContextProvider: FC<{
   const [startSongId, setStartSongId] = useState(defaultPlayValues.startSongId);
   const [playlist, setPlaylist] = useState(defaultPlayValues.playlist);
   const [pbo, setPbo] = useState<PlayValues["pbo"]>(defaultPlayValues.pbo);
+  const [previouslyPlayed, setPreviouslyPlayed] = useState(
+    defaultPlayValues.previouslyPlayed
+  );
 
   return (
     <PlayContext.Provider
@@ -76,6 +83,8 @@ export const PlayContextProvider: FC<{
         setStartSongId,
         pbo,
         setPbo,
+        previouslyPlayed,
+        setPreviouslyPlayed,
       }}
     >
       {children}

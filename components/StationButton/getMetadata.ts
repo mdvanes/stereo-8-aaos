@@ -7,6 +7,7 @@ interface NowPlayingResponse {
   songImageUrl: string;
   name: string;
   imageUrl: string;
+  previouslyPlayed: string;
 }
 
 interface TracksResponse {
@@ -15,6 +16,7 @@ interface TracksResponse {
       artist: string;
       title: string;
       image_url_400x400?: string;
+      startdatetime: string;
       enddatetime: string;
     }
   ];
@@ -40,16 +42,15 @@ const getMeta = async (
       enddatetime,
     } = nowonairResponse.data[0];
 
-    // Testing a view of previous played songs
-    const previouslyPlayed = nowonairResponse.data.map(
-      (n) =>
-        // @ts-expect-error add startdatetime to type
-        `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })} ${n.artist} - ${n.title}`
-    );
-    console.log(previouslyPlayed.join("\n"));
+    const previouslyPlayed = nowonairResponse.data
+      .map(
+        (n) =>
+          `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })} ${n.artist} - ${n.title}`
+      )
+      .join("\n");
 
     const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
       (data) => data.json()
@@ -70,6 +71,7 @@ const getMeta = async (
       songImageUrl: songImg ?? "",
       name: `${name}${presentersSuffix}`,
       imageUrl: presenterImg ?? "",
+      previouslyPlayed,
     };
   } catch (err) {
     console.error(err);
@@ -85,6 +87,7 @@ export const updateMeta = async ({
 }: {
   context: {
     setSong: (_: ISong | null) => void;
+    setPreviouslyPlayed: (_: string | null) => void;
   };
   metaTracksUrl: string;
   metaBroadcastUrl: string;
@@ -98,4 +101,7 @@ export const updateMeta = async ({
     duration: -1,
     img: meta ? meta.songImageUrl ?? meta.imageUrl : undefined,
   });
+  if (meta?.previouslyPlayed) {
+    context.setPreviouslyPlayed(meta.previouslyPlayed);
+  }
 };
