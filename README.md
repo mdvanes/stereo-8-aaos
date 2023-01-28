@@ -117,9 +117,12 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.20: feat: read config from JSON on (external) storage (e.g. USB drive) -> not possible with react-native-fs, can't read from USB. Use service call
 - FIXED v1.0.20: feat: fix radio nowplaying
 - FIXED v1.0.21: bug: play button (/ click on row) does not work
+- v1.0.22 fix app icon
 - v1.0.22 debt: remove salt from config and store only salt + salted pw in Async store
 - v1.0.22 bug: double back button (only on playlist, works well on modal!)
 - v1.0.22 restyle bottombar, image on background and poll radio meta data
+- v1.0.22 highlight active row
+- v1.0.22 log previously played on radio
 - bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
 - bug: see mail after publish with eligibility issues
 - enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)

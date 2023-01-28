@@ -40,6 +40,17 @@ const getMeta = async (
       enddatetime,
     } = nowonairResponse.data[0];
 
+    // Testing a view of previous played songs
+    const previouslyPlayed = nowonairResponse.data.map(
+      (n) =>
+        // @ts-expect-error add startdatetime to type
+        `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })} ${n.artist} - ${n.title}`
+    );
+    console.log(previouslyPlayed.join("\n"));
+
     const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
       (data) => data.json()
     );
