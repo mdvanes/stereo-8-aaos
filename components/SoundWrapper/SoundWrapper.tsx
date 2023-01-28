@@ -12,7 +12,6 @@ import { useGetNextSong } from "./useGetNextSong";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
-// TODO clean up this file
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
   const { getNextSong } = useGetNextSong();
@@ -27,17 +26,12 @@ export const SoundWrapper: FC = () => {
     } else {
       if (playbackStatus.isPlaying) {
         context.setProgress(playbackStatus.positionMillis);
-        // const nextSong = getNextSong();
-        // console.log("next:", nextSong);
       }
       if (playbackStatus.didJustFinish) {
-        // console.log("finished song");
         const nextSong = getNextSong();
         if (nextSong) {
-          // console.log("next:", nextSong);
           context.setStartSongId(nextSong.id);
         }
-        // playNext();
       }
     }
   };
@@ -58,13 +52,8 @@ export const SoundWrapper: FC = () => {
       { uri },
       { shouldPlay: false, progressUpdateIntervalMillis: 800 }
     );
-    // playbackObject.setProgressUpdateIntervalAsync();
     playbackObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
     context.setPbo(playbackObject);
-    // const pid = context.playlist?.id;
-    // if (pid) {
-    //   setSongs(await getPlaylist(pid));
-    // }
     context.setIsLoading(false);
   };
 
@@ -80,36 +69,15 @@ export const SoundWrapper: FC = () => {
     init();
   }, []);
 
-  // const playNext = () => {
-  //   console.log("start play next");
-  //   if (context.queue) {
-  //     const nextIndex =
-  //       (context.queue?.findIndex(
-  //         (queueItem) => queueItem.id === context.startSongId
-  //       ) ?? -1) + 1;
-  //     const nextSong =
-  //       context.queue.length > nextIndex + 1
-  //         ? context.queue[nextIndex]
-  //         : context.queue[0];
-  //     console.log("next song:", nextSong);
-  //     context.setStartSongId(nextSong.id);
-  //   }
-  // };
-
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {
       context.setIsRadioPlaying(false);
-      //   if (context.isPlaying) {
-      //     // console.log("pause!");
-      //     await context.pbo.pauseAsync();
-      //   } else {
-      // console.log("play!");
       await context.pbo.unloadAsync();
       await context.pbo.loadAsync({
         uri: getAPI("stream", `&id=${context.startSongId}`),
       });
       await context.pbo.playAsync();
-      //   }
+
       context.setIsPlaying(!context.isPlaying);
       setTimeout(async () => {
         const newMeta = await getNowPlaying({ remote: false });
@@ -128,7 +96,6 @@ export const SoundWrapper: FC = () => {
   };
 
   useEffect(() => {
-    // console.log(context);
     handlePlaySong();
   }, [context.startSongId]);
 
