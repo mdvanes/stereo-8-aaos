@@ -49,7 +49,7 @@ export const SongsInPlaylist: FC = () => {
       console.warn(
         "On the playlist page, the playlist ID was null, so redirecting back to playlists overview"
       );
-      navigation.navigate("Playlists");
+      navigation.navigate("Home");
     }
     setIsLoading(false);
   };

@@ -15,7 +15,8 @@ declare global {
 
 // See: https://reactnavigation.org/docs/typescript
 export type RootStackParamList = {
-  Playlists: undefined; // NavigatorScreenParams<RootTabParamList> | undefined;
+  Home: undefined;
+  // Playlists: undefined; // NavigatorScreenParams<RootTabParamList> | undefined;
   Playlist: undefined; // NavigatorScreenParams<undefined> | undefined;
   // Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

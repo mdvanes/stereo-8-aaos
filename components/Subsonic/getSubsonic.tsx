@@ -131,3 +131,77 @@ export const getCurrentRemotePlayingId = async (): Promise<
   const newMeta = await getNowPlaying({ remote: true });
   return newMeta?.id;
 };
+
+export interface Artist {
+  id?: string;
+  name?: string;
+  coverArt?: string;
+  albumCount?: number;
+}
+
+interface IndexesResponse {
+  indexes?: {
+    ignoredArticles?: string;
+    index?: {
+      name?: string;
+      artist?: Artist[];
+    }[];
+  };
+}
+
+export const getIndexes = async (): Promise<Artist[]> => {
+  try {
+    const response = await fetch(getAPI("getIndexes")).then((data) =>
+      data.json()
+    );
+    const { indexes }: IndexesResponse = response["subsonic-response"];
+
+    if (indexes && indexes.index?.length) {
+      return indexes.index.find((n) => n.name === "A")?.artist ?? [];
+    }
+    return [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
+
+export interface MusicDirectory {
+  id: string;
+  artist: string;
+  album?: string;
+  isDir: boolean;
+}
+
+export interface MusicDirectoryAlbum extends MusicDirectory {
+  isDir: true;
+}
+
+export interface MusicDirectorySong extends MusicDirectory {
+  isDir: false;
+}
+
+interface MusicDirectoryResponse {
+  directory?: {
+    id?: string;
+    name?: string;
+    child?: MusicDirectory[];
+  };
+}
+
+export const getMusicDir = async (id: string): Promise<MusicDirectory[]> => {
+  try {
+    const response = await fetch(getAPI("getMusicDirectory", `&id=${id}`)).then(
+      (data) => data.json()
+    );
+    const { directory }: MusicDirectoryResponse = response["subsonic-response"];
+
+    if (directory && directory.child?.length) {
+      return directory.child ?? [];
+    }
+    return [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};

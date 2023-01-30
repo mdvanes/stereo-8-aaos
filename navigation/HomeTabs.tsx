@@ -16,7 +16,7 @@ const Tab = createMaterialTopTabNavigator<HomeTabsParamList>();
 
 export function HomeTabs() {
   return (
-    <Tab.Navigator initialRouteName="Previous">
+    <Tab.Navigator initialRouteName="Library">
       <Tab.Screen name="Playlists" component={PlaylistsScreen} />
       <Tab.Screen name="Previous" component={PreviousScreen} />
       <Tab.Screen name="Favorites" component={LibraryScreen} />
