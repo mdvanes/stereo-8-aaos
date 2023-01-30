@@ -20,39 +20,34 @@ const isAlbum = (item: LibraryItemType): item is MusicDirectoryAlbum => {
   return "isDir" in item && item.isDir;
 };
 
-const LibraryArtistItem: FC<{ item: Artist }> = ({ item }) => {
-  const context = useContext(PlayContext);
-
-  return (
-    <Pressable
-      style={itemStyles.item_pressable}
-      onPress={async () => {
-        const dirs = await getMusicDir(item.id ?? "");
-        context.setLibraryItems(dirs);
-      }}
-    >
-      <Text style={[styles.libraryItem, itemStyles.line]}>
-        <FontAwesome name="folder" size={20} style={{ marginRight: 15 }} />{" "}
-        {item.name}
-      </Text>
-    </Pressable>
-  );
+const getLabel = (item: LibraryItemType): string => {
+  if (isArtist(item)) {
+    return item.name ?? "";
+  }
+  if (isAlbum(item)) {
+    return item.album ?? item.title ?? "";
+  }
+  return item.title ?? "";
 };
 
-const LibraryAlbumItem: FC<{ item: MusicDirectoryAlbum }> = ({ item }) => {
+const LibraryDirItem: FC<{ item: Artist | MusicDirectoryAlbum }> = ({
+  item,
+}) => {
   const context = useContext(PlayContext);
+  const label = getLabel(item);
 
   return (
     <Pressable
       style={itemStyles.item_pressable}
       onPress={async () => {
         const dirs = await getMusicDir(item.id ?? "");
+        context.setLibraryBreadcrumb((prev: string[]) => [...prev, item]);
         context.setLibraryItems(dirs);
       }}
     >
       <Text style={[styles.libraryItem, itemStyles.line]}>
         <FontAwesome name="folder" size={20} style={{ marginRight: 15 }} />{" "}
-        {item.album || item.title}
+        {label}
       </Text>
     </Pressable>
   );
@@ -78,11 +73,8 @@ const LibrarySongItem: FC<{ item: MusicDirectorySong }> = ({ item }) => {
 };
 
 const LibraryItem: FC<{ item: LibraryItemType }> = ({ item }) => {
-  if (isArtist(item)) {
-    return <LibraryArtistItem item={item} />;
-  }
-  if (isAlbum(item)) {
-    return <LibraryAlbumItem item={item} />;
+  if (isArtist(item) || isAlbum(item)) {
+    return <LibraryDirItem item={item} />;
   }
   return <LibrarySongItem item={item} />;
 };
@@ -133,11 +125,17 @@ export const Library: FC = () => {
             <Pressable
               onPress={async () => {
                 context.setLibraryItems(await getIndexes());
+                context.setLibraryBreadcrumb([]);
               }}
             >
               <Text style={[styles.libraryItem]}>Library</Text>
             </Pressable>{" "}
-            {">"} A {">"} Album {">"} SubAlbum
+            <FontAwesome
+              name="caret-right"
+              size={20}
+              style={{ marginHorizontal: 15 }}
+            />{" "}
+            {context.libraryBreadcrumb.map(getLabel).join(", ")}
           </Text>
         )}
       />

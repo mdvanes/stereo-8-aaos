@@ -14,6 +14,7 @@ export interface PlayValues {
   pbo: Audio.Sound | null;
   previouslyPlayed: string | null;
   libraryItems: LibraryItemType[];
+  libraryBreadcrumb: LibraryItemType[];
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -27,6 +28,7 @@ export const defaultPlayValues: PlayValues = {
   pbo: null,
   previouslyPlayed: null,
   libraryItems: [],
+  libraryBreadcrumb: [],
 };
 
 export const PlayContext = createContext({
@@ -50,6 +52,9 @@ export const PlayContext = createContext({
   setPreviouslyPlayed: (_: PlayValues["previouslyPlayed"]) => {},
   libraryItems: defaultPlayValues.libraryItems,
   setLibraryItems: (_: PlayValues["libraryItems"]) => {},
+  libraryBreadcrumb: defaultPlayValues.libraryBreadcrumb,
+  // TODO fix any
+  setLibraryBreadcrumb: (_: PlayValues["libraryBreadcrumb"] | any) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -70,6 +75,9 @@ export const PlayContextProvider: FC<{
   );
   const [libraryItems, setLibraryItems] = useState(
     defaultPlayValues.libraryItems
+  );
+  const [libraryBreadcrumb, setLibraryBreadcrumb] = useState(
+    defaultPlayValues.libraryBreadcrumb
   );
 
   return (
@@ -95,6 +103,8 @@ export const PlayContextProvider: FC<{
         setPreviouslyPlayed,
         libraryItems,
         setLibraryItems,
+        libraryBreadcrumb,
+        setLibraryBreadcrumb,
       }}
     >
       {children}
