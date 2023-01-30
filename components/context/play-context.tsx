@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useState } from "react";
 import { IPlaylist, ISong } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
-import { LibraryItemType } from "../../types";
+import { IndexesResponse, IndexItem, LibraryItemType } from "../../types";
 
 export interface PlayValues {
   isPlaying: boolean;
@@ -13,6 +13,7 @@ export interface PlayValues {
   startSongId: string | null;
   pbo: Audio.Sound | null;
   previouslyPlayed: string | null;
+  libraryIndexes: IndexItem[];
   libraryItems: LibraryItemType[];
   libraryBreadcrumb: LibraryItemType[];
 }
@@ -27,6 +28,7 @@ export const defaultPlayValues: PlayValues = {
   startSongId: null,
   pbo: null,
   previouslyPlayed: null,
+  libraryIndexes: [],
   libraryItems: [],
   libraryBreadcrumb: [],
 };
@@ -50,6 +52,8 @@ export const PlayContext = createContext({
   setPbo: (_: PlayValues["pbo"]) => {},
   previouslyPlayed: defaultPlayValues.previouslyPlayed,
   setPreviouslyPlayed: (_: PlayValues["previouslyPlayed"]) => {},
+  libraryIndexes: defaultPlayValues.libraryIndexes,
+  setLibraryIndexes: (_: PlayValues["libraryIndexes"]) => {},
   libraryItems: defaultPlayValues.libraryItems,
   setLibraryItems: (_: PlayValues["libraryItems"]) => {},
   libraryBreadcrumb: defaultPlayValues.libraryBreadcrumb,
@@ -72,6 +76,9 @@ export const PlayContextProvider: FC<{
   const [pbo, setPbo] = useState<PlayValues["pbo"]>(defaultPlayValues.pbo);
   const [previouslyPlayed, setPreviouslyPlayed] = useState(
     defaultPlayValues.previouslyPlayed
+  );
+  const [libraryIndexes, setLibraryIndexes] = useState(
+    defaultPlayValues.libraryIndexes
   );
   const [libraryItems, setLibraryItems] = useState(
     defaultPlayValues.libraryItems
@@ -101,6 +108,8 @@ export const PlayContextProvider: FC<{
         setPbo,
         previouslyPlayed,
         setPreviouslyPlayed,
+        libraryIndexes,
+        setLibraryIndexes,
         libraryItems,
         setLibraryItems,
         libraryBreadcrumb,

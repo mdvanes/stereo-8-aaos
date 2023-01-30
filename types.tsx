@@ -44,13 +44,15 @@ export interface Artist {
   albumCount?: number;
 }
 
+export interface IndexItem {
+  name?: string;
+  artist?: Artist[];
+}
+
 export interface IndexesResponse {
   indexes?: {
     ignoredArticles?: string;
-    index?: {
-      name?: string;
-      artist?: Artist[];
-    }[];
+    index?: IndexItem[];
   };
 }
 

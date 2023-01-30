@@ -9,6 +9,7 @@ import {
 } from "../../../types";
 import { PlayContext } from "../../context/play-context";
 import { styles as itemStyles } from "../../item.styles";
+import { View } from "../../Themed";
 import { getIndexes, getMusicDir } from "../getSubsonic";
 import { styles } from "./Library.styles";
 
@@ -79,12 +80,42 @@ const LibraryItem: FC<{ item: LibraryItemType }> = ({ item }) => {
   return <LibrarySongItem item={item} />;
 };
 
+const FirstLetterSelector: FC = () => {
+  const context = useContext(PlayContext);
+  return (
+    <View style={{ flexDirection: "row" }}>
+      {context.libraryIndexes.map((indexItem) => {
+        return (
+          <Pressable
+            key={indexItem.name}
+            style={{ marginHorizontal: 10 }}
+            onPress={async () => {
+              context.setLibraryItems(indexItem?.artist ?? []);
+              context.setLibraryBreadcrumb([{ name: indexItem.name }]);
+            }}
+          >
+            <Text style={[styles.libraryItem]}>{indexItem.name}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+};
+
 export const Library: FC = () => {
   const context = useContext(PlayContext);
 
   const init = async () => {
     // setIsLoading(true);
-    context.setLibraryItems(await getIndexes());
+    // context.setLibraryItems(await getIndexes());
+    const r = await getIndexes();
+    context.setLibraryIndexes(r);
+    context.setLibraryItems(r.find((n) => n.name === "A")?.artist ?? []);
+    // const x = context.libraryIndexes[0];
+    // if (r && r.length > 0) {
+    //   context.setLibraryItems(r[0].artist ?? []);
+    //   context.setLibraryBreadcrumb([{ name: r[0].name }]);
+    // }
     // setIsLoading(false);
   };
 
@@ -121,22 +152,37 @@ export const Library: FC = () => {
           />
         )}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={[styles.libraryItem, itemStyles.line]}>
-            <Pressable
-              onPress={async () => {
-                context.setLibraryItems(await getIndexes());
-                context.setLibraryBreadcrumb([]);
-              }}
-            >
-              <Text style={[styles.libraryItem]}>Library</Text>
-            </Pressable>{" "}
-            <FontAwesome
-              name="caret-right"
-              size={20}
-              style={{ marginHorizontal: 15 }}
-            />{" "}
-            {context.libraryBreadcrumb.map(getLabel).join(", ")}
-          </Text>
+          <>
+            {context.libraryBreadcrumb.length > 0 && (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={[styles.libraryItem]}>
+                  <Pressable
+                    onPress={async () => {
+                      const x = context.libraryIndexes[0];
+                      if (x) {
+                        context.setLibraryItems(x.artist ?? []);
+                        context.setLibraryBreadcrumb([]);
+                      }
+                    }}
+                  >
+                    <Text style={[styles.libraryItem]}>Library</Text>
+                  </Pressable>{" "}
+                </Text>
+
+                {context.libraryBreadcrumb.map((x) => (
+                  <>
+                    <FontAwesome
+                      name="caret-right"
+                      size={20}
+                      style={{ marginHorizontal: 15, color: "white" }}
+                    />
+                    <Text style={styles.libraryItem}>{getLabel(x)}</Text>
+                  </>
+                ))}
+              </View>
+            )}
+            {context.libraryBreadcrumb.length === 0 && <FirstLetterSelector />}
+          </>
         )}
       />
     </SafeAreaView>

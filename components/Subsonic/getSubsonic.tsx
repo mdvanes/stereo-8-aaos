@@ -2,6 +2,7 @@ import { getSettings, ISettings } from "../../getSettings";
 import {
   Artist,
   IndexesResponse,
+  IndexItem,
   MusicDirectory,
   MusicDirectoryResponse,
 } from "../../types";
@@ -138,7 +139,7 @@ export const getCurrentRemotePlayingId = async (): Promise<
   return newMeta?.id;
 };
 
-export const getIndexes = async (): Promise<Artist[]> => {
+export const getIndexes = async (): Promise<IndexItem[]> => {
   try {
     const response = await fetch(getAPI("getIndexes")).then((data) =>
       data.json()
@@ -146,7 +147,7 @@ export const getIndexes = async (): Promise<Artist[]> => {
     const { indexes }: IndexesResponse = response["subsonic-response"];
 
     if (indexes && indexes.index?.length) {
-      return indexes.index.find((n) => n.name === "A")?.artist ?? [];
+      return indexes.index;
     }
     return [];
   } catch (err) {
