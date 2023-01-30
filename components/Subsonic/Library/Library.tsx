@@ -1,3 +1,4 @@
+import { FontAwesome } from "@expo/vector-icons";
 import React, { FC, useContext, useEffect } from "react";
 import { Pressable, SafeAreaView, SectionList, Text } from "react-native";
 import {
@@ -16,7 +17,7 @@ const isArtist = (item: LibraryItemType): item is Artist => {
 };
 
 const isAlbum = (item: LibraryItemType): item is MusicDirectoryAlbum => {
-  return "album" in item && item.isDir;
+  return "isDir" in item && item.isDir;
 };
 
 const LibraryArtistItem: FC<{ item: Artist }> = ({ item }) => {
@@ -30,7 +31,10 @@ const LibraryArtistItem: FC<{ item: Artist }> = ({ item }) => {
         context.setLibraryItems(dirs);
       }}
     >
-      <Text style={[styles.libraryItem, itemStyles.line]}>{item.name}</Text>
+      <Text style={[styles.libraryItem, itemStyles.line]}>
+        <FontAwesome name="folder" size={20} style={{ marginRight: 15 }} />{" "}
+        {item.name}
+      </Text>
     </Pressable>
   );
 };
@@ -43,11 +47,13 @@ const LibraryAlbumItem: FC<{ item: MusicDirectoryAlbum }> = ({ item }) => {
       style={itemStyles.item_pressable}
       onPress={async () => {
         const dirs = await getMusicDir(item.id ?? "");
-        console.log(item.id, dirs);
         context.setLibraryItems(dirs);
       }}
     >
-      <Text style={[styles.libraryItem, itemStyles.line]}>{item.album}</Text>
+      <Text style={[styles.libraryItem, itemStyles.line]}>
+        <FontAwesome name="folder" size={20} style={{ marginRight: 15 }} />{" "}
+        {item.album || item.title}
+      </Text>
     </Pressable>
   );
 };
@@ -61,9 +67,7 @@ const LibrarySongItem: FC<{ item: MusicDirectorySong }> = ({ item }) => {
     <Pressable
       style={itemStyles.item_pressable}
       onPress={async () => {
-        const dirs = await getMusicDir(item.id ?? "");
-        console.log(item.id, dirs);
-        context.setLibraryItems(dirs);
+        context.setStartSongId(item.id);
       }}
     >
       <Text style={[styles.libraryItem, itemStyles.line]}>
