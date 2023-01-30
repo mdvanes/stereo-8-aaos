@@ -1,18 +1,15 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { Button, Pressable, SectionList, Text, View } from "react-native";
-import { PlayContext } from "../../context/play-context";
+import React, { FC, useContext, useEffect } from "react";
+import { Pressable, SafeAreaView, SectionList, Text } from "react-native";
 import {
   Artist,
-  getIndexes,
-  getMusicDir,
-  MusicDirectory,
+  LibraryItemType,
   MusicDirectoryAlbum,
   MusicDirectorySong,
-} from "../getSubsonic";
-import { styles } from "./Library.styles";
+} from "../../../types";
+import { PlayContext } from "../../context/play-context";
 import { styles as itemStyles } from "../../item.styles";
-
-type LibraryItemType = Artist | MusicDirectoryAlbum | MusicDirectorySong;
+import { getIndexes, getMusicDir } from "../getSubsonic";
+import { styles } from "./Library.styles";
 
 const isArtist = (item: LibraryItemType): item is Artist => {
   return "name" in item;
@@ -23,13 +20,14 @@ const isAlbum = (item: LibraryItemType): item is MusicDirectoryAlbum => {
 };
 
 const LibraryArtistItem: FC<{ item: Artist }> = ({ item }) => {
+  const context = useContext(PlayContext);
+
   return (
     <Pressable
       style={itemStyles.item_pressable}
       onPress={async () => {
-        const x = await getMusicDir(item.id ?? "");
-        console.log(item.id, x);
-        // setItems(x); // TODO store in context!
+        const dirs = await getMusicDir(item.id ?? "");
+        context.setLibraryItems(dirs);
       }}
     >
       <Text style={[styles.libraryItem, itemStyles.line]}>{item.name}</Text>
@@ -38,7 +36,41 @@ const LibraryArtistItem: FC<{ item: Artist }> = ({ item }) => {
 };
 
 const LibraryAlbumItem: FC<{ item: MusicDirectoryAlbum }> = ({ item }) => {
-  return <Text style={styles.libraryItem}>{item.album}</Text>;
+  const context = useContext(PlayContext);
+
+  return (
+    <Pressable
+      style={itemStyles.item_pressable}
+      onPress={async () => {
+        const dirs = await getMusicDir(item.id ?? "");
+        console.log(item.id, dirs);
+        context.setLibraryItems(dirs);
+      }}
+    >
+      <Text style={[styles.libraryItem, itemStyles.line]}>{item.album}</Text>
+    </Pressable>
+  );
+};
+
+const LibrarySongItem: FC<{ item: MusicDirectorySong }> = ({ item }) => {
+  const context = useContext(PlayContext);
+
+  const track = item.track ? `${item.track?.toString().padStart(2, "0")}.` : "";
+
+  return (
+    <Pressable
+      style={itemStyles.item_pressable}
+      onPress={async () => {
+        const dirs = await getMusicDir(item.id ?? "");
+        console.log(item.id, dirs);
+        context.setLibraryItems(dirs);
+      }}
+    >
+      <Text style={[styles.libraryItem, itemStyles.line]}>
+        {track} {item.title}
+      </Text>
+    </Pressable>
+  );
 };
 
 const LibraryItem: FC<{ item: LibraryItemType }> = ({ item }) => {
@@ -48,16 +80,15 @@ const LibraryItem: FC<{ item: LibraryItemType }> = ({ item }) => {
   if (isAlbum(item)) {
     return <LibraryAlbumItem item={item} />;
   }
-  return <Text style={styles.libraryItem}>{item.isDir}</Text>;
+  return <LibrarySongItem item={item} />;
 };
 
 export const Library: FC = () => {
   const context = useContext(PlayContext);
-  const [items, setItems] = useState<Artist[] | MusicDirectory[]>([]);
 
   const init = async () => {
     // setIsLoading(true);
-    setItems(await getIndexes());
+    context.setLibraryItems(await getIndexes());
     // setIsLoading(false);
   };
 
@@ -81,48 +112,31 @@ export const Library: FC = () => {
   }, []);
 
   return (
-    <>
-      <View
-        style={{
-          flex: 1,
-          // justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
-      >
-        <Text style={{ color: "white", fontSize: 24 }}>Library</Text>
-        {/* <Text style={{ color: "white", fontSize: 24 }}>
-      </Text> */}
-        {/* {items.map((a) => {
-          const artistName = "name" in a ? a.name : null;
-          const albumName = "album" in a ? a.album : null;
-          // @ts-expect-error
-          const songName = a.track + a.title;
-          return (
-            <Button
-              title={artistName || songName || albumName || ""}
-              key={a.id}
-              onPress={async () => {
-                const x = await getMusicDir(a.id ?? "");
-                console.log(a.id, x);
-                setItems(x);
-              }}
-            />
-          );
-        })} */}
-      </View>
+    <SafeAreaView style={{ flex: 1, width: "100%" }}>
       <SectionList
-        sections={[{ title: "", data: items }]}
+        sections={[{ title: "", data: context.libraryItems }]}
         keyExtractor={(item, index) => `${item.id}_${index}`}
         renderItem={({ item }) => (
           <LibraryItem
             item={item}
             // onClick={handlePlaySong}
-            // activeId={context.song?.id}
+            // TODO activeId={context.song?.id}
             // {...item}
           />
         )}
-        renderSectionHeader={({ section: { title } }) => <Text>{title}?</Text>}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={[styles.libraryItem, itemStyles.line]}>
+            <Pressable
+              onPress={async () => {
+                context.setLibraryItems(await getIndexes());
+              }}
+            >
+              <Text style={[styles.libraryItem]}>Library</Text>
+            </Pressable>{" "}
+            {">"} A {">"} Album {">"} SubAlbum
+          </Text>
+        )}
       />
-    </>
+    </SafeAreaView>
   );
 };

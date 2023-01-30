@@ -36,3 +36,47 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export interface Artist {
+  id?: string;
+  name?: string;
+  coverArt?: string;
+  albumCount?: number;
+}
+
+export interface IndexesResponse {
+  indexes?: {
+    ignoredArticles?: string;
+    index?: {
+      name?: string;
+      artist?: Artist[];
+    }[];
+  };
+}
+
+export interface MusicDirectory {
+  id: string;
+  artist: string;
+  album?: string;
+  isDir: boolean;
+  title?: string;
+  track?: number;
+}
+
+export interface MusicDirectoryAlbum extends MusicDirectory {
+  isDir: true;
+}
+
+export interface MusicDirectorySong extends MusicDirectory {
+  isDir: false;
+}
+
+export interface MusicDirectoryResponse {
+  directory?: {
+    id?: string;
+    name?: string;
+    child?: MusicDirectory[];
+  };
+}
+
+export type LibraryItemType = Artist | MusicDirectoryAlbum | MusicDirectorySong;
