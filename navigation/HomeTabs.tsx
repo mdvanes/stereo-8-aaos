@@ -1,13 +1,12 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import React, { FC } from "react";
-import { Text, View } from "react-native";
+import React from "react";
 import { LibraryScreen } from "../screens/LibraryScreen";
 import PlaylistsScreen from "../screens/PlaylistsScreen";
-import { PreviousScreen } from "../screens/PreviousScreen";
+import { RadioScreen } from "../screens/RadioScreen";
 
 type HomeTabsParamList = {
   Playlists: undefined;
-  Previous: undefined;
+  Radio: undefined;
   Favorites: undefined;
   Library: undefined;
 };
@@ -16,9 +15,9 @@ const Tab = createMaterialTopTabNavigator<HomeTabsParamList>();
 
 export function HomeTabs() {
   return (
-    <Tab.Navigator initialRouteName="Library">
+    <Tab.Navigator initialRouteName="Playlists">
       <Tab.Screen name="Playlists" component={PlaylistsScreen} />
-      <Tab.Screen name="Previous" component={PreviousScreen} />
+      <Tab.Screen name="Radio" component={RadioScreen} />
       {/* TODO <Tab.Screen name="Favorites" component={LibraryScreen} /> */}
       <Tab.Screen name="Library" component={LibraryScreen} />
     </Tab.Navigator>

@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect } from "react";
 import { SafeAreaView, SectionList } from "react-native";
+import { ConditionalImageBackground } from "../../ConditionalImageBackground";
 import { PlayContext } from "../../context/play-context";
 import { getIndexes } from "../getSubsonic";
 import { Breadcrumb } from "./Breadcrumb";
@@ -45,19 +46,23 @@ export const Library: FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, width: "100%" }}>
-      <SectionList
-        sections={[{ title: "", data: context.libraryItems }]}
-        keyExtractor={(item, index) => `${item.id}_${index}`}
-        renderItem={({ item }) => (
-          <LibraryItem item={item} isActive={context.song?.id === item.id} />
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <>
-            {context.libraryBreadcrumb.length > 0 && <Breadcrumb />}
-            {context.libraryBreadcrumb.length === 0 && <FirstLetterSelector />}
-          </>
-        )}
-      />
+      <ConditionalImageBackground img={context.song?.img}>
+        <SectionList
+          sections={[{ title: "", data: context.libraryItems }]}
+          keyExtractor={(item, index) => `${item.id}_${index}`}
+          renderItem={({ item }) => (
+            <LibraryItem item={item} isActive={context.song?.id === item.id} />
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <>
+              {context.libraryBreadcrumb.length > 0 && <Breadcrumb />}
+              {context.libraryBreadcrumb.length === 0 && (
+                <FirstLetterSelector />
+              )}
+            </>
+          )}
+        />
+      </ConditionalImageBackground>
     </SafeAreaView>
   );
 };
