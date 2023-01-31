@@ -10,7 +10,7 @@ export const Breadcrumb: FC = () => {
   const context = useContext(PlayContext);
 
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
       <Text style={[styles.libraryItem]}>
         <Pressable
           onPress={async () => {
@@ -26,14 +26,17 @@ export const Breadcrumb: FC = () => {
       </Text>
 
       {context.libraryBreadcrumb.map((item, index) => (
-        <div key={`${item.id}_${index}`}>
+        <View
+          key={`${item.id}_${index}`}
+          style={{ flexDirection: "row", alignItems: "center" }}
+        >
           <FontAwesome
             name="caret-right"
             size={20}
             style={{ marginHorizontal: 15, color: "white" }}
           />
           <Text style={styles.libraryItem}>{getLabel(item)}</Text>
-        </div>
+        </View>
       ))}
     </View>
   );
