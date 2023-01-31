@@ -19,7 +19,7 @@ export function HomeTabs() {
     <Tab.Navigator initialRouteName="Library">
       <Tab.Screen name="Playlists" component={PlaylistsScreen} />
       <Tab.Screen name="Previous" component={PreviousScreen} />
-      <Tab.Screen name="Favorites" component={LibraryScreen} />
+      {/* TODO <Tab.Screen name="Favorites" component={LibraryScreen} /> */}
       <Tab.Screen name="Library" component={LibraryScreen} />
     </Tab.Navigator>
   );
