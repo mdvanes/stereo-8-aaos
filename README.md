@@ -123,10 +123,10 @@ https://reactnative.dev/docs/environment-setup
 - v1.0.22 restyle bottombar, image on background and poll radio meta data
 - v1.0.22 highlight active row
 - v1.0.22 log previously played on radio
-- bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
+- v1.0.22 bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
+- v1.0.22 feat: browse all "artists > albums > songs" instead of only playlists
 - bug: see mail after publish with eligibility issues
 - enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
-- enhancement: browse all "artists > albums > songs" instead of only playlists
 - enhancement: mark an album as "local favorite"
 - enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
 - enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator

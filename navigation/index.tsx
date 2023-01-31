@@ -4,21 +4,20 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
+import React from "react";
 import { ColorSchemeName } from "react-native";
 import { PlayContextProvider } from "../components/context/play-context";
 import { ProgressContextProvider } from "../components/context/progress-context";
 import { SoundWrapper } from "../components/SoundWrapper/SoundWrapper";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
-import PlaylistsScreen from "../screens/PlaylistsScreen";
 import { RootStackParamList } from "../types";
+import { HomeTabs } from "./HomeTabs";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { stackScreenHomeOptions } from "./options/home";
 import { stackScreenModalOptions } from "./options/modal";
 import { stackScreenPlaylistOptions } from "./options/playlist";
-import { stackScreenPlaylistsOptions } from "./options/playlists";
 
 export default function Navigation({
   colorScheme,
@@ -49,25 +48,27 @@ function RootNavigator() {
       <ProgressContextProvider>
         <SoundWrapper />
         <Stack.Navigator
+          initialRouteName="Home"
           screenOptions={{
             headerBackVisible: false,
           }}
         >
           <Stack.Screen
-            name="Playlists"
-            component={PlaylistsScreen}
-            options={stackScreenPlaylistsOptions(colorScheme)}
+            name="Home"
+            component={HomeTabs}
+            options={stackScreenHomeOptions(colorScheme)}
           />
           <Stack.Screen
             name="Playlist"
             component={PlaylistScreen}
             options={stackScreenPlaylistOptions(colorScheme)}
           />
-          <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{ title: "Oops!" }}
-          />
+          {/* TODO NOTE: when NotFound is active, hot reloading is broken and will always direct to this route */}
+          {/* <Stack.Screen
+              name="NotFound"
+              component={NotFoundScreen}
+              options={{ title: "Not Found" }}
+            /> */}
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
               name="Modal"
