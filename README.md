@@ -132,3 +132,7 @@ https://reactnative.dev/docs/environment-setup
 - enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator
 - enhancement: multiple radio stations
 - enhancement: show something on the car home screen instead of just the app name
+
+- play loop for library
+- rename previous tab to radio and add buttons for stations
+- bug: topbar (statusbar) on car is black with dark text
