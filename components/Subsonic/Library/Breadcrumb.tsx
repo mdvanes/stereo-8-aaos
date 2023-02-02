@@ -10,9 +10,16 @@ export const Breadcrumb: FC = () => {
   const context = useContext(PlayContext);
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: 10,
+      }}
+    >
       <Text style={[styles.libraryItem]}>
         <Pressable
+          style={{ paddingVertical: 20, paddingLeft: 20, paddingRight: 10 }}
           onPress={async () => {
             const firstIndex = context.libraryIndexes[0];
             if (firstIndex) {

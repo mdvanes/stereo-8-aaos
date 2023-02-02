@@ -7,12 +7,12 @@ import { styles } from "./Library.styles";
 export const FirstLetterSelector: FC = () => {
   const context = useContext(PlayContext);
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View style={{ flexDirection: "row", flexWrap: 'wrap', marginHorizontal: 10 }}>
       {context.libraryIndexes.map((indexItem) => {
         return (
           <Pressable
             key={indexItem.name}
-            style={{ marginHorizontal: 10 }}
+            style={{ padding: 20 }}
             onPress={async () => {
               context.setLibraryItems(indexItem?.artist ?? []);
               context.setLibraryBreadcrumb([{ name: indexItem.name }]);
