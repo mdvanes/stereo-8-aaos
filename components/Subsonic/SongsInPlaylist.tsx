@@ -7,12 +7,13 @@ import {
   SectionList,
   View,
 } from "react-native";
+import { MusicDirectorySong } from "../../types";
 import { ConditionalImageBackground } from "../ConditionalImageBackground";
 import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
-import { getPlaylist, hasValidSettings, ISong } from "./getSubsonic";
+import { getPlaylist, hasValidSettings } from "./getSubsonic";
 
 const Item = ({
   id,
@@ -20,7 +21,7 @@ const Item = ({
   title,
   onClick,
   activeId,
-}: ISong & { onClick: (id: string) => () => void; activeId?: string }) => (
+}: MusicDirectorySong & { onClick: (id: string) => () => void; activeId?: string }) => (
   <View
     style={activeId === id ? [styles.item, styles.item__active] : styles.item}
   >

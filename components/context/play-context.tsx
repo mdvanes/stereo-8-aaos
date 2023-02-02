@@ -1,15 +1,15 @@
 import { createContext, FC, ReactNode, useState } from "react";
-import { IPlaylist, ISong } from "../Subsonic/getSubsonic";
+import { IPlaylist } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
-import { IndexesResponse, IndexItem, LibraryItemType } from "../../types";
+import { IndexesResponse, IndexItem, LibraryItemType, MusicDirectorySong } from "../../types";
 
 export interface PlayValues {
   isPlaying: boolean;
   isRadioPlaying: boolean;
   isLoading: boolean;
   playlist: IPlaylist | null;
-  song: ISong | null;
-  queue: ISong[] | null;
+  song: MusicDirectorySong | null;
+  queue: MusicDirectorySong[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
   previouslyPlayed: string | null;
@@ -43,7 +43,7 @@ export const PlayContext = createContext({
   playlist: defaultPlayValues.playlist,
   setPlaylist: (_: IPlaylist | null) => {},
   song: defaultPlayValues.song,
-  setSong: (_: ISong | null) => {},
+  setSong: (_: MusicDirectorySong | null) => {},
   queue: defaultPlayValues.queue,
   setQueue: (_: PlayValues["queue"]) => {},
   startSongId: defaultPlayValues.startSongId,

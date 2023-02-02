@@ -1,14 +1,12 @@
 import { useContext } from "react";
+import { MusicDirectorySong } from "../../types";
 import { PlayContext } from "../context/play-context";
-import { ISong } from "../Subsonic/getSubsonic";
 
 export const useGetNextSong = () => {
   const context = useContext(PlayContext);
 
-  const getNextSong = (): ISong | null => {
-    // console.log("start play next", context.queue);
+  const getNextSong = (): MusicDirectorySong | null => {
     if (context.queue) {
-    //   console.log("start play next");
       const nextIndex =
         (context.queue?.findIndex(
           (queueItem) => queueItem.id === context.startSongId

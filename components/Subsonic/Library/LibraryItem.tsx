@@ -10,7 +10,7 @@ import {
 import { PlayContext } from "../../context/play-context";
 import { styles as itemStyles } from "../../item.styles";
 import { getMusicDir } from "../getSubsonic";
-import { getLabel, isAlbum, isArtist } from "./getLabel";
+import { getLabel, isAlbum, isArtist, isSong } from "./getLabel";
 import { styles } from "./Library.styles";
 
 const LibraryDirItem: FC<{
@@ -36,10 +36,11 @@ const LibraryDirItem: FC<{
   );
 };
 
-const LibrarySongItem: FC<{ item: MusicDirectorySong; isActive: boolean }> = ({
-  item,
-  isActive,
-}) => {
+const LibrarySongItem: FC<{
+  item: MusicDirectorySong;
+  items?: MusicDirectorySong[];
+  isActive: boolean;
+}> = ({ item, items, isActive }) => {
   const context = useContext(PlayContext);
 
   const track = item.track ? `${item.track?.toString().padStart(2, "0")}.` : "";
@@ -48,6 +49,7 @@ const LibrarySongItem: FC<{ item: MusicDirectorySong; isActive: boolean }> = ({
     <Pressable
       style={itemStyles.item_pressable}
       onPress={async () => {
+        context.setQueue(items ?? []);
         context.setStartSongId(item.id);
       }}
     >
@@ -64,12 +66,19 @@ const LibrarySongItem: FC<{ item: MusicDirectorySong; isActive: boolean }> = ({
   );
 };
 
-export const LibraryItem: FC<{ item: LibraryItemType; isActive: boolean }> = ({
-  item,
-  isActive = false,
-}) => {
+export const LibraryItem: FC<{
+  item: LibraryItemType;
+  items?: LibraryItemType[];
+  isActive: boolean;
+}> = ({ item, items, isActive = false }) => {
   if (isArtist(item) || isAlbum(item)) {
     return <LibraryDirItem item={item} />;
   }
-  return <LibrarySongItem item={item} isActive={isActive} />;
+  return (
+    <LibrarySongItem
+      item={item}
+      items={items ? items.filter(isSong) : []}
+      isActive={isActive}
+    />
+  );
 };

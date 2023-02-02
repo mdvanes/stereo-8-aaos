@@ -91,6 +91,7 @@ export const SoundWrapper: FC = () => {
             title: newMeta.title,
             album: newMeta.album,
             duration: newMeta.duration,
+            isDir: false
           });
         }
       }, 500);

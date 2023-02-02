@@ -51,7 +51,7 @@ export const Library: FC = () => {
           sections={[{ title: "", data: context.libraryItems }]}
           keyExtractor={(item, index) => `${item.id}_${index}`}
           renderItem={({ item }) => (
-            <LibraryItem item={item} isActive={context.song?.id === item.id} />
+            <LibraryItem item={item} items={context.libraryItems} isActive={context.song?.id === item.id} />
           )}
           renderSectionHeader={({ section: { title } }) => (
             <>

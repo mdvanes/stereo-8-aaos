@@ -5,6 +5,7 @@ import {
   IndexItem,
   MusicDirectory,
   MusicDirectoryResponse,
+  MusicDirectorySong,
 } from "../../types";
 
 const PLAYER_NAME = "Stereo8";
@@ -48,15 +49,6 @@ export interface IPlaylist {
   name: string;
 }
 
-export interface ISong {
-  id: string;
-  artist: string;
-  title: string;
-  duration: number;
-  album?: string;
-  img?: string;
-}
-
 export const testConnection = async (): Promise<void> => {
   await fetch(getAPI("getPlaylists")).then((data) => data.json());
 };
@@ -80,7 +72,7 @@ export const getPlaylists = async (): Promise<IPlaylist[]> => {
   }
 };
 
-export const getPlaylist = async (id: string): Promise<ISong[]> => {
+export const getPlaylist = async (id: string): Promise<MusicDirectorySong[]> => {
   try {
     const response = await fetch(getAPI("getPlaylist", `&id=${id}`)).then(
       (data) => data.json()
@@ -88,9 +80,9 @@ export const getPlaylist = async (id: string): Promise<ISong[]> => {
     const { playlist } = response["subsonic-response"];
 
     if (playlist?.entry) {
-      const songs = (playlist.entry as ISong[]).map(
+      const songs = (playlist.entry as MusicDirectorySong[]).map(
         ({ id, artist, title, duration }) => {
-          return { id, artist, title, duration };
+          return { id, artist, title, duration, isDir: false } as MusicDirectorySong;
         }
       );
       return songs;
