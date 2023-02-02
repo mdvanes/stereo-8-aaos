@@ -45,10 +45,6 @@ const getMeta = async (
 
     const previouslyPlayed: PreviouslyPlayedItem[] = nowonairResponse.data.map(
       (n) => ({
-        // `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
-        //   hour: "2-digit",
-        //   minute: "2-digit",
-        // })} ${n.artist} - ${n.title}`
         time: `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString(
           [],
           {
@@ -60,7 +56,6 @@ const getMeta = async (
         title: n.title,
       })
     );
-    // .join("\n");
 
     const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
       (data) => data.json()
