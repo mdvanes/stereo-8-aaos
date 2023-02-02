@@ -1,7 +1,9 @@
 import { createContext, FC, ReactNode, useState } from "react";
 import { IPlaylist } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
-import { IndexesResponse, IndexItem, LibraryItemType, MusicDirectorySong } from "../../types";
+import { IndexItem, LibraryItemType, MusicDirectorySong } from "../../types";
+
+export interface PreviouslyPlayedItem { time: string; artist: string; title: string };
 
 export interface PlayValues {
   isPlaying: boolean;
@@ -12,7 +14,7 @@ export interface PlayValues {
   queue: MusicDirectorySong[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
-  previouslyPlayed: string | null;
+  previouslyPlayed: { time: string; artist: string; title: string }[];
   libraryIndexes: IndexItem[];
   libraryItems: LibraryItemType[];
   libraryBreadcrumb: LibraryItemType[];
@@ -27,7 +29,7 @@ export const defaultPlayValues: PlayValues = {
   queue: null,
   startSongId: null,
   pbo: null,
-  previouslyPlayed: null,
+  previouslyPlayed: [],
   libraryIndexes: [],
   libraryItems: [],
   libraryBreadcrumb: [],

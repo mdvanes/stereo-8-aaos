@@ -1,4 +1,5 @@
-import { ISong } from "../Subsonic/getSubsonic";
+import { MusicDirectorySong } from "../../types";
+import { PreviouslyPlayedItem } from "../context/play-context";
 
 interface NowPlayingResponse {
   artist: string;
@@ -7,7 +8,7 @@ interface NowPlayingResponse {
   songImageUrl: string;
   name: string;
   imageUrl: string;
-  previouslyPlayed: string;
+  previouslyPlayed: PreviouslyPlayedItem[];
 }
 
 interface TracksResponse {
@@ -42,15 +43,24 @@ const getMeta = async (
       enddatetime,
     } = nowonairResponse.data[0];
 
-    const previouslyPlayed = nowonairResponse.data
-      .map(
-        (n) =>
-          `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
+    const previouslyPlayed: PreviouslyPlayedItem[] = nowonairResponse.data.map(
+      (n) => ({
+        // `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString([], {
+        //   hour: "2-digit",
+        //   minute: "2-digit",
+        // })} ${n.artist} - ${n.title}`
+        time: `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString(
+          [],
+          {
             hour: "2-digit",
             minute: "2-digit",
-          })} ${n.artist} - ${n.title}`
-      )
-      .join("\n");
+          }
+        )}`,
+        artist: n.artist,
+        title: n.title,
+      })
+    );
+    // .join("\n");
 
     const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
       (data) => data.json()
@@ -86,8 +96,8 @@ export const updateMeta = async ({
   channelName,
 }: {
   context: {
-    setSong: (_: ISong | null) => void;
-    setPreviouslyPlayed: (_: string | null) => void;
+    setSong: (_: MusicDirectorySong | null) => void;
+    setPreviouslyPlayed: (_: PreviouslyPlayedItem[]) => void;
   };
   metaTracksUrl: string;
   metaBroadcastUrl: string;
@@ -100,6 +110,7 @@ export const updateMeta = async ({
     artist: `${meta?.artist} (${meta?.name})`,
     duration: -1,
     img: meta ? meta.songImageUrl ?? meta.imageUrl : undefined,
+    isDir: false,
   });
   if (meta?.previouslyPlayed) {
     context.setPreviouslyPlayed(meta.previouslyPlayed);
