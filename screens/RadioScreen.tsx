@@ -32,6 +32,12 @@ export const RadioScreen: FC = () => {
             {settings?.radio?.map(({ name }) => (
               <Pressable
                 key={name}
+                onPress={() => {
+                  {
+                    /* TODO allow multiple radio stations */
+                  }
+                  alert("Not Yet Implemented");
+                }}
                 style={{
                   margin: 20,
                   padding: 20,
@@ -40,7 +46,6 @@ export const RadioScreen: FC = () => {
                   borderRadius: 10,
                 }}
               >
-                {/* TODO onClick -> allow multiple stations */}
                 <Text style={{ color: "white", fontSize: 28 }}>{name}</Text>
               </Pressable>
             ))}
