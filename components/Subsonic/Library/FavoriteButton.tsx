@@ -6,11 +6,11 @@ import { PlayContext } from "../../context/play-context";
 import { styles } from "./Library.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const favoritesStoreKey = "@favorites";
+export const favoritesStoreKey = "@favorites";
 
 const addFavorite = async (id: string) => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList = rawStored ? JSON.parse(rawStored) : "";
+  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
   await AsyncStorage.setItem(
     favoritesStoreKey,
     JSON.stringify([...favoritesList, id])
@@ -19,7 +19,7 @@ const addFavorite = async (id: string) => {
 
 const removeFavorite = async (id: string) => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : "";
+  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
   const newFavoritesList = favoritesList.filter((f) => f !== id);
   await AsyncStorage.setItem(
     favoritesStoreKey,
@@ -29,7 +29,7 @@ const removeFavorite = async (id: string) => {
 
 const getIsFavorite = async (id: string): Promise<boolean> => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : "";
+  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
   return favoritesList.some((f) => f === id);
 };
 

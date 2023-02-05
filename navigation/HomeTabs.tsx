@@ -1,8 +1,9 @@
 import {
   createMaterialTopTabNavigator,
-  MaterialTopTabNavigationOptions
+  MaterialTopTabNavigationOptions,
 } from "@react-navigation/material-top-tabs";
 import React from "react";
+import { FavoritesScreen } from "../screens/FavoritesScreen";
 import { LibraryScreen } from "../screens/LibraryScreen";
 import PlaylistsScreen from "../screens/PlaylistsScreen";
 import { RadioScreen } from "../screens/RadioScreen";
@@ -30,7 +31,11 @@ export function HomeTabs() {
         name="Playlists"
         component={PlaylistsScreen}
       />
-      {/* TODO <Tab.Screen name="Favorites" component={LibraryScreen} /> */}
+      <Tab.Screen
+        options={options}
+        name="Favorites"
+        component={FavoritesScreen}
+      />
       <Tab.Screen options={options} name="Library" component={LibraryScreen} />
       <Tab.Screen options={options} name="Radio" component={RadioScreen} />
     </Tab.Navigator>
