@@ -1,18 +1,23 @@
+import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Dimensions,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   TextInput,
   View,
 } from "react-native";
 import appJson from "../../app.json";
-import Layout from "../../constants/Layout";
+import Colors from "../../constants/Colors";
+import Layout, { HEADER_ICON_SIZE } from "../../constants/Layout";
 import { ISettings } from "../../getSettings";
+import { ReloadContext } from "../context/reload-context";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
+import { ReloadButton } from "./ReloadButton";
 
 const configUrlStoreKey = "@configUrl";
 const configSettingsStoreKey = "@configSettings";
@@ -116,46 +121,49 @@ export default function Settings({ path }: { path: string }) {
       {Boolean(saved) && <Text>Saved!</Text>}
       {Boolean(error) && <Text>{error}</Text>}
 
-      <Text style={{ marginTop: 32, fontSize: 28 }}>
-        v{appJson.expo.version}
-      </Text>
+      <View style={{ flexDirection: "row", marginTop: 32 }}>
+        <View>
+          <Text style={{ fontSize: 28 }}>v{appJson.expo.version}</Text>
+          <Text>
+            {Math.round(Dimensions.get("window").width)} x{" "}
+            {Math.round(Dimensions.get("window").height)} (
+            {Layout.isBigDevice ? "big" : "small"})
+          </Text>
+        </View>
 
-      <Text>
-        {Math.round(Dimensions.get("window").width)} x{" "}
-        {Math.round(Dimensions.get("window").height)} (
-        {Layout.isBigDevice ? "big" : "small"})
-      </Text>
+        <View style={{ flexDirection: "row", height: 38, marginLeft: 30 }}>
+          {__DEV__ && (
+            <Text
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                marginRight: 20,
+                fontWeight: "bold",
+              }}
+            >
+              DEV MODE
+            </Text>
+          )}
 
-      <View style={{ flexDirection: "row" }}>
-        {__DEV__ && (
           <Text
             style={{
-              backgroundColor: "green",
+              backgroundColor: isBrowser ? "green" : "#2196f3",
               color: "white",
               paddingVertical: 10,
               paddingHorizontal: 20,
-              marginTop: 20,
-              marginRight: 20,
               fontWeight: "bold",
             }}
           >
-            DEV MODE
+            {Boolean(isBrowser) ? "BROWSER" : "APP"} MODE
           </Text>
-        )}
-
-        <Text
-          style={{
-            backgroundColor: isBrowser ? "green" : "#2196f3",
-            color: "white",
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            marginTop: 20,
-            fontWeight: "bold",
-          }}
-        >
-          {Boolean(isBrowser) ? "BROWSER" : "APP"} MODE
-        </Text>
+        </View>
       </View>
+
+      <ReloadButton />
+
+      <View style={{ flexDirection: "row" }}></View>
     </SafeAreaView>
   );
 }

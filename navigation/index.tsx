@@ -4,10 +4,15 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useContext } from "react";
 import { ColorSchemeName } from "react-native";
 import { PlayContextProvider } from "../components/context/play-context";
 import { ProgressContextProvider } from "../components/context/progress-context";
+import {
+  ReloadContext,
+  ReloadContextProvider,
+} from "../components/context/reload-context";
+import { ReloadIndicator } from "../components/Settings/ReloadIndicator";
 import { SoundWrapper } from "../components/SoundWrapper/SoundWrapper";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -29,7 +34,9 @@ export default function Navigation({
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <ReloadContextProvider>
+        <RootNavigator />
+      </ReloadContextProvider>
     </NavigationContainer>
   );
 }
@@ -42,8 +49,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const colorScheme = useColorScheme();
+  const reloadContext = useContext(ReloadContext);
 
-  return (
+  return reloadContext.disabled ? (
+    <ReloadIndicator />
+  ) : (
     <PlayContextProvider>
       <ProgressContextProvider>
         <SoundWrapper />
