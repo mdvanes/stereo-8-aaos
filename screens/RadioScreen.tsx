@@ -17,7 +17,6 @@ const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
   setting,
 }) => (
   <Pressable
-    key={setting.name}
     onPress={() => {
       {
         /* TODO allow multiple radio stations */
@@ -26,7 +25,8 @@ const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
     }}
     style={{
       margin: 20,
-      padding: 20,
+      paddingVertical: 20,
+      paddingHorizontal: 50,
       flex: 1,
       backgroundColor: "#2196f3",
       borderRadius: 10,
@@ -57,6 +57,11 @@ export const RadioScreen: FC = () => {
         width: "100%",
       }}
     >
+      <View style={{ flexDirection: "row" }}>
+        {settings?.radio?.map((item) => (
+          <SelectionStationButton key={item.name} setting={item} />
+        ))}
+      </View>
       <SafeAreaView style={{ flex: 1, width: "100%" }}>
         <ConditionalImageBackground img={context.song?.img}>
           <SectionList
@@ -69,15 +74,6 @@ export const RadioScreen: FC = () => {
                 </Text>
               </View>
             )}
-            renderSectionHeader={({ section: { title } }) => {
-              return (
-                <View style={{ flexDirection: "row" }}>
-                  {settings?.radio?.map((item) => (
-                    <SelectionStationButton setting={item} />
-                  ))}
-                </View>
-              );
-            }}
           />
         </ConditionalImageBackground>
       </SafeAreaView>
