@@ -3,6 +3,7 @@ import React, { FC, useContext } from "react";
 import { Pressable, Text } from "react-native";
 import { PlayContext } from "../../context/play-context";
 import { View } from "../../Themed";
+import { FavoriteButton } from "./FavoriteButton";
 import { getLabel } from "./getLabel";
 import { styles } from "./Library.styles";
 
@@ -31,6 +32,8 @@ export const Breadcrumb: FC = () => {
           <Text style={[styles.libraryItem]}>Library</Text>
         </Pressable>{" "}
       </Text>
+
+      <FavoriteButton />
 
       {context.libraryBreadcrumb.map((item, index) => (
         <View

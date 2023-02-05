@@ -1,20 +1,16 @@
-import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dimensions,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   TextInput,
   View,
 } from "react-native";
 import appJson from "../../app.json";
-import Colors from "../../constants/Colors";
-import Layout, { HEADER_ICON_SIZE } from "../../constants/Layout";
+import Layout from "../../constants/Layout";
 import { ISettings } from "../../getSettings";
-import { ReloadContext } from "../context/reload-context";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
 import { ReloadButton } from "./ReloadButton";
