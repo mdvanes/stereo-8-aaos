@@ -25,6 +25,7 @@
     android:allowBackup="true"
     android:appCategory="audio"
     android:icon="@mipmap/ic_launcher"
+    android:forceDarkAllowed="true"
     android:label="@string/app_name"
     android:name=".MainApplication"
     android:roundIcon="@mipmap/ic_launcher_round"
@@ -37,14 +38,15 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@anonymous/stereo-8-aaos"/>
 
     <activity 
-      android:name=".MainActivity"
-      android:label="@string/app_name"
       android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-      android:launchMode="singleTask"
-      android:windowSoftInputMode="adjustResize"
-      android:theme="@style/Theme.App.SplashScreen"
       android:exported="true"
-      android:screenOrientation="portrait">
+      android:forceDarkAllowed="true"
+      android:label="@string/app_name"
+      android:launchMode="singleTask"
+      android:name=".MainActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.App.SplashScreen"
+      android:windowSoftInputMode="adjustResize">
       <meta-data android:name="distractionOptimized" android:value="true"/>
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
