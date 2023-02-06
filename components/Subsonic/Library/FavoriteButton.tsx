@@ -5,22 +5,27 @@ import Colors from "../../../constants/Colors";
 import { PlayContext } from "../../context/play-context";
 import { styles } from "./Library.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LibraryItemType } from "../../../types";
 
 export const favoritesStoreKey = "@favorites";
 
-const addFavorite = async (id: string) => {
+const addFavorite = async (item: LibraryItemType) => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
+  const favoritesList: LibraryItemType[] = rawStored
+    ? JSON.parse(rawStored)
+    : [];
   await AsyncStorage.setItem(
     favoritesStoreKey,
-    JSON.stringify([...favoritesList, id])
+    JSON.stringify([...favoritesList, item])
   );
 };
 
 const removeFavorite = async (id: string) => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
-  const newFavoritesList = favoritesList.filter((f) => f !== id);
+  const favoritesList: LibraryItemType[] = rawStored
+    ? JSON.parse(rawStored)
+    : [];
+  const newFavoritesList = favoritesList.filter((f) => f.id !== id);
   await AsyncStorage.setItem(
     favoritesStoreKey,
     JSON.stringify(newFavoritesList)
@@ -29,8 +34,10 @@ const removeFavorite = async (id: string) => {
 
 const getIsFavorite = async (id: string): Promise<boolean> => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
-  const favoritesList: string[] = rawStored ? JSON.parse(rawStored) : [];
-  return favoritesList.some((f) => f === id);
+  const favoritesList: LibraryItemType[] = rawStored
+    ? JSON.parse(rawStored)
+    : [];
+  return favoritesList.some((f) => f.id === id);
 };
 
 export const FavoriteButton: FC = () => {
@@ -57,7 +64,7 @@ export const FavoriteButton: FC = () => {
             if (isFavorite) {
               removeFavorite(lastDir.id);
             } else {
-              addFavorite(lastDir.id);
+              addFavorite(lastDir);
             }
             setIsFavorite(() => !isFavorite);
           }
