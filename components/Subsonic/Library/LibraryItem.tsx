@@ -15,7 +15,8 @@ import { styles } from "./Library.styles";
 
 const LibraryDirItem: FC<{
   item: Artist | MusicDirectoryAlbum;
-}> = ({ item }) => {
+  isFavoritesContext: boolean;
+}> = ({ item, isFavoritesContext = false }) => {
   const context = useContext(PlayContext);
   const label = getLabel(item);
 
@@ -24,8 +25,15 @@ const LibraryDirItem: FC<{
       style={itemStyles.item_pressable}
       onPress={async () => {
         const dirs = await getMusicDir(item.id ?? "");
-        context.setLibraryBreadcrumb((prev: string[]) => [...prev, item]);
-        context.setLibraryItems(dirs);
+        if (isFavoritesContext) {
+          context.setFavoritesDirItems(dirs);
+        } else {
+          context.setLibraryBreadcrumb((prev: LibraryItemType[]) => [
+            ...prev,
+            item,
+          ]);
+          context.setLibraryItems(dirs);
+        }
       }}
     >
       <Text style={[styles.libraryItem, itemStyles.line]}>
@@ -69,10 +77,13 @@ const LibrarySongItem: FC<{
 export const LibraryItem: FC<{
   item: LibraryItemType;
   items?: LibraryItemType[];
+  isFavoritesContext?: boolean;
   isActive: boolean;
-}> = ({ item, items, isActive = false }) => {
+}> = ({ item, items, isActive = false, isFavoritesContext = false }) => {
   if (isArtist(item) || isAlbum(item)) {
-    return <LibraryDirItem item={item} />;
+    return (
+      <LibraryDirItem item={item} isFavoritesContext={isFavoritesContext} />
+    );
   }
   return (
     <LibrarySongItem

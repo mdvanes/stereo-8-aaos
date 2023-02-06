@@ -42,6 +42,12 @@ export const Favorites: FC = () => {
     init();
   }, []);
 
+  console.log(
+    context.favoritesDirItems,
+    favorites,
+    context.favoritesDirItems || favorites
+  );
+
   return (
     <SafeAreaView style={{ flex: 1, width: "100%" }}>
       <ConditionalImageBackground img={context.song?.img}>
@@ -49,13 +55,16 @@ export const Favorites: FC = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          sections={[{ title: "", data: favorites }]}
+          sections={[
+            { title: "", data: context.favoritesDirItems || favorites },
+          ]}
           keyExtractor={(item, index) => `${item.id}_${index}`}
           renderItem={({ item }) => (
             <LibraryItem
               item={item}
               items={context.libraryItems}
-              isActive={false}
+              isActive={context.song?.id === item.id}
+              isFavoritesContext
             />
           )}
         />

@@ -3,7 +3,11 @@ import { IPlaylist } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
 import { IndexItem, LibraryItemType, MusicDirectorySong } from "../../types";
 
-export interface PreviouslyPlayedItem { time: string; artist: string; title: string };
+export interface PreviouslyPlayedItem {
+  time: string;
+  artist: string;
+  title: string;
+}
 
 export interface PlayValues {
   isPlaying: boolean;
@@ -18,6 +22,7 @@ export interface PlayValues {
   libraryIndexes: IndexItem[];
   libraryItems: LibraryItemType[];
   libraryBreadcrumb: LibraryItemType[];
+  favoritesDirItems: LibraryItemType[] | null;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -33,6 +38,7 @@ export const defaultPlayValues: PlayValues = {
   libraryIndexes: [],
   libraryItems: [],
   libraryBreadcrumb: [],
+  favoritesDirItems: null,
 };
 
 export const PlayContext = createContext({
@@ -59,8 +65,15 @@ export const PlayContext = createContext({
   libraryItems: defaultPlayValues.libraryItems,
   setLibraryItems: (_: PlayValues["libraryItems"]) => {},
   libraryBreadcrumb: defaultPlayValues.libraryBreadcrumb,
-  // TODO fix any
-  setLibraryBreadcrumb: (_: PlayValues["libraryBreadcrumb"] | any) => {},
+  setLibraryBreadcrumb: (
+    _:
+      | PlayValues["libraryBreadcrumb"]
+      | ((
+          _: PlayValues["libraryBreadcrumb"]
+        ) => PlayValues["libraryBreadcrumb"])
+  ) => {},
+  favoritesDirItems: defaultPlayValues.favoritesDirItems,
+  setFavoritesDirItems: (_: PlayValues["favoritesDirItems"]) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -88,6 +101,9 @@ export const PlayContextProvider: FC<{
   const [libraryBreadcrumb, setLibraryBreadcrumb] = useState(
     defaultPlayValues.libraryBreadcrumb
   );
+  const [favoritesDirItems, setFavoritesDirItems] = useState<
+    PlayValues["favoritesDirItems"]
+  >(defaultPlayValues.favoritesDirItems);
 
   return (
     <PlayContext.Provider
@@ -116,6 +132,8 @@ export const PlayContextProvider: FC<{
         setLibraryItems,
         libraryBreadcrumb,
         setLibraryBreadcrumb,
+        favoritesDirItems,
+        setFavoritesDirItems,
       }}
     >
       {children}
