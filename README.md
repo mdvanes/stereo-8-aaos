@@ -126,11 +126,12 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.23 bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
 - FIXED v1.0.23 feat: browse all "artists > albums > songs" instead of only playlists
 - v1.0.24 play loop for library
-- enhancement: rename previous tab to radio and add buttons for stations
-- bug: topbar (statusbar) on car is black with dark text (only during the day) (not reproducable on emulator)
-- enhancement: add a force reload button in Settings, and correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
-- enhancement: mark an album as "local favorite"
+- v1.0.24 enhancement: rename previous tab to radio and add buttons for stations
+- v1.0.24 bug: topbar (statusbar) on car is black with dark text (only during the day) (not reproducable on emulator)
+- v1.0.24 enhancement: add a force reload button in Settings
+- v1.0.24 enhancement: mark an album as "local favorite"
 
+- bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
 - enhancement: implement buttons for multiple radio stations
 - enhancement: add an dedicated extra line to bottombar for programme & presentor
 - bug: see mail after publish with eligibility issues
