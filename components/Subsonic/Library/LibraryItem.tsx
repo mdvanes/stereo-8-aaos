@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { FC, useContext } from "react";
 import { Pressable, Text } from "react-native";
 import {
@@ -19,6 +20,7 @@ const LibraryDirItem: FC<{
 }> = ({ item, isFavoritesContext = false }) => {
   const context = useContext(PlayContext);
   const label = getLabel(item);
+  const navigation = useNavigation();
 
   return (
     <Pressable
@@ -27,6 +29,7 @@ const LibraryDirItem: FC<{
         const dirs = await getMusicDir(item.id ?? "");
         if (isFavoritesContext) {
           context.setFavoritesDirItems(dirs);
+          navigation.navigate("Favorite");
         } else {
           context.setLibraryBreadcrumb((prev: LibraryItemType[]) => [
             ...prev,

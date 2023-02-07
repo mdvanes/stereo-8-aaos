@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
+import React, { useContext } from "react";
 import { ColorSchemeName, Pressable, Text, View } from "react-native";
 import { PlayContext } from "../../components/context/play-context";
 import { styles } from "../../components/item.styles";
@@ -9,7 +9,7 @@ import { RootStackScreenProps } from "../../types";
 import { BackButton } from "../BackButton";
 
 const PlaylistTitle = () => {
-  const context = React.useContext(PlayContext);
+  const context = useContext(PlayContext);
   return (
     <View>
       <Text style={styles.topbarTitle}>{context.playlist?.name}</Text>
@@ -17,12 +17,10 @@ const PlaylistTitle = () => {
   );
 };
 
-export const stackScreenPlaylistOptions =
-  (colorScheme: NonNullable<ColorSchemeName>) =>
-  ({ navigation }: RootStackScreenProps<"Playlist">) => ({
-    headerTitle: () => <PlaylistTitle />,
-    headerLeft: () => <BackButton navigation={navigation} />,
-    headerRight: () => (
+export const settingsNavButton =
+  (navigation: RootStackScreenProps<"Playlist" | "Favorite">["navigation"]) =>
+  () =>
+    (
       <Pressable
         onPress={() => navigation.navigate("Modal")}
         style={({ pressed }) => ({
@@ -32,9 +30,16 @@ export const stackScreenPlaylistOptions =
         <FontAwesome
           name="cog"
           size={HEADER_ICON_SIZE}
-          color={Colors[colorScheme].text}
+          color={Colors["dark"].text}
           style={{ marginRight: 15 }}
         />
       </Pressable>
-    ),
+    );
+
+export const stackScreenPlaylistOptions =
+  (colorScheme: NonNullable<ColorSchemeName>) =>
+  ({ navigation }: RootStackScreenProps<"Playlist">) => ({
+    headerTitle: () => <PlaylistTitle />,
+    headerLeft: () => <BackButton navigation={navigation} />,
+    headerRight: settingsNavButton(navigation),
   });

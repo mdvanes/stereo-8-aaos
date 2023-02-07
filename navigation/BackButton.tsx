@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
+import React, { useContext } from "react";
 import { Pressable } from "react-native";
+import { PlayContext } from "../components/context/play-context";
 import Colors from "../constants/Colors";
 import { HEADER_ICON_SIZE } from "../constants/Layout";
 import useColorScheme from "../hooks/useColorScheme";
@@ -12,9 +13,14 @@ export const BackButton = ({
   navigation: { goBack: () => void };
 }) => {
   const colorScheme = useColorScheme();
+  const context = useContext(PlayContext);
+
   return (
     <Pressable
-      onPress={() => navigation.goBack()}
+      onPress={() => {
+        context.setFavoritesDirItems(null);
+        navigation.goBack();
+      }}
       style={({ pressed }) => ({
         opacity: pressed ? 0.5 : 1,
       })}

@@ -18,6 +18,7 @@ export type RootStackParamList = {
   Home: undefined;
   // Playlists: undefined; // NavigatorScreenParams<RootTabParamList> | undefined;
   Playlist: undefined; // NavigatorScreenParams<undefined> | undefined;
+  Favorite: undefined;
   // Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;

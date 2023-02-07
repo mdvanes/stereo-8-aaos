@@ -15,11 +15,13 @@ import {
 import { ReloadIndicator } from "../components/Settings/ReloadIndicator";
 import { SoundWrapper } from "../components/SoundWrapper/SoundWrapper";
 import useColorScheme from "../hooks/useColorScheme";
+import { FavoritesScreen } from "../screens/FavoritesScreen";
 import ModalScreen from "../screens/ModalScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
 import { RootStackParamList } from "../types";
 import { HomeTabs } from "./HomeTabs";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { stackScreenFavoriteOptions } from "./options/favorite";
 import { stackScreenHomeOptions } from "./options/home";
 import { stackScreenModalOptions } from "./options/modal";
 import { stackScreenPlaylistOptions } from "./options/playlist";
@@ -72,6 +74,11 @@ function RootNavigator() {
             name="Playlist"
             component={PlaylistScreen}
             options={stackScreenPlaylistOptions(colorScheme)}
+          />
+          <Stack.Screen
+            name="Favorite"
+            component={FavoritesScreen}
+            options={stackScreenFavoriteOptions(colorScheme)}
           />
           {/* TODO NOTE: when NotFound is active, hot reloading is broken and will always direct to this route */}
           {/* <Stack.Screen
