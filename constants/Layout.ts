@@ -33,6 +33,14 @@ export const HEADER_ICON_SIZE =
     ? HEADER_ICON_SIZE_RESPONSIVE.BIG
     : HEADER_ICON_SIZE_RESPONSIVE.SMALL;
 
+const TAB_TEXT_SIZE_RESPONSIVE = {
+  BIG: 24,
+  SMALL: 12,
+};
+
+export const TAB_TEXT_SIZE =
+  width > 500 ? TAB_TEXT_SIZE_RESPONSIVE.BIG : TAB_TEXT_SIZE_RESPONSIVE.SMALL;
+
 export default {
   window: {
     width,

@@ -3,6 +3,7 @@ import {
   MaterialTopTabNavigationOptions,
 } from "@react-navigation/material-top-tabs";
 import React from "react";
+import { TAB_TEXT_SIZE } from "../constants/Layout";
 import { FavoritesScreen } from "../screens/FavoritesScreen";
 import { LibraryScreen } from "../screens/LibraryScreen";
 import PlaylistsScreen from "../screens/PlaylistsScreen";
@@ -19,7 +20,7 @@ const Tab = createMaterialTopTabNavigator<HomeTabsParamList>();
 
 const options: MaterialTopTabNavigationOptions = {
   tabBarLabelStyle: {
-    fontSize: 24,
+    fontSize: TAB_TEXT_SIZE,
   },
 };
 
