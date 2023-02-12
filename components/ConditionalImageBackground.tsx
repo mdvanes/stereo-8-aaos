@@ -13,6 +13,7 @@ export const ConditionalImageBackground: FC<{ img?: string }> = ({
       source={{ uri: img }}
       resizeMode="contain"
       imageStyle={{ opacity: 0.2 }}
+      style={{ height: "100%" }}
     >
       {children}
     </ImageBackground>
