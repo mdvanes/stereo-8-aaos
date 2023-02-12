@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -14,38 +13,9 @@ import { ISettings } from "../../getSettings";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
 import { DownloadAndPlay } from "./DownloadAndPlay";
+import { getStoredData, storeData } from "./getStoredData";
 import { ReloadButton } from "./ReloadButton";
 import { ShowKeys } from "./ShowKeys";
-
-const configUrlStoreKey = "@configUrl";
-const configSettingsStoreKey = "@configSettings";
-
-const storeData = async (data: {
-  configUrl: string;
-  configSettings: ISettings | undefined;
-}) => {
-  try {
-    await AsyncStorage.setItem(configUrlStoreKey, data.configUrl);
-    await AsyncStorage.setItem(
-      configSettingsStoreKey,
-      JSON.stringify(data.configSettings)
-    );
-    console.log("done");
-  } catch (error) {
-    alert("Error saving data");
-  }
-};
-
-export const getStoredData = async () => {
-  const configUrl = await AsyncStorage.getItem(configUrlStoreKey);
-  const response = await AsyncStorage.getItem(configSettingsStoreKey);
-  try {
-    const configSettings: ISettings = response ? JSON.parse(response) : "";
-    return { configUrl, configSettings };
-  } catch (e) {
-    throw Error("invalid json" + response);
-  }
-};
 
 export default function Settings({ path }: { path: string }) {
   const [configUrl, onChangeConfigUrl] = useState("");

@@ -1,4 +1,4 @@
-import { getStoredData } from "./components/Settings/Settings";
+import { getStoredData } from "./components/Settings/getStoredData";
 
 export interface IRadioSetting {
   name: string;
