@@ -26,7 +26,7 @@ export const RadioTab: FC = () => {
         width: "100%",
       }}
     >
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", paddingLeft: 20 }}>
         {settings?.radio?.map((item) => (
           <SelectionStationButton key={item.name} setting={item} />
         ))}

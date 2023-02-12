@@ -16,11 +16,11 @@ Subsonic user: ${configSettings.subsonic?.user}
 Subsonic password: ${configSettings.subsonic?.saltedPassword ? "***" : ""}
 
 Nr of radio channels: ${configSettings.radio?.length}
-${
-  radio1
-    ? `Radio channel 1: ${radio1.name}
-${radio1.channelUrl}`
+${configSettings.radio?.map((radio, index) =>
+  radio
+    ? `Radio channel ${index + 1}: ${radio.name} ${radio.channelUrl}`
     : ""
-}
+).join('\n')}
+
    `;
 };
