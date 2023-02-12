@@ -1,15 +1,7 @@
-import { MusicDirectorySong } from "../../types";
-import { PreviouslyPlayedItem } from "../context/play-context";
-
-interface NowPlayingResponse {
-  artist: string;
-  title: string;
-  last_updated: string;
-  songImageUrl: string;
-  name: string;
-  imageUrl: string;
-  previouslyPlayed: PreviouslyPlayedItem[];
-}
+import {
+  NowPlayingResponse,
+  PreviouslyPlayedItem,
+} from "../context/play-context";
 
 interface TracksResponse {
   data: [
@@ -62,21 +54,22 @@ const getMeta = async (
     );
 
     const {
-      title: name,
+      title: broadcastTitle,
       presenters,
       image_url_400x400: presenterImg,
     } = broadcastResponse.data[0];
 
-    const presentersSuffix = presenters ? ` / ${presenters}` : "";
-
     return {
       artist,
-      title,
+      broadcastTitle,
+      duration: -1,
+      id: "0",
+      img: songImg ?? presenterImg ?? undefined,
+      isDir: false,
       last_updated: enddatetime,
-      songImageUrl: songImg ?? "",
-      name: `${name}${presentersSuffix}`,
-      imageUrl: presenterImg ?? "",
+      presenters,
       previouslyPlayed,
+      title,
     };
   } catch (err) {
     console.error(err);
@@ -91,7 +84,7 @@ export const updateMeta = async ({
   channelName,
 }: {
   context: {
-    setSong: (_: MusicDirectorySong | null) => void;
+    setSong: (_: NowPlayingResponse | null) => void;
     setPreviouslyPlayed: (_: PreviouslyPlayedItem[]) => void;
   };
   metaTracksUrl: string;
@@ -99,14 +92,7 @@ export const updateMeta = async ({
   channelName: string;
 }) => {
   const meta = await getMeta(metaTracksUrl, metaBroadcastUrl);
-  context.setSong({
-    id: "0",
-    title: meta?.title || channelName,
-    artist: `${meta?.artist} (${meta?.name})`,
-    duration: -1,
-    img: meta ? meta.songImageUrl ?? meta.imageUrl : undefined,
-    isDir: false,
-  });
+  context.setSong(meta);
   if (meta?.previouslyPlayed) {
     context.setPreviouslyPlayed(meta.previouslyPlayed);
   }

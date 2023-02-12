@@ -9,13 +9,20 @@ export interface PreviouslyPlayedItem {
   title: string;
 }
 
+export interface NowPlayingResponse extends MusicDirectorySong {
+  broadcastTitle?: string;
+  last_updated: string;
+  presenters?: string;
+  previouslyPlayed: PreviouslyPlayedItem[];
+}
+
 export interface PlayValues {
   isPlaying: boolean;
   isRadioPlaying: boolean;
   isLoading: boolean;
   playlist: IPlaylist | null;
-  song: MusicDirectorySong | null;
-  queue: MusicDirectorySong[] | null;
+  song: NowPlayingResponse | null;
+  queue: NowPlayingResponse[] | null;
   startSongId: string | null;
   pbo: Audio.Sound | null;
   previouslyPlayed: { time: string; artist: string; title: string }[];
@@ -51,7 +58,7 @@ export const PlayContext = createContext({
   playlist: defaultPlayValues.playlist,
   setPlaylist: (_: IPlaylist | null) => {},
   song: defaultPlayValues.song,
-  setSong: (_: MusicDirectorySong | null) => {},
+  setSong: (_: NowPlayingResponse | null) => {},
   queue: defaultPlayValues.queue,
   setQueue: (_: PlayValues["queue"]) => {},
   startSongId: defaultPlayValues.startSongId,

@@ -1,4 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { FC, useContext, useEffect } from "react";
 import { Pressable, View } from "react-native";
 import Colors from "../../constants/Colors";
@@ -73,8 +73,8 @@ export const StationButton: FC<IStationButtonProps> = ({ config }) => {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        <FontAwesome
-          name={context.isRadioPlaying ? "pause-circle" : "music"}
+        <MaterialIcons
+          name={context.isRadioPlaying ? "pause-circle-filled" : "radio"}
           size={HEADER_ICON_SIZE}
           color={Colors[colorScheme].text}
         />

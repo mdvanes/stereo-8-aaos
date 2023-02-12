@@ -90,6 +90,11 @@ export const BottomBar: FC = () => {
     </View>
   );
 
+  const broadcastInfo = [context.song?.broadcastTitle, context.song?.presenters]
+    .filter((n) => n && n.length > 0)
+    .join(" - ")
+    .slice(0, 100);
+
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
@@ -101,6 +106,9 @@ export const BottomBar: FC = () => {
           {(context.song?.title || "").slice(0, 70)}
         </Text>
         <Text style={styles.statusH2}>{getByline().slice(0, 70)}</Text>
+        {Boolean(broadcastInfo) && (
+          <Text style={styles.statusH3}>{broadcastInfo}</Text>
+        )}
       </View>
 
       <View>
@@ -123,9 +131,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   leftAction: {
-    padding: 15,
-    paddingTop: 20,
-    paddingBottom: 20,
+    padding: 20,
   },
   status: {
     flex: 1,
@@ -143,6 +149,10 @@ const styles = StyleSheet.create({
   statusH2: {
     fontSize: BOTTOM_FONT_SIZE,
     fontStyle: "italic",
+    paddingTop: 0,
+  },
+  statusH3: {
+    fontSize: BOTTOM_FONT_SIZE * 0.5,
     paddingTop: 0,
   },
   image: {
