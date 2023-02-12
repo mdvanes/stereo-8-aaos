@@ -33,7 +33,7 @@ target 'stereo8aaos' do
   #   use_flipper!()
   # end
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
 
   post_install do |installer|
     react_native_post_install(installer)

@@ -22,6 +22,7 @@ Test on Android:
 
 on emulator:
 
+(if there is no devbuild.apk or it's outdated, use `eas build --profile development --platform android` and rename the apk to devbuild.apk)
 - run `npm start`
 - press "a"
 - install the devbuild.apk (drag into emulator)
@@ -126,17 +127,17 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.23 bug: way too many rerenders because Context contains progress and that updates every second. Either use memo/callback or put progress in separate context.
 - FIXED v1.0.23 feat: browse all "artists > albums > songs" instead of only playlists
 - v1.0.24 play loop for library
-- v1.0.24 enhancement: rename previous tab to radio and add buttons for stations
-- v1.0.24 bug: topbar (statusbar) on car is black with dark text (only during the day) (not reproducable on emulator)
-- v1.0.24 enhancement: add a force reload button in Settings
-- v1.0.24 enhancement: mark an album as "local favorite"
+- FIXED v1.0.24 enhancement: rename previous tab to radio and add buttons for stations
+- FIXED v1.0.24 bug: topbar (statusbar) on car is black with dark text (only during the day) (not reproducable on emulator)
+- FIXED v1.0.24 enhancement: add a force reload button in Settings (although it still seems to have a memory leak)
+- FIXED v1.0.24 enhancement: mark an album as "local favorite"
+- v1.0.25 enhancement: background can also show album cover
 
-- bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
+- bug: if there are no entries in Favorites, you can't pull down to refresh
 - enhancement: implement buttons for multiple radio stations
 - enhancement: add an dedicated extra line to bottombar for programme & presentor
+- bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
 - bug: see mail after publish with eligibility issues
-- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
 - enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
-- enhancement: re-introduce tabs with playlists but also album view. See commits from before 1.0.19 navigation/index.tsx bottom-tab-navigator
-- enhancement: multiple radio stations
+- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
 - enhancement: show something on the car home screen instead of just the app name

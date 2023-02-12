@@ -21,7 +21,10 @@ const Item = ({
   title,
   onClick,
   activeId,
-}: MusicDirectorySong & { onClick: (id: string) => () => void; activeId?: string }) => (
+}: MusicDirectorySong & {
+  onClick: (id: string) => () => void;
+  activeId?: string;
+}) => (
   <View
     style={activeId === id ? [styles.item, styles.item__active] : styles.item}
   >

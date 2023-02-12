@@ -13,7 +13,9 @@ import Layout from "../../constants/Layout";
 import { ISettings } from "../../getSettings";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
+import { DownloadAndPlay } from "./DownloadAndPlay";
 import { ReloadButton } from "./ReloadButton";
+import { ShowKeys } from "./ShowKeys";
 
 const configUrlStoreKey = "@configUrl";
 const configSettingsStoreKey = "@configSettings";
@@ -157,9 +159,11 @@ export default function Settings({ path }: { path: string }) {
         </View>
       </View>
 
-      <ReloadButton />
+      <ShowKeys />
 
-      <View style={{ flexDirection: "row" }}></View>
+      {Boolean(isBrowser) || <DownloadAndPlay />}
+
+      <ReloadButton />
     </SafeAreaView>
   );
 }
