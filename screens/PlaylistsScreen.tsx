@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { BottomBar } from "../components/BottomBar/BottomBar";
+import { BottomBarAndBgWrapper } from "../components/BottomBarAndBgWrapper/BottomBarAndBgWrapper";
 import { Playlists } from "../components/Subsonic/Playlists";
 import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
@@ -9,10 +10,9 @@ export default function PlaylistsScreen({
   navigation,
 }: RootTabScreenProps<"Playlists">) {
   return (
-    <View style={styles.container}>
+    <BottomBarAndBgWrapper viewProps={{ style: styles.container }}>
       <Playlists />
-      <BottomBar />
-    </View>
+    </BottomBarAndBgWrapper>
   );
 }
 

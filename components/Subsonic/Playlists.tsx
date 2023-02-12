@@ -8,7 +8,6 @@ import {
   View,
 } from "react-native";
 import useColorScheme from "../../hooks/useColorScheme";
-import { ConditionalImageBackground } from "../ConditionalImageBackground";
 import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
@@ -91,18 +90,16 @@ export const Playlists: FC = () => {
           // style={{ height: 600 }}
           style={{ flex: 1, width: "100%" }}
         >
-          <ConditionalImageBackground img={context.song?.img}>
-            <SectionList
-              sections={[{ title: "", data: playlists }]}
-              keyExtractor={(item, index) => `${item.id}_${index}`}
-              renderItem={({ item }) => (
-                <PlaylistItem onClick={handleOpenPlaylist} {...item} />
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <Text>{title}</Text>
-              )}
-            />
-          </ConditionalImageBackground>
+          <SectionList
+            sections={[{ title: "", data: playlists }]}
+            keyExtractor={(item, index) => `${item.id}_${index}`}
+            renderItem={({ item }) => (
+              <PlaylistItem onClick={handleOpenPlaylist} {...item} />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text>{title}</Text>
+            )}
+          />
         </SafeAreaView>
       )}
     </>

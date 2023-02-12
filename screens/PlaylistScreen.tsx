@@ -1,18 +1,16 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { BottomBar } from "../components/BottomBar/BottomBar";
+import { BottomBarAndBgWrapper } from "../components/BottomBarAndBgWrapper/BottomBarAndBgWrapper";
 import { SongsInPlaylist } from "../components/Subsonic/SongsInPlaylist";
-import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
 export default function PlaylistScreen({
   navigation,
 }: RootTabScreenProps<"Playlist">) {
   return (
-    <View style={styles.container}>
+    <BottomBarAndBgWrapper viewProps={{ style: styles.container }}>
       <SongsInPlaylist />
-      <BottomBar />
-    </View>
+    </BottomBarAndBgWrapper>
   );
 }
 
