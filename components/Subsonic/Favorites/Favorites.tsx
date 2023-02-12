@@ -16,6 +16,14 @@ const getFavorites = async () => {
   return favoritesList;
 };
 
+const pullToRefresh: LibraryItemType = {
+  album: "",
+  title: "",
+  artist: "",
+  isDir: true,
+  id: "-1",
+};
+
 export const Favorites: FC = () => {
   const context = useContext(PlayContext);
   const [favorites, setFavorites] = useState<LibraryItemType[]>([]);
@@ -25,7 +33,7 @@ export const Favorites: FC = () => {
     setRefreshing(true);
     try {
       const favoritesList = await getFavorites();
-      setFavorites(favoritesList);
+      setFavorites(favoritesList.length > 0 ? favoritesList : [pullToRefresh]);
     } catch (err) {
       alert(err);
     }
@@ -50,7 +58,10 @@ export const Favorites: FC = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           sections={[
-            { title: "", data: context.favoritesDirItems || favorites },
+            {
+              title: "",
+              data: context.favoritesDirItems || favorites,
+            },
           ]}
           keyExtractor={(item, index) => `${item.id}_${index}`}
           renderItem={({ item }) => (

@@ -77,12 +77,23 @@ const LibrarySongItem: FC<{
   );
 };
 
+const AddFavoriteWarning: FC = () => {
+  return (
+    <Text style={[styles.libraryItem, itemStyles.line]}>
+      Mark favorites in library and pull to refresh
+    </Text>
+  );
+};
+
 export const LibraryItem: FC<{
   item: LibraryItemType;
   items?: LibraryItemType[];
   isFavoritesContext?: boolean;
   isActive: boolean;
 }> = ({ item, items, isActive = false, isFavoritesContext = false }) => {
+  if (item.id === "-1") {
+    return <AddFavoriteWarning />;
+  }
   if (isArtist(item) || isAlbum(item)) {
     return (
       <LibraryDirItem item={item} isFavoritesContext={isFavoritesContext} />
