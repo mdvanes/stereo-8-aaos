@@ -1,83 +1,12 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Pressable,
-  SafeAreaView,
-  SectionList,
-  Text,
-  View,
-} from "react-native";
-import { BottomBar } from "../components/BottomBar/BottomBar";
-import { ConditionalImageBackground } from "../components/ConditionalImageBackground";
-import { PlayContext } from "../components/context/play-context";
-import { getSettings, IRadioSetting, ISettings } from "../getSettings";
+import React, { FC } from "react";
+import { BottomBarAndBgWrapper } from "../components/BottomBarAndBgWrapper/BottomBarAndBgWrapper";
 import { styles } from "../components/item.styles";
-
-const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
-  setting,
-}) => (
-  <Pressable
-    onPress={() => {
-      {
-        /* TODO allow multiple radio stations */
-      }
-      alert("Not Yet Implemented");
-    }}
-    style={{
-      margin: 20,
-      paddingVertical: 20,
-      paddingHorizontal: 50,
-      flex: 1,
-      backgroundColor: "#2196f3",
-      borderRadius: 10,
-    }}
-  >
-    <Text style={{ color: "white", fontSize: 28 }}>{setting.name}</Text>
-  </Pressable>
-);
+import { RadioTab } from "../components/RadioTab/RadioTab";
 
 export const RadioScreen: FC = () => {
-  const context = useContext(PlayContext);
-  const [settings, setSettings] = useState<ISettings>();
-
-  useEffect(() => {
-    const run = async () => {
-      const newSettings: ISettings = await getSettings();
-      setSettings(newSettings);
-    };
-    run();
-  }, []);
-
   return (
-    <View
-      style={{
-        alignItems: "flex-start",
-        flex: 1,
-        justifyContent: "space-between",
-        width: "100%",
-      }}
-    >
-      <View style={{ flexDirection: "row" }}>
-        {settings?.radio?.map((item) => (
-          <SelectionStationButton key={item.name} setting={item} />
-        ))}
-      </View>
-      <SafeAreaView style={{ flex: 1, width: "100%" }}>
-        <ConditionalImageBackground img={context.song?.img}>
-          <SectionList
-            sections={[{ title: "", data: context.previouslyPlayed ?? [] }]}
-            keyExtractor={(item, index) => `${item.time}_${index}`}
-            renderItem={({ item }) => (
-              <View style={styles.item}>
-                <Text style={[styles.line, { color: "white" }]}>
-                  {item.time} {item.artist} - {item.title}
-                </Text>
-              </View>
-            )}
-          />
-        </ConditionalImageBackground>
-      </SafeAreaView>
-      <BottomBar />
-    </View>
+    <BottomBarAndBgWrapper viewProps={{ style: styles.container }}>
+      <RadioTab />
+    </BottomBarAndBgWrapper>
   );
 };
