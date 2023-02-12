@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { PlayContext } from "../context/play-context";
 import {
   getAPI,
+  getCoverArtUrl,
   getCurrentRemotePlayingId,
   getNowPlaying,
   hasValidSettings,
@@ -91,7 +92,10 @@ export const SoundWrapper: FC = () => {
             title: newMeta.title,
             album: newMeta.album,
             duration: newMeta.duration,
-            isDir: false
+            img: newMeta.coverArt
+              ? getCoverArtUrl({ id: newMeta.coverArt })
+              : undefined,
+            isDir: false,
           });
         }
       }, 500);

@@ -42,6 +42,7 @@ export interface SubsonicNowPlaying {
   artist: string;
   duration: number;
   playerName?: string;
+  coverArt?: string;
 }
 
 export interface IPlaylist {
@@ -72,7 +73,9 @@ export const getPlaylists = async (): Promise<IPlaylist[]> => {
   }
 };
 
-export const getPlaylist = async (id: string): Promise<MusicDirectorySong[]> => {
+export const getPlaylist = async (
+  id: string
+): Promise<MusicDirectorySong[]> => {
   try {
     const response = await fetch(getAPI("getPlaylist", `&id=${id}`)).then(
       (data) => data.json()
@@ -82,7 +85,13 @@ export const getPlaylist = async (id: string): Promise<MusicDirectorySong[]> => 
     if (playlist?.entry) {
       const songs = (playlist.entry as MusicDirectorySong[]).map(
         ({ id, artist, title, duration }) => {
-          return { id, artist, title, duration, isDir: false } as MusicDirectorySong;
+          return {
+            id,
+            artist,
+            title,
+            duration,
+            isDir: false,
+          } as MusicDirectorySong;
         }
       );
       return songs;
@@ -122,6 +131,10 @@ export const getNowPlaying = async ({
     console.error(error);
     return null;
   }
+};
+
+export const getCoverArtUrl = ({ id }: { id: string }): string => {
+  return getAPI("getCoverArt", `&id=${id}`);
 };
 
 export const getCurrentRemotePlayingId = async (): Promise<
