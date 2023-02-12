@@ -1,15 +1,13 @@
 import React, { FC } from "react";
 import { StyleSheet } from "react-native";
-import { BottomBar } from "../components/BottomBar/BottomBar";
+import { BottomBarAndBgWrapper } from "../components/BottomBarAndBgWrapper/BottomBarAndBgWrapper";
 import { Library } from "../components/Subsonic/Library/Library";
-import { View } from "../components/Themed";
 
 export const LibraryScreen: FC = () => {
   return (
-    <View style={styles.container}>
+    <BottomBarAndBgWrapper viewProps={{ style: styles.container }}>
       <Library />
-      <BottomBar />
-    </View>
+    </BottomBarAndBgWrapper>
   );
 };
 

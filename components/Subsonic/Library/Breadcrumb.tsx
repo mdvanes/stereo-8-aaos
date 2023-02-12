@@ -16,6 +16,7 @@ export const Breadcrumb: FC = () => {
         flexDirection: "row",
         alignItems: "center",
         marginHorizontal: 10,
+        backgroundColor: "transparent",
       }}
     >
       <Text style={[styles.libraryItem]}>

@@ -1,15 +1,13 @@
 import React, { FC } from "react";
 import { StyleSheet } from "react-native";
-import { BottomBar } from "../components/BottomBar/BottomBar";
+import { BottomBarAndBgWrapper } from "../components/BottomBarAndBgWrapper/BottomBarAndBgWrapper";
 import { Favorites } from "../components/Subsonic/Favorites/Favorites";
-import { View } from "../components/Themed";
 
 export const FavoritesScreen: FC = () => {
   return (
-    <View style={styles.container}>
+    <BottomBarAndBgWrapper viewProps={{ style: styles.container }}>
       <Favorites />
-      <BottomBar />
-    </View>
+    </BottomBarAndBgWrapper>
   );
 };
 

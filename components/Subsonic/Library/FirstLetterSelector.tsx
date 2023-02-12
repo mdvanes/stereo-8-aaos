@@ -7,7 +7,14 @@ import { styles } from "./Library.styles";
 export const FirstLetterSelector: FC = () => {
   const context = useContext(PlayContext);
   return (
-    <View style={{ flexDirection: "row", flexWrap: 'wrap', marginHorizontal: 10 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginHorizontal: 10,
+        backgroundColor: "transparent",
+      }}
+    >
       {context.libraryIndexes.map((indexItem) => {
         return (
           <Pressable
