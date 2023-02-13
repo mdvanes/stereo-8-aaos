@@ -1,38 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface CounterState {
-  metaUpdateInterval: ReturnType<typeof setInterval> | undefined;
+export interface RadioState {
+  isRadioPlaying: boolean;
 }
 
-const initialState: CounterState = {
-  metaUpdateInterval: undefined,
+const initialState: RadioState = {
+  isRadioPlaying: false,
 };
 
 export const radioSlice = createSlice({
   name: "radio",
   initialState,
   reducers: {
-    // setMetaUpdateInterval: (
-    //   state,
-    //   action: PayloadAction<ReturnType<typeof setInterval>>
-    // ) => {
-    //   state.metaUpdateInterval = action.payload;
-    // },
-    // clearMetaUpdateInterval: (
-    //   state,
-     
-    // ) => {
-    //   if (state.metaUpdateInterval) {
-    //     clearInterval(state.metaUpdateInterval);
-    //   }
-    // },
+    setIsRadioPlaying: (state, action: PayloadAction<boolean>) => {
+      state.isRadioPlaying = action.payload;
+    },
   },
 });
 
-export const { 
-  // setMetaUpdateInterval, clearMetaUpdateInterval 
-} =
-  radioSlice.actions;
+export const { setIsRadioPlaying } = radioSlice.actions;
 
 export default radioSlice.reducer;

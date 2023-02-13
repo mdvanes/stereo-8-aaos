@@ -1,12 +1,19 @@
 import { useCallback, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { IRadioSetting } from "../../getSettings";
+import { RootState } from "../../store/store";
 import { PlayContext } from "../context/play-context";
 import { updateMeta } from "./getMetadata";
+import { setIsRadioPlaying } from "./radioSlice";
 
 let metaUpdateInterval: ReturnType<typeof setInterval>;
 
 export const useStationButton = () => {
   const context = useContext(PlayContext);
+  const isRadioPlaying = useSelector(
+    (state: RootState) => state.radio.isRadioPlaying
+  );
+  const dispatch = useDispatch();
 
   const clearMetaUpdateInterval = () => {
     if (metaUpdateInterval) {
@@ -40,7 +47,7 @@ export const useStationButton = () => {
         context.setStartSongId(null);
         context.setIsPlaying(false);
 
-        if (context.isRadioPlaying) {
+        if (isRadioPlaying) {
           await context.pbo.pauseAsync();
         } else {
           setMetaUpdateInterval(
@@ -61,12 +68,12 @@ export const useStationButton = () => {
           await context.pbo.playAsync();
         }
 
-        context.setIsRadioPlaying(!context.isRadioPlaying);
+        dispatch(setIsRadioPlaying(!isRadioPlaying));
       } else {
         alert("Unexpected unset PBO");
       }
     },
-    [context]
+    [context, isRadioPlaying]
   );
 
   return { clearMetaUpdateInterval, toggle };

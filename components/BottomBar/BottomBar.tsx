@@ -1,11 +1,14 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { FC, useContext } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
 import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 import useColorScheme from "../../hooks/useColorScheme";
+import { RootState } from "../../store/store";
 import { PlayContext } from "../context/play-context";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
+import { setIsRadioPlaying } from "../StationButton/radioSlice";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
 import { ProgressClock } from "./ProgressClock";
@@ -14,6 +17,10 @@ export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
   const { getNextSong } = useGetNextSong();
   const context = useContext(PlayContext);
+  const isRadioPlaying = useSelector(
+    (state: RootState) => state.radio.isRadioPlaying
+  );
+  const dispatch = useDispatch();
 
   const getByline = () => {
     if (context.song) {
@@ -25,8 +32,8 @@ export const BottomBar: FC = () => {
 
   const handlePlayPause = async () => {
     if (context.pbo && context.startSongId) {
-      context.setIsRadioPlaying(false);
-      if (context.isPlaying || context.isRadioPlaying) {
+      dispatch(setIsRadioPlaying(false));
+      if (context.isPlaying || isRadioPlaying) {
         await context.pbo.pauseAsync();
       } else {
         await context.pbo.playAsync();

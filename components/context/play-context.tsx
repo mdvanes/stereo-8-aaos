@@ -19,7 +19,6 @@ export interface NowPlayingResponse extends MusicDirectorySong {
 
 export interface PlayValues {
   isPlaying: boolean;
-  isRadioPlaying: boolean;
   isLoading: boolean;
   playlist: IPlaylist | null;
   song: NowPlayingResponse | null;
@@ -36,7 +35,6 @@ export interface PlayValues {
 
 export const defaultPlayValues: PlayValues = {
   isPlaying: false,
-  isRadioPlaying: false,
   isLoading: false,
   playlist: null,
   song: null,
@@ -54,8 +52,6 @@ export const defaultPlayValues: PlayValues = {
 export const PlayContext = createContext({
   isPlaying: defaultPlayValues.isPlaying,
   setIsPlaying: (_: PlayValues["isPlaying"]) => {},
-  isRadioPlaying: defaultPlayValues.isPlaying,
-  setIsRadioPlaying: (_: PlayValues["isRadioPlaying"]) => {},
   isLoading: defaultPlayValues.isLoading,
   setIsLoading: (_: boolean) => {},
   playlist: defaultPlayValues.playlist,
@@ -92,9 +88,6 @@ export const PlayContextProvider: FC<{
   children?: ReactNode | undefined;
 }> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(defaultPlayValues.isPlaying);
-  const [isRadioPlaying, setIsRadioPlaying] = useState(
-    defaultPlayValues.isPlaying
-  );
   const [isLoading, setIsLoading] = useState(defaultPlayValues.isPlaying);
   const [song, setSong] = useState(defaultPlayValues.song);
   const [queue, setQueue] = useState(defaultPlayValues.queue);
@@ -125,8 +118,6 @@ export const PlayContextProvider: FC<{
       value={{
         isPlaying,
         setIsPlaying,
-        isRadioPlaying,
-        setIsRadioPlaying,
         isLoading,
         setIsLoading,
         playlist,
