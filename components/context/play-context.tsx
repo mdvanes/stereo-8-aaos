@@ -12,9 +12,9 @@ export interface PreviouslyPlayedItem {
 
 export interface NowPlayingResponse extends MusicDirectorySong {
   broadcastTitle?: string;
-  last_updated: string;
+  last_updated?: string;
   presenters?: string;
-  previouslyPlayed: PreviouslyPlayedItem[];
+  previouslyPlayed?: PreviouslyPlayedItem[];
 }
 
 export interface PlayValues {

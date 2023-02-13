@@ -11,6 +11,8 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";
 import { ProgressContext } from "../context/progress-context";
+import { useDispatch } from "react-redux";
+import { setIsRadioPlaying } from "../StationButton/radioSlice";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
@@ -19,6 +21,7 @@ export const SoundWrapper: FC = () => {
   const progressContext = useContext(ProgressContext);
   const { getNextSong } = useGetNextSong();
   const [error, setError] = useState<string>();
+  const dispatch = useDispatch();
 
   const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
     if (!playbackStatus.isLoaded) {
@@ -74,7 +77,7 @@ export const SoundWrapper: FC = () => {
 
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {
-      context.setIsRadioPlaying(false);
+      dispatch(setIsRadioPlaying(false));
       await context.pbo.unloadAsync();
       await context.pbo.loadAsync({
         uri: getAPI("stream", `&id=${context.startSongId}`),

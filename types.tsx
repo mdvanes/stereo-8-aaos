@@ -74,8 +74,6 @@ export interface MusicDirectorySong extends MusicDirectory {
   isDir: false;
   duration: number;
   img?: string;
-
-  // presenters?: string;
 }
 
 export interface MusicDirectoryResponse {

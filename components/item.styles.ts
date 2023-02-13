@@ -13,6 +13,10 @@ export const styles = StyleSheet.create({
   item__active: {
     backgroundColor: "rgba(33,150,243,0.2)",
   },
+  item__offline: {
+    borderLeftColor: "#0885ff",
+    borderLeftWidth: 5,
+  },
   title: {
     fontSize: 32,
   },
