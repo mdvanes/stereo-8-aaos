@@ -13,24 +13,26 @@ export const radioSlice = createSlice({
   name: "radio",
   initialState,
   reducers: {
-    setMetaUpdateInterval: (
-      state,
-      action: PayloadAction<ReturnType<typeof setInterval>>
-    ) => {
-      state.metaUpdateInterval = action.payload;
-    },
-    clearMetaUpdateInterval: (
-      state,
+    // setMetaUpdateInterval: (
+    //   state,
+    //   action: PayloadAction<ReturnType<typeof setInterval>>
+    // ) => {
+    //   state.metaUpdateInterval = action.payload;
+    // },
+    // clearMetaUpdateInterval: (
+    //   state,
      
-    ) => {
-      if (state.metaUpdateInterval) {
-        clearInterval(state.metaUpdateInterval);
-      }
-    },
+    // ) => {
+    //   if (state.metaUpdateInterval) {
+    //     clearInterval(state.metaUpdateInterval);
+    //   }
+    // },
   },
 });
 
-export const { setMetaUpdateInterval, clearMetaUpdateInterval } =
+export const { 
+  // setMetaUpdateInterval, clearMetaUpdateInterval 
+} =
   radioSlice.actions;
 
 export default radioSlice.reducer;

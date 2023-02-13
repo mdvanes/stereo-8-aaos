@@ -1,24 +1,22 @@
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useContext } from "react";
 import { Pressable, Text } from "react-native";
 import { IRadioSetting } from "../../getSettings";
 import { PlayContext } from "../context/play-context";
+import { useStationButton } from "../StationButton/useStationButton";
 
 export const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
   setting,
 }) => {
   const context = useContext(PlayContext);
-
-  useEffect(() => {
-    if (context.radioSetting) {
-      // alert("changed");
-      // TODO also toggle radio playing
-    }
-  }, [context.radioSetting]);
+  const { toggle } = useStationButton();
 
   return (
     <Pressable
       onPress={() => {
-        context.setRadioSetting(setting);
+        if (setting) {
+          context.setRadioSetting(setting);
+          toggle(setting);
+        }
       }}
       style={{
         marginVertical: 20,

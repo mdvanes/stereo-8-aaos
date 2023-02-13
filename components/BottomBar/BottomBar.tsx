@@ -86,9 +86,7 @@ export const BottomBar: FC = () => {
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
-        {context.radioSetting && (
-          <StationButton config={context.radioSetting} />
-        )}
+        {context.radioSetting && <StationButton />}
       </View>
 
       <View style={styles.status}>
