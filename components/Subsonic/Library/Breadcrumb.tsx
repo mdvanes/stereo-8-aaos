@@ -39,7 +39,11 @@ export const Breadcrumb: FC = () => {
       {context.libraryBreadcrumb.map((item, index) => (
         <View
           key={`${item.id}_${index}`}
-          style={{ flexDirection: "row", alignItems: "center" }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "transparent",
+          }}
         >
           <FontAwesome
             name="caret-right"
