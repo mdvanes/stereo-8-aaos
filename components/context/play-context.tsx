@@ -2,6 +2,7 @@ import { createContext, FC, ReactNode, useState } from "react";
 import { IPlaylist } from "../Subsonic/getSubsonic";
 import { Audio } from "expo-av";
 import { IndexItem, LibraryItemType, MusicDirectorySong } from "../../types";
+import { IRadioSetting } from "../../getSettings";
 
 export interface PreviouslyPlayedItem {
   time: string;
@@ -30,6 +31,7 @@ export interface PlayValues {
   libraryItems: LibraryItemType[];
   libraryBreadcrumb: LibraryItemType[];
   favoritesDirItems: LibraryItemType[] | null;
+  radioSetting: IRadioSetting | null;
 }
 
 export const defaultPlayValues: PlayValues = {
@@ -46,6 +48,7 @@ export const defaultPlayValues: PlayValues = {
   libraryItems: [],
   libraryBreadcrumb: [],
   favoritesDirItems: null,
+  radioSetting: null,
 };
 
 export const PlayContext = createContext({
@@ -81,6 +84,8 @@ export const PlayContext = createContext({
   ) => {},
   favoritesDirItems: defaultPlayValues.favoritesDirItems,
   setFavoritesDirItems: (_: PlayValues["favoritesDirItems"]) => {},
+  radioSetting: defaultPlayValues.radioSetting,
+  setRadioSetting: (_: PlayValues["radioSetting"]) => {},
 });
 
 export const PlayContextProvider: FC<{
@@ -111,6 +116,9 @@ export const PlayContextProvider: FC<{
   const [favoritesDirItems, setFavoritesDirItems] = useState<
     PlayValues["favoritesDirItems"]
   >(defaultPlayValues.favoritesDirItems);
+  const [radioSetting, setRadioSetting] = useState(
+    defaultPlayValues.radioSetting
+  );
 
   return (
     <PlayContext.Provider
@@ -141,6 +149,8 @@ export const PlayContextProvider: FC<{
         setLibraryBreadcrumb,
         favoritesDirItems,
         setFavoritesDirItems,
+        radioSetting,
+        setRadioSetting,
       }}
     >
       {children}

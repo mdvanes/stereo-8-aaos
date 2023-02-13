@@ -13,6 +13,15 @@ export const RadioTab: FC = () => {
     const run = async () => {
       const newSettings: ISettings = await getSettings();
       setSettings(newSettings);
+
+      // Set default radio station if none selected
+      if (
+        !context.radioSetting &&
+        newSettings.radio &&
+        newSettings.radio.length > 0
+      ) {
+        context.setRadioSetting(newSettings.radio[0]);
+      }
     };
     run();
   }, []);
@@ -26,7 +35,7 @@ export const RadioTab: FC = () => {
         width: "100%",
       }}
     >
-      <View style={{ flexDirection: "row", paddingLeft: 20 }}>
+      <View style={{ flexDirection: "row", paddingLeft: 20, width: "100%" }}>
         {settings?.radio?.map((item) => (
           <SelectionStationButton key={item.name} setting={item} />
         ))}
