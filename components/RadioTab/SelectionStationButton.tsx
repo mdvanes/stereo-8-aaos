@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { Pressable, Text } from "react-native";
 import { IRadioSetting } from "../../getSettings";
 import { PlayContext } from "../context/play-context";
@@ -7,6 +7,13 @@ export const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
   setting,
 }) => {
   const context = useContext(PlayContext);
+
+  useEffect(() => {
+    if (context.radioSetting) {
+      // alert("changed");
+      // TODO also toggle radio playing
+    }
+  }, [context.radioSetting]);
 
   return (
     <Pressable
@@ -19,7 +26,10 @@ export const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
         paddingVertical: 20,
         paddingHorizontal: 30,
         flex: 1,
-        backgroundColor: "#2196f3",
+        backgroundColor:
+          context.radioSetting?.channelUrl === setting.channelUrl
+            ? "#2196f3"
+            : "#15456c",
         borderRadius: 10,
       }}
     >
