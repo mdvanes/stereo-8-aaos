@@ -1,31 +1,19 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { Pressable, StyleSheet, View, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import React, { FC, useContext } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import Colors from "../../constants/Colors";
+import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 import useColorScheme from "../../hooks/useColorScheme";
 import { PlayContext } from "../context/play-context";
+import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
-import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
-import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
-import { getSettings, IRadioSetting, ISettings } from "../../getSettings";
 import { ProgressClock } from "./ProgressClock";
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
   const { getNextSong } = useGetNextSong();
   const context = useContext(PlayContext);
-  const [radioSetting, setRadioSetting] = useState<IRadioSetting>();
-
-  useEffect(() => {
-    const run = async () => {
-      const settings: ISettings = await getSettings();
-      if (settings.radio && settings.radio.length > 0) {
-        setRadioSetting(settings.radio[0]);
-      }
-    };
-    run();
-  }, []);
 
   const getByline = () => {
     if (context.song) {
@@ -98,7 +86,9 @@ export const BottomBar: FC = () => {
   return (
     <View style={styles.top}>
       <View style={styles.leftAction}>
-        {radioSetting && <StationButton config={radioSetting} />}
+        {context.radioSetting && (
+          <StationButton config={context.radioSetting} />
+        )}
       </View>
 
       <View style={styles.status}>

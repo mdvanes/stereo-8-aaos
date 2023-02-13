@@ -19,10 +19,32 @@ interface BroadcastResponse {
   data: [{ title: string; presenters?: string; image_url_400x400?: string }];
 }
 
+const bgMap: Record<string, string> = {
+  "Sky Radio": require("../../assets/images/sky-radio.jpg"),
+  "Pinguin Radio": require("../../assets/images/pinguin-radio.jpg"),
+};
+
 const getMeta = async (
+  channelName: string,
   tracksURL: string,
   broadcastUrl: string
 ): Promise<NowPlayingResponse | null> => {
+  if (!tracksURL || !broadcastUrl) {
+    const mappedBg = bgMap[channelName];
+    return {
+      artist: "No meta data available",
+      broadcastTitle: undefined,
+      duration: -1,
+      id: "0",
+      img: mappedBg ?? undefined,
+      isDir: false,
+      last_updated: "",
+      presenters: undefined,
+      previouslyPlayed: [],
+      title: channelName,
+    };
+  }
+
   try {
     const nowonairResponse: TracksResponse = await fetch(tracksURL).then(
       (data) => data.json()
@@ -91,7 +113,7 @@ export const updateMeta = async ({
   metaBroadcastUrl: string;
   channelName: string;
 }) => {
-  const meta = await getMeta(metaTracksUrl, metaBroadcastUrl);
+  const meta = await getMeta(channelName, metaTracksUrl, metaBroadcastUrl);
   context.setSong(meta);
   if (meta?.previouslyPlayed) {
     context.setPreviouslyPlayed(meta.previouslyPlayed);
