@@ -10,15 +10,18 @@ import {
   ViewStyle,
 } from "react-native";
 import { MusicDirectorySong } from "../../types";
-import { NowPlayingResponse, PlayContext } from "../context/play-context";
+import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
 import { getPlaylist, hasValidSettings } from "./getSubsonic";
 
-// "9272"
-
-// const stylenames = () => [[]];
+const getStylenames = (
+  tuples: Array<[StyleProp<ViewStyle>, boolean]>
+): StyleProp<ViewStyle> =>
+  tuples
+    .filter(([k, v]) => Boolean(v))
+    .map(([k, v]) => k) as StyleProp<ViewStyle>;
 
 const Item = ({
   id,
@@ -30,22 +33,14 @@ const Item = ({
   onClick: (id: string) => () => void;
   activeId?: string;
 }) => {
-  const stylenames = [
+  const stylenames = getStylenames([
     [styles.item, true],
     [styles.item__active, activeId === id],
     [styles.item__offline, "9272" === id],
-  ]
-    .filter(([k, v]) => Boolean(v))
-    .map(([k, v]) => k) as StyleProp<ViewStyle>;
-  // console.log(stylenames);
-  // const stylenames1 = {
-  //   [styles.item]: true
-  // }
+  ]);
+
   return (
-    <View
-      // style={activeId === id ? [styles.item, styles.item__active] : styles.item}
-      style={stylenames}
-    >
+    <View style={stylenames}>
       <Pressable style={styles.item_pressable} onPress={onClick(id)}>
         <Text style={styles.line}>
           {artist} - {title}

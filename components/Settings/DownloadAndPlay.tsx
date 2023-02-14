@@ -25,7 +25,10 @@ const foo = () => {
     .then((res) => {
       // the temp file path
       // TODO this does not work on web, but does in emulator:  LOG  The file saved to  /data/user/0/com.mdworld.stereo8aaos/files/ReactNativeBlobUtilTmp_1s8cpc443pcdzv3yvzy1o
-      console.log("The file saved to ", res.path());
+      const p = res.path();
+      const msg = `The file saved to: ${p}`;
+      console.log(msg);
+      alert(msg);
     });
 };
 
