@@ -132,10 +132,10 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.24 enhancement: add a force reload button in Settings (although it still seems to have a memory leak)
 - FIXED v1.0.24 enhancement: mark an album as "local favorite"
 - v1.0.25 enhancement: background can also show album cover
-
-- bug: if there are no entries in Favorites, you can't pull down to refresh
-- enhancement: implement buttons for multiple radio stations
-- enhancement: add an dedicated extra line to bottombar for programme & presentor
+- v1.0.25 bug: if there are no entries in Favorites, you can't pull down to refresh
+- v1.0.25 enhancement: implement buttons for multiple radio stations
+- v1.0.25 enhancement: add an dedicated extra line to bottombar for programme & presentor
+- bug: when radio playing and click on a song to play, the interval for radio switches back to radio meta data
 - bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
 - bug: see mail after publish with eligibility issues
 - enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
