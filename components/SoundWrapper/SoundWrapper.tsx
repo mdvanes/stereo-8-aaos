@@ -13,6 +13,7 @@ import { useGetNextSong } from "./useGetNextSong";
 import { ProgressContext } from "../context/progress-context";
 import { useDispatch } from "react-redux";
 import { setIsRadioPlaying } from "../StationButton/radioSlice";
+import { useStationButton } from "../StationButton/useStationButton";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
@@ -22,6 +23,7 @@ export const SoundWrapper: FC = () => {
   const { getNextSong } = useGetNextSong();
   const [error, setError] = useState<string>();
   const dispatch = useDispatch();
+  const { clearMetaUpdateInterval } = useStationButton();
 
   const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
     if (!playbackStatus.isLoaded) {
@@ -78,6 +80,8 @@ export const SoundWrapper: FC = () => {
   const handlePlaySong = async () => {
     if (context.pbo && context.startSongId) {
       dispatch(setIsRadioPlaying(false));
+      clearMetaUpdateInterval();
+
       await context.pbo.unloadAsync();
       await context.pbo.loadAsync({
         uri: getAPI("stream", `&id=${context.startSongId}`),
