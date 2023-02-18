@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
@@ -7,20 +7,29 @@ import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
 import useColorScheme from "../../hooks/useColorScheme";
 import { RootState } from "../../store/store";
 import { PlayContext } from "../context/play-context";
-import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
+import { getShowFfwd } from "../Settings/getStoredData";
 import { setIsRadioPlaying } from "../StationButton/radioSlice";
 import { StationButton } from "../StationButton/StationButton";
 import { Text } from "../Themed";
+import { FfwdButton } from "./FfwdButton";
+import { PrevButton } from "./PrevButton";
 import { ProgressClock } from "./ProgressClock";
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
-  const { getNextSong } = useGetNextSong();
   const context = useContext(PlayContext);
   const isRadioPlaying = useSelector(
     (state: RootState) => state.radio.isRadioPlaying
   );
   const dispatch = useDispatch();
+  const [showFfwd, setShowFfwd] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      const result = await getShowFfwd();
+      setShowFfwd(result.showFfwd);
+    })();
+  });
 
   const getByline = () => {
     if (context.song) {
@@ -41,31 +50,6 @@ export const BottomBar: FC = () => {
       context.setIsPlaying(!context.isPlaying);
     }
   };
-
-  const handleNext = () => {
-    const nextSong = getNextSong();
-    if (nextSong) {
-      context.setStartSongId(nextSong.id);
-    }
-  };
-
-  const ffwdView = (
-    <View style={styles.rightAction}>
-      <Pressable
-        onPress={handleNext}
-        style={({ pressed }) => ({
-          opacity: pressed ? 0.5 : 1,
-        })}
-      >
-        <FontAwesome
-          name="forward"
-          size={HEADER_ICON_SIZE}
-          color={Colors[colorScheme].text}
-          style={{ marginRight: 15 }}
-        />
-      </Pressable>
-    </View>
-  );
 
   const playView = (
     <View style={styles.rightAction}>
@@ -109,7 +93,8 @@ export const BottomBar: FC = () => {
       <View>
         <ProgressClock />
         <View style={{ flexDirection: "row" }}>
-          {ffwdView}
+          {showFfwd && <PrevButton />}
+          {showFfwd && <FfwdButton />}
           {playView}
         </View>
       </View>

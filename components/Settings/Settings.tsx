@@ -4,6 +4,7 @@ import {
   Dimensions,
   SafeAreaView,
   StyleSheet,
+  Switch,
   TextInput,
   View,
 } from "react-native";
@@ -13,7 +14,12 @@ import { ISettings } from "../../getSettings";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
 import { DownloadAndPlay } from "./DownloadAndPlay";
-import { getStoredData, storeData } from "./getStoredData";
+import {
+  getShowFfwd,
+  getStoredData,
+  storeData,
+  storeShowFfwd,
+} from "./getStoredData";
 import { ReloadButton } from "./ReloadButton";
 import { ShowKeys } from "./ShowKeys";
 
@@ -22,10 +28,13 @@ export default function Settings({ path }: { path: string }) {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const [configSettings, setConfigSettings] = useState<ISettings>();
+  const [showFfwd, setShowFfwd] = useState<boolean>(false);
 
   useEffect(() => {
     const run = async () => {
       try {
+        const newShowFfwd = await getShowFfwd();
+        setShowFfwd(newShowFfwd.showFfwd);
         const data = await getStoredData();
         console.log(data);
         if (data?.configUrl) {
@@ -89,7 +98,24 @@ export default function Settings({ path }: { path: string }) {
       {Boolean(saved) && <Text>Saved!</Text>}
       {Boolean(error) && <Text>{error}</Text>}
 
-      <View style={{ flexDirection: "row", marginTop: 32 }}>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 32 }}
+      >
+        <Switch
+          // trackColor={{ true: "#2196f3" }}
+          // thumbColor="#2196f3"
+          value={showFfwd}
+          onValueChange={async () => {
+            setShowFfwd(!showFfwd);
+            await storeShowFfwd({ showFfwd: !showFfwd });
+          }}
+        />
+        <Text style={{ fontSize: 18, lineHeight: 64, marginLeft: 20 }}>
+          Show "fast forward" button in bottom bar
+        </Text>
+      </View>
+
+      <View style={{ flexDirection: "row" }}>
         <View>
           <Text style={{ fontSize: 28 }}>v{appJson.expo.version}</Text>
           <Text>
