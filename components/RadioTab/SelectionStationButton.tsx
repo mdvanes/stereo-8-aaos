@@ -1,5 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Pressable, Text } from "react-native";
+import { TAB_TEXT_SIZE } from "../../constants/Layout";
 import { IRadioSetting } from "../../getSettings";
 import { PlayContext } from "../context/play-context";
 import { useStationButton } from "../StationButton/useStationButton";
@@ -31,7 +32,9 @@ export const SelectionStationButton: FC<{ setting: IRadioSetting }> = ({
         borderRadius: 10,
       }}
     >
-      <Text style={{ color: "white", fontSize: 24, textAlign: "center" }}>
+      <Text
+        style={{ color: "white", fontSize: TAB_TEXT_SIZE, textAlign: "center" }}
+      >
         {setting.name}
       </Text>
     </Pressable>
