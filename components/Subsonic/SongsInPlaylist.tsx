@@ -1,54 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useContext, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  SafeAreaView,
-  SectionList,
-  StyleProp,
-  View,
-  ViewStyle,
-} from "react-native";
-import { MusicDirectorySong } from "../../types";
+import { ActivityIndicator, SafeAreaView, SectionList } from "react-native";
 import { PlayContext } from "../context/play-context";
-import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
 import { getPlaylist, hasValidSettings } from "./getSubsonic";
-
-const getStylenames = (
-  tuples: Array<[StyleProp<ViewStyle>, boolean]>
-): StyleProp<ViewStyle> =>
-  tuples
-    .filter(([k, v]) => Boolean(v))
-    .map(([k, v]) => k) as StyleProp<ViewStyle>;
-
-const Item = ({
-  id,
-  artist,
-  title,
-  onClick,
-  activeId,
-}: MusicDirectorySong & {
-  onClick: (id: string) => () => void;
-  activeId?: string;
-}) => {
-  const stylenames = getStylenames([
-    [styles.item, true],
-    [styles.item__active, activeId === id],
-    [styles.item__offline, "9272" === id],
-  ]);
-
-  return (
-    <View style={stylenames}>
-      <Pressable style={styles.item_pressable} onPress={onClick(id)}>
-        <Text style={styles.line}>
-          {artist} - {title}
-        </Text>
-      </Pressable>
-    </View>
-  );
-};
+import { SongsInPlaylistItem } from "./SongsInPlaylistItem";
 
 export const SongsInPlaylist: FC = () => {
   const [error, setError] = useState<string>();
@@ -107,7 +64,7 @@ export const SongsInPlaylist: FC = () => {
             sections={[{ title: "", data: context.queue }]}
             keyExtractor={(item, index) => `${item.id}_${index}`}
             renderItem={({ item }) => (
-              <Item
+              <SongsInPlaylistItem
                 onClick={handlePlaySong}
                 activeId={context.song?.id}
                 {...item}
