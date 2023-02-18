@@ -5,6 +5,7 @@ import { LibraryItemType } from "../../../types";
 import { PlayContext } from "../../context/play-context";
 import { favoritesStoreKey } from "../Library/FavoriteButton";
 import { LibraryItem } from "../Library/LibraryItem";
+import { sortFavorites } from "./sortFavorites";
 
 const getFavorites = async () => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
@@ -32,6 +33,7 @@ export const Favorites: FC = () => {
     setRefreshing(true);
     try {
       const favoritesList = await getFavorites();
+      favoritesList.sort(sortFavorites);
       setFavorites(favoritesList.length > 0 ? favoritesList : [pullToRefresh]);
     } catch (err) {
       alert(err);

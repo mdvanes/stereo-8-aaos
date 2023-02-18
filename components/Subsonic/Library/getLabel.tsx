@@ -2,7 +2,7 @@ import {
   Artist,
   LibraryItemType,
   MusicDirectoryAlbum,
-  MusicDirectorySong
+  MusicDirectorySong,
 } from "../../../types";
 
 export const isArtist = (item: LibraryItemType): item is Artist => {
@@ -17,9 +17,16 @@ export const isSong = (item: LibraryItemType): item is MusicDirectorySong => {
   return "isDir" in item && !item.isDir;
 };
 
-export const getLabel = (item: LibraryItemType): string => {
+export const getLabel = (
+  item: LibraryItemType,
+  isFavoritesContext?: boolean
+): string => {
   if (isArtist(item)) {
     return item.name ?? "";
+  }
+  if (isFavoritesContext && isAlbum(item)) {
+    const label = item.album ?? item.title ?? "";
+    return `${item.artist} - ${label}`;
   }
   if (isAlbum(item)) {
     return item.album ?? item.title ?? "";

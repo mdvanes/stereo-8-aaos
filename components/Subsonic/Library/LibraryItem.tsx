@@ -19,7 +19,7 @@ const LibraryDirItem: FC<{
   isFavoritesContext: boolean;
 }> = ({ item, isFavoritesContext = false }) => {
   const context = useContext(PlayContext);
-  const label = getLabel(item);
+  const label = getLabel(item, isFavoritesContext);
   const navigation = useNavigation();
 
   return (
