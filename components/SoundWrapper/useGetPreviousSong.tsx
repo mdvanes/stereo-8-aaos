@@ -6,7 +6,6 @@ export const useGetPreviousSong = () => {
   const context = useContext(PlayContext);
 
   const getPreviousSong = (): MusicDirectorySong | null => {
-    console.log(context.startSongId, context.queue);
     if (context.queue) {
       const prevIndex = context.queue?.findIndex(
         (queueItem) => queueItem.id === context.startSongId

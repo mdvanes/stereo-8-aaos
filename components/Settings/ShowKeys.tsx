@@ -30,8 +30,6 @@ export const ShowKeys: FC = () => {
 
   const pause = async () => {
     if (context.pbo) {
-      console.log("pauseAsync", context);
-      // dispatch(setIsRadioPlaying(false));
       await context.pbo.pauseAsync();
       context.setIsPlaying(false);
     }
