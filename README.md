@@ -23,6 +23,7 @@ Test on Android:
 on emulator:
 
 (if there is no devbuild.apk or it's outdated, use `eas build --profile development --platform android` and rename the apk to devbuild.apk)
+
 - run `npm start`
 - press "a"
 - install the devbuild.apk (drag into emulator)
@@ -135,9 +136,16 @@ https://reactnative.dev/docs/environment-setup
 - v1.0.25 bug: if there are no entries in Favorites, you can't pull down to refresh
 - v1.0.25 enhancement: implement buttons for multiple radio stations
 - v1.0.25 enhancement: add an dedicated extra line to bottombar for programme & presentor
-- bug: when radio playing and click on a song to play, the interval for radio switches back to radio meta data
+- v1.0.26 bug: when radio playing and click on a song to play, the interval for radio switches back to radio meta data. Only on Android, not on Web!
+- v1.0.26 enhancement: sort favorites
+- v1.0.26 enhancement: show artist in favorites list
+- v1.0.26 enhancement: toggle show ffwd button
+- v1.0.26 enhancement: added test for offline playing
+
+- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
+- Cache bust radio meta
+- Extract radio meta logic and add for Sky
 - bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
 - bug: see mail after publish with eligibility issues
 - enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
-- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
 - enhancement: show something on the car home screen instead of just the app name

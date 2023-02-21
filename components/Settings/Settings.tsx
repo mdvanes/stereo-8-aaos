@@ -104,6 +104,8 @@ export default function Settings({ path }: { path: string }) {
         <Switch
           // trackColor={{ true: "#2196f3" }}
           // thumbColor="#2196f3"
+          trackColor={{ true: "#1b4d74", false: "#717171" }}
+          thumbColor={!showFfwd ? "white" : "#2196f3"}
           value={showFfwd}
           onValueChange={async () => {
             setShowFfwd(!showFfwd);
@@ -111,7 +113,7 @@ export default function Settings({ path }: { path: string }) {
           }}
         />
         <Text style={{ fontSize: 18, lineHeight: 64, marginLeft: 20 }}>
-          Show "fast forward" button in bottom bar
+          Show "back" and "forward" buttons in bottom bar
         </Text>
       </View>
 
