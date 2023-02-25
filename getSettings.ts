@@ -1,10 +1,10 @@
+import { RadioSchemaOptional } from "@mdworld/radio-metadata";
 import { getStoredData } from "./components/Settings/getStoredData";
 
 export interface IRadioSetting {
   name: string;
   channelUrl: string;
-  metaTracksUrl: string;
-  metaBroadcastUrl: string;
+  schema: RadioSchemaOptional;
 }
 
 interface ISubsonicSetting {

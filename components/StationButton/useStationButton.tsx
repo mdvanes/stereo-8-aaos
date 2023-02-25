@@ -32,15 +32,13 @@ export const useStationButton = () => {
       const {
         name: channelName,
         channelUrl,
-        metaTracksUrl,
-        metaBroadcastUrl,
+        schema,
       } = radioSetting;
 
       if (context.pbo) {
         await updateMeta({
           context,
-          metaTracksUrl,
-          metaBroadcastUrl,
+          schema,
           channelName,
         });
         // Stop playing songs, get ready for stream
@@ -54,8 +52,7 @@ export const useStationButton = () => {
             setInterval(() => {
               updateMeta({
                 context,
-                metaTracksUrl,
-                metaBroadcastUrl,
+                schema,
                 channelName,
               });
             }, 30 * 1000)

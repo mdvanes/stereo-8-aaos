@@ -2,6 +2,7 @@ import {
   NowPlayingResponse,
   PreviouslyPlayedItem,
 } from "../context/play-context";
+import { getRadioMetaData, RadioSchemaOptional } from "@mdworld/radio-metadata";
 
 interface TracksResponse {
   data: [
@@ -26,10 +27,9 @@ const bgMap: Record<string, string> = {
 
 const getMeta = async (
   channelName: string,
-  tracksURL: string,
-  broadcastUrl: string
+  schema: RadioSchemaOptional
 ): Promise<NowPlayingResponse | null> => {
-  if (!tracksURL || !broadcastUrl) {
+  if (!schema) {
     const mappedBg = bgMap[channelName];
     return {
       artist: "No meta data available",
@@ -46,52 +46,38 @@ const getMeta = async (
   }
 
   try {
-    const nowonairResponse: TracksResponse = await fetch(tracksURL).then(
-      (data) => data.json()
-    );
+    const tracks = await getRadioMetaData(schema);
+    const lastTrack = tracks[0];
+    const { song, broadcast, time } = lastTrack;
 
-    const {
-      artist,
-      title,
-      image_url_400x400: songImg,
-      enddatetime,
-    } = nowonairResponse.data[0];
-
-    const previouslyPlayed: PreviouslyPlayedItem[] = nowonairResponse.data.map(
-      (n) => ({
-        time: `${new Date(`${n.startdatetime}.000+01:00`).toLocaleTimeString(
-          [],
-          {
-            hour: "2-digit",
-            minute: "2-digit",
-          }
-        )}`,
-        artist: n.artist,
-        title: n.title,
+    const previouslyPlayed = tracks.map(
+      (track): PreviouslyPlayedItem => ({
+        time:
+          // TODO fix timestamp for Sky
+          track.time?.end && track.time.end.length >= 19
+            ? `${new Date(
+                `${track.time?.end.slice(0, 19)}.000+01:00`
+              ).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}`
+            : "",
+        artist: track.song.artist ?? "",
+        title: track.song.title ?? "",
       })
     );
 
-    const broadcastResponse: BroadcastResponse = await fetch(broadcastUrl).then(
-      (data) => data.json()
-    );
-
-    const {
-      title: broadcastTitle,
-      presenters,
-      image_url_400x400: presenterImg,
-    } = broadcastResponse.data[0];
-
     return {
-      artist,
-      broadcastTitle,
-      duration: -1,
-      id: "0",
-      img: songImg ?? presenterImg ?? undefined,
-      isDir: false,
-      last_updated: enddatetime,
-      presenters,
+      artist: song.artist ?? "",
+      title: song.title,
+      broadcastTitle: broadcast?.title,
+      img: song.imageUrl ?? broadcast?.imageUrl ?? undefined,
+      last_updated: time?.end,
+      presenters: broadcast?.presenters,
       previouslyPlayed,
-      title,
+      id: "0",
+      duration: -1,
+      isDir: false,
     };
   } catch (err) {
     console.error(err);
@@ -101,19 +87,17 @@ const getMeta = async (
 
 export const updateMeta = async ({
   context,
-  metaTracksUrl,
-  metaBroadcastUrl,
+  schema,
   channelName,
 }: {
   context: {
     setSong: (_: NowPlayingResponse | null) => void;
     setPreviouslyPlayed: (_: PreviouslyPlayedItem[]) => void;
   };
-  metaTracksUrl: string;
-  metaBroadcastUrl: string;
+  schema: RadioSchemaOptional;
   channelName: string;
 }) => {
-  const meta = await getMeta(channelName, metaTracksUrl, metaBroadcastUrl);
+  const meta = await getMeta(channelName, schema);
   context.setSong(meta);
   if (meta?.previouslyPlayed) {
     context.setPreviouslyPlayed(meta.previouslyPlayed);

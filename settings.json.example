@@ -8,8 +8,7 @@
     {
       "name": "channel name",
       "channelUrl": "https://my.domain",
-      "metaTracksUrl": "https://my.domain",
-      "metaBroadcastUrl": "https://my.domain"
+      "schema": {}
     }
   ]
 }
