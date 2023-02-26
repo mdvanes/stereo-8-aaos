@@ -53,6 +53,43 @@
         },
         "channelUrl": {
           "type": "string"
+        },
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "urls": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "headers": {
+                    "type": "object"
+                  }
+                },
+                "required": ["name", "url"]
+              }
+            },
+            "paths": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "tracks": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
       },
       "type": "object"
