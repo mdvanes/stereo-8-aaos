@@ -42,11 +42,7 @@ export const StationButton: FC = () => {
         })}
       >
         {isLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="white"
-            style={{ width: "50%" }}
-          />
+          <ActivityIndicator size={HEADER_ICON_SIZE} color="white" />
         ) : (
           <MaterialIcons
             name={isRadioPlaying ? "pause-circle-filled" : "radio"}
