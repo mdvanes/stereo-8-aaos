@@ -1,21 +1,14 @@
-import { FC, useContext, useState } from "react";
-import {
-  Button,
-  ProgressBarAndroid,
-  ProgressBarAndroidBase,
-} from "react-native";
-import { getAPI } from "../Subsonic/getSubsonic";
-import { Text, View } from "../Themed";
-import ReactNativeBlobUtil from "react-native-blob-util";
-import { Audio } from "expo-av";
-import { PlayContext, PlayValues } from "../context/play-context";
 import {
   createDownloadResumable,
   documentDirectory,
-  getContentUriAsync,
   getInfoAsync,
 } from "expo-file-system";
-import { Asset } from "expo-asset";
+import { FC, useContext, useState } from "react";
+import { ActivityIndicator, Button } from "react-native";
+import ReactNativeBlobUtil from "react-native-blob-util";
+import { PlayContext, PlayValues } from "../context/play-context";
+import { getAPI } from "../Subsonic/getSubsonic";
+import { Text, View } from "../Themed";
 
 // const soundLocation = "./mysounds";
 
@@ -152,9 +145,7 @@ export const DownloadAndPlay: FC = () => {
   return (
     <View>
       <Text>Download and play</Text>
-      {progress > -1 && (
-        <ProgressBarAndroid styleAttr="Horizontal" progress={progress} />
-      )}
+      {progress > -1 && <ActivityIndicator />}
       <Button
         title="test"
         onPress={() => {

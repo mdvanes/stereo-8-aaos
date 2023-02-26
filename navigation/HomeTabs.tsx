@@ -22,6 +22,7 @@ const options: MaterialTopTabNavigationOptions = {
   tabBarLabelStyle: {
     fontSize: TAB_TEXT_SIZE,
   },
+  animationEnabled: false,
 };
 
 export function HomeTabs() {

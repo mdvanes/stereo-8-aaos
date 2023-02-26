@@ -3,14 +3,19 @@ import React, { FC, useContext } from "react";
 import { Pressable } from "react-native";
 import Colors from "../../constants/Colors";
 import { HEADER_ICON_SIZE } from "../../constants/Layout";
+import { PlayContext } from "../context/play-context";
 import { ReloadContext } from "../context/reload-context";
 
 export const ReloadButton: FC = () => {
+  const context = useContext(PlayContext);
   const reloadContext = useContext(ReloadContext);
 
   return (
     <Pressable
-      onPress={() => {
+      onPress={async () => {
+        if (context.pbo) {
+          await context.pbo.unloadAsync();
+        }
         reloadContext.reload();
       }}
       style={({ pressed }) => ({

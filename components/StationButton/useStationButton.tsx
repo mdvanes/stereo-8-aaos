@@ -4,7 +4,7 @@ import { IRadioSetting } from "../../getSettings";
 import { RootState } from "../../store/store";
 import { PlayContext } from "../context/play-context";
 import { updateMeta } from "./getMetadata";
-import { setIsRadioPlaying } from "./radioSlice";
+import { setIsRadioPlaying, setLastChannelName } from "./radioSlice";
 
 let metaUpdateInterval: ReturnType<typeof setInterval>;
 
@@ -12,6 +12,9 @@ export const useStationButton = () => {
   const context = useContext(PlayContext);
   const isRadioPlaying = useSelector(
     (state: RootState) => state.radio.isRadioPlaying
+  );
+  const lastChannelName = useSelector(
+    (state: RootState) => state.radio.lastChannelName
   );
   const dispatch = useDispatch();
 
@@ -29,7 +32,7 @@ export const useStationButton = () => {
     async (radioSetting: IRadioSetting) => {
       clearMetaUpdateInterval();
 
-      const { name: channelName, channelUrl, schema } = radioSetting;
+      const { channelUrl, name: channelName } = radioSetting;
 
       if (context.pbo) {
         await updateMeta({
@@ -40,8 +43,9 @@ export const useStationButton = () => {
         context.setStartSongId(null);
         context.setIsPlaying(false);
 
-        if (isRadioPlaying) {
-          await context.pbo.pauseAsync();
+        if (isRadioPlaying && lastChannelName === channelName) {
+          await context.pbo.unloadAsync();
+          dispatch(setIsRadioPlaying(false));
         } else {
           setMetaUpdateInterval(
             setInterval(() => {
@@ -57,14 +61,14 @@ export const useStationButton = () => {
             uri: channelUrl,
           });
           await context.pbo.playAsync();
+          dispatch(setLastChannelName(channelName));
+          dispatch(setIsRadioPlaying(true));
         }
-
-        dispatch(setIsRadioPlaying(!isRadioPlaying));
       } else {
         alert("Unexpected unset PBO");
       }
     },
-    [context, isRadioPlaying]
+    [context, isRadioPlaying, lastChannelName]
   );
 
   return { clearMetaUpdateInterval, toggle };

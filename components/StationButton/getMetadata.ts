@@ -5,7 +5,7 @@ import {
 import { getRadioMetaData } from "@mdworld/radio-metadata";
 import { IRadioSetting } from "../../getSettings";
 
-// require does not resolve within getMeta
+// require can't take dynamic value
 const bgMap: Record<string, string> = {
   "Sky Radio": require("../../assets/images/sky-radio.jpg"),
   "Pinguin Radio": require("../../assets/images/pinguin-radio.jpg"),

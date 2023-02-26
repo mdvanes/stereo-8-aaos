@@ -80,6 +80,7 @@ export const SoundWrapper: FC = () => {
   useEffect(() => {
     if (!hasValidSettings()) {
       setError("Settings not complete");
+      return;
     }
     init();
 
