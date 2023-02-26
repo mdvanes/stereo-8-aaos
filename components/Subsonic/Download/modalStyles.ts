@@ -9,8 +9,8 @@ export const modalStyles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#333",
-    borderRadius: 10,
+    backgroundColor: "#121212",
+    borderRadius: 4,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
@@ -25,19 +25,22 @@ export const modalStyles = StyleSheet.create({
   actions: {
     display: "flex",
     flexDirection: "row",
-    marginTop: 10
+    marginTop: 10,
   },
   button: {
-    borderRadius: 10,
+    borderRadius: 4,
     padding: 10,
     elevation: 2,
     marginHorizontal: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   buttonOK: {
-    backgroundColor: "green",
+    backgroundColor: "#2196f3",
   },
   buttonError: {
-    backgroundColor: "red",
+    backgroundColor: "#aa0909",
   },
   textStyle: {
     color: "white",

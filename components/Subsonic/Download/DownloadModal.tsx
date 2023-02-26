@@ -1,3 +1,4 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { FC } from "react";
 import { Alert, Modal, Pressable, View } from "react-native";
 import { Text } from "../../Themed";
@@ -6,7 +7,7 @@ import { modalStyles } from "./modalStyles";
 interface DownloadModalProps {
   modalVisible: boolean;
   setModalVisible: (_: boolean) => void;
-  setFoo: (_: boolean) => void;
+  setIsOffline: (_: boolean) => void;
   artist: string;
   title?: string;
 }
@@ -14,7 +15,7 @@ interface DownloadModalProps {
 export const DownloadModal: FC<DownloadModalProps> = ({
   modalVisible,
   setModalVisible,
-  setFoo,
+  setIsOffline,
   artist,
   title,
 }) => {
@@ -37,28 +38,35 @@ export const DownloadModal: FC<DownloadModalProps> = ({
             <Pressable
               style={[modalStyles.button, modalStyles.buttonOK]}
               onPress={() => {
-                setFoo(true);
+                setIsOffline(true);
                 setModalVisible(!modalVisible);
               }}
             >
+              <MaterialIcons name="cloud-download" size={30} color="white" />
               <Text style={modalStyles.textStyle}>(Re)download all</Text>
             </Pressable>
             <Pressable
               style={[modalStyles.button, modalStyles.buttonOK]}
               onPress={() => {
-                setFoo(true);
+                setIsOffline(true);
                 setModalVisible(!modalVisible);
               }}
             >
+              <MaterialIcons name="file-download" size={30} color="white" />
               <Text style={modalStyles.textStyle}>(Re)download</Text>
             </Pressable>
             <Pressable
               style={[modalStyles.button, modalStyles.buttonError]}
               onPress={() => {
-                setFoo(false);
+                setIsOffline(false);
                 setModalVisible(!modalVisible);
               }}
             >
+              <MaterialIcons
+                name="restore-from-trash"
+                size={30}
+                color="white"
+              />
               <Text style={modalStyles.textStyle}>Delete</Text>
             </Pressable>
           </View>

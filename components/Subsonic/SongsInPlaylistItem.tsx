@@ -22,13 +22,13 @@ export const SongsInPlaylistItem = ({
   onClick: (id: string) => () => void;
   activeId?: string;
 }) => {
-  const [foo, setFoo] = useState(false);
+  const [isOffline, setIsOffline] = useState(id === "2921");
   const [modalVisible, setModalVisible] = useState(false);
 
   const stylenames = getStylenames([
     [styles.item, true],
     [styles.item__active, activeId === id],
-    [styles.item__offline, foo],
+    [styles.item__offline, isOffline],
   ]);
 
   return (
@@ -36,7 +36,7 @@ export const SongsInPlaylistItem = ({
       <DownloadModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        setFoo={setFoo}
+        setIsOffline={setIsOffline}
         artist={artist}
         title={title}
       />

@@ -1,5 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Audio, AVPlaybackStatus } from "expo-av";
 import React, { FC, useContext, useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { PlayContext } from "../context/play-context";
+import { ProgressContext } from "../context/progress-context";
+import { setIsRadioPlaying } from "../StationButton/radioSlice";
+import { useStationButton } from "../StationButton/useStationButton";
 import {
   getAPI,
   getCoverArtUrl,
@@ -7,13 +14,7 @@ import {
   getNowPlaying,
   hasValidSettings,
 } from "../Subsonic/getSubsonic";
-import { Audio, AVPlaybackStatus } from "expo-av";
-import { Text, View } from "react-native";
 import { useGetNextSong } from "./useGetNextSong";
-import { ProgressContext } from "../context/progress-context";
-import { useDispatch } from "react-redux";
-import { setIsRadioPlaying } from "../StationButton/radioSlice";
-import { useStationButton } from "../StationButton/useStationButton";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
@@ -107,13 +108,26 @@ export const SoundWrapper: FC = () => {
       return;
     }
 
-    await context.pbo.loadAsync(
-      {
-        uri: getAPI("stream", `&id=${context.startSongId}`),
+    if (context.startSongId === "2921") {
+      console.log("song is hardcoded to play from download store");
+
+      const uri = await AsyncStorage.getItem("@download");
+      console.log(uri);
+
+      if (uri) {
+        await context.pbo.loadAsync({
+          uri,
+        });
       }
-      // {},
-      // true // TODO downloadFirstflag
-    );
+    } else {
+      await context.pbo.loadAsync(
+        {
+          uri: getAPI("stream", `&id=${context.startSongId}`),
+        }
+        // {},
+        // true // TODO downloadFirstflag
+      );
+    }
     await context.pbo.playAsync();
 
     context.setIsPlaying(!context.isPlaying);
