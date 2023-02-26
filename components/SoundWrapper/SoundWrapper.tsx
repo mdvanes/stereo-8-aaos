@@ -17,6 +17,13 @@ import { useStationButton } from "../StationButton/useStationButton";
 
 const fallbackUrl = "https://icecast.omroep.nl/radio2-bb-mp3";
 
+const wait = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(undefined);
+    }, ms);
+  });
+
 export const SoundWrapper: FC = () => {
   const context = useContext(PlayContext);
   const progressContext = useContext(ProgressContext);
@@ -75,38 +82,59 @@ export const SoundWrapper: FC = () => {
       setError("Settings not complete");
     }
     init();
+
+    // unmount
+    return () => {
+      console.log("unmounting soundwrapper");
+      if (context.pbo) {
+        context.pbo.unloadAsync();
+      }
+    };
   }, []);
 
   const handlePlaySong = async () => {
-    if (context.pbo && context.startSongId) {
-      dispatch(setIsRadioPlaying(false));
-      clearMetaUpdateInterval();
+    dispatch(setIsRadioPlaying(false));
+    clearMetaUpdateInterval();
 
-      await context.pbo.unloadAsync();
-      await context.pbo.loadAsync({
-        uri: getAPI("stream", `&id=${context.startSongId}`),
-      });
-      await context.pbo.playAsync();
-
-      context.setIsPlaying(!context.isPlaying);
-      setTimeout(async () => {
-        const newMeta = await getNowPlaying({ remote: false });
-        if (newMeta && newMeta.id) {
-          context.setIsPlaying(true);
-          context.setSong({
-            id: newMeta.id,
-            artist: newMeta.artist,
-            title: newMeta.title,
-            album: newMeta.album,
-            duration: newMeta.duration,
-            img: newMeta.coverArt
-              ? getCoverArtUrl({ id: newMeta.coverArt })
-              : undefined,
-            isDir: false,
-          });
-        }
-      }, 500);
+    if (!context.pbo) {
+      return;
     }
+
+    await context.pbo.unloadAsync();
+
+    if (!context.startSongId) {
+      return;
+    }
+
+    await context.pbo.loadAsync(
+      {
+        uri: getAPI("stream", `&id=${context.startSongId}`),
+      }
+      // {},
+      // true // TODO downloadFirstflag
+    );
+    await context.pbo.playAsync();
+
+    context.setIsPlaying(!context.isPlaying);
+    await wait(500);
+
+    const newMeta = await getNowPlaying({ remote: false });
+    if (!newMeta?.id) {
+      return;
+    }
+
+    context.setIsPlaying(true);
+    context.setSong({
+      id: newMeta.id,
+      artist: newMeta.artist,
+      title: newMeta.title,
+      album: newMeta.album,
+      duration: newMeta.duration,
+      img: newMeta.coverArt
+        ? getCoverArtUrl({ id: newMeta.coverArt })
+        : undefined,
+      isDir: false,
+    });
   };
 
   useEffect(() => {

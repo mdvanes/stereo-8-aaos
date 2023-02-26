@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { FC, useCallback, useContext, useEffect } from "react";
-import { Pressable, View } from "react-native";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, View } from "react-native";
 import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
 import { HEADER_ICON_SIZE } from "../../constants/Layout";
@@ -17,6 +17,7 @@ export const StationButton: FC = () => {
   const isRadioPlaying = useSelector(
     (state: RootState) => state.radio.isRadioPlaying
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -26,7 +27,9 @@ export const StationButton: FC = () => {
 
   const handleOnPress = useCallback(async () => {
     if (radioSetting) {
+      setIsLoading(true);
       await toggle(radioSetting);
+      setIsLoading(false);
     }
   }, [radioSetting, context, isRadioPlaying]);
 
@@ -38,11 +41,19 @@ export const StationButton: FC = () => {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        <MaterialIcons
-          name={isRadioPlaying ? "pause-circle-filled" : "radio"}
-          size={HEADER_ICON_SIZE}
-          color={Colors[colorScheme].text}
-        />
+        {isLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="white"
+            style={{ width: "50%" }}
+          />
+        ) : (
+          <MaterialIcons
+            name={isRadioPlaying ? "pause-circle-filled" : "radio"}
+            size={HEADER_ICON_SIZE}
+            color={Colors[colorScheme].text}
+          />
+        )}
       </Pressable>
     </View>
   );
