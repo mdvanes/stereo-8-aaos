@@ -45,6 +45,20 @@
       "required": ["domain", "user", "password"],
       "type": "object"
     },
+    "PickPath": {
+      "additionalProperties": false,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
     "RadioSetting": {
       "additionalProperties": false,
       "properties": {
@@ -88,20 +102,20 @@
               "additionalProperties": false,
               "properties": {
                 "tracks": {
-                  "type": "string"
+                  "$ref": "#/definitions/PickPath"
                 },
                 "broadcast": {
                   "type": "object",
                   "additionalProperties": false,
                   "properties": {
                     "title": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "presenters": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "imageUrl": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     }
                   }
                 },
@@ -110,10 +124,10 @@
                   "additionalProperties": false,
                   "properties": {
                     "start": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "end": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     }
                   }
                 },
@@ -122,16 +136,16 @@
                   "additionalProperties": false,
                   "properties": {
                     "title": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "artist": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "imageUrl": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     },
                     "listenUrl": {
-                      "type": "string"
+                      "$ref": "#/definitions/PickPath"
                     }
                   },
                   "required": ["artist", "title"]

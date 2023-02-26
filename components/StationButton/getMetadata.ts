@@ -2,24 +2,8 @@ import {
   NowPlayingResponse,
   PreviouslyPlayedItem,
 } from "../context/play-context";
-import { getRadioMetaData, RadioSchemaOptional } from "@mdworld/radio-metadata";
+import { getRadioMetaData } from "@mdworld/radio-metadata";
 import { IRadioSetting } from "../../getSettings";
-
-interface TracksResponse {
-  data: [
-    {
-      artist: string;
-      title: string;
-      image_url_400x400?: string;
-      startdatetime: string;
-      enddatetime: string;
-    }
-  ];
-}
-
-interface BroadcastResponse {
-  data: [{ title: string; presenters?: string; image_url_400x400?: string }];
-}
 
 // require does not resolve within getMeta
 const bgMap: Record<string, string> = {
@@ -73,7 +57,7 @@ const getMeta = async (
     return {
       artist: song.artist ?? "",
       title: song.title,
-      broadcastTitle: broadcast?.title,
+      broadcastTitle: broadcast?.title ?? channelName,
       img:
         song.imageUrl ??
         broadcast?.imageUrl ??
