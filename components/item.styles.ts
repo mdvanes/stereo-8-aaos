@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(33,150,243,0.2)",
   },
   item__offline: {
-    borderLeftColor: "#0885ff",
-    borderLeftWidth: 5,
+    borderRightColor: "#0885ff",
+    borderRightWidth: 10,
   },
   title: {
     fontSize: 32,
