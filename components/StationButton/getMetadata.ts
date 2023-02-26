@@ -3,6 +3,7 @@ import {
   PreviouslyPlayedItem,
 } from "../context/play-context";
 import { getRadioMetaData, RadioSchemaOptional } from "@mdworld/radio-metadata";
+import { IRadioSetting } from "../../getSettings";
 
 interface TracksResponse {
   data: [
@@ -20,15 +21,17 @@ interface BroadcastResponse {
   data: [{ title: string; presenters?: string; image_url_400x400?: string }];
 }
 
+// require does not resolve within getMeta
 const bgMap: Record<string, string> = {
   "Sky Radio": require("../../assets/images/sky-radio.jpg"),
   "Pinguin Radio": require("../../assets/images/pinguin-radio.jpg"),
 };
 
 const getMeta = async (
-  channelName: string,
-  schema: RadioSchemaOptional
+  radioSetting: IRadioSetting
 ): Promise<NowPlayingResponse | null> => {
+  const { name: channelName, schema } = radioSetting;
+
   if (!schema) {
     const mappedBg = bgMap[channelName];
     return {
@@ -71,7 +74,11 @@ const getMeta = async (
       artist: song.artist ?? "",
       title: song.title,
       broadcastTitle: broadcast?.title,
-      img: song.imageUrl ?? broadcast?.imageUrl ?? undefined,
+      img:
+        song.imageUrl ??
+        broadcast?.imageUrl ??
+        radioSetting.fallBackImageUrl ??
+        undefined,
       last_updated: time?.end,
       presenters: broadcast?.presenters,
       previouslyPlayed,
@@ -87,17 +94,15 @@ const getMeta = async (
 
 export const updateMeta = async ({
   context,
-  schema,
-  channelName,
+  radioSetting,
 }: {
   context: {
     setSong: (_: NowPlayingResponse | null) => void;
     setPreviouslyPlayed: (_: PreviouslyPlayedItem[]) => void;
   };
-  schema: RadioSchemaOptional;
-  channelName: string;
+  radioSetting: IRadioSetting;
 }) => {
-  const meta = await getMeta(channelName, schema);
+  const meta = await getMeta(radioSetting);
   context.setSong(meta);
   if (meta?.previouslyPlayed) {
     context.setPreviouslyPlayed(meta.previouslyPlayed);

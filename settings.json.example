@@ -1,4 +1,5 @@
 {
+  "$schema": "settings.schema.json",
   "subsonic": {
     "domain": "https://my.domain/rest/",
     "user": "my_username",

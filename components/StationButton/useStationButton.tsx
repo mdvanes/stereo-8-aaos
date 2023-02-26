@@ -29,17 +29,12 @@ export const useStationButton = () => {
     async (radioSetting: IRadioSetting) => {
       clearMetaUpdateInterval();
 
-      const {
-        name: channelName,
-        channelUrl,
-        schema,
-      } = radioSetting;
+      const { name: channelName, channelUrl, schema } = radioSetting;
 
       if (context.pbo) {
         await updateMeta({
           context,
-          schema,
-          channelName,
+          radioSetting,
         });
         // Stop playing songs, get ready for stream
         context.setStartSongId(null);
@@ -52,8 +47,7 @@ export const useStationButton = () => {
             setInterval(() => {
               updateMeta({
                 context,
-                schema,
-                channelName,
+                radioSetting,
               });
             }, 30 * 1000)
           );

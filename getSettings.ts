@@ -4,6 +4,7 @@ import { getStoredData } from "./components/Settings/getStoredData";
 export interface IRadioSetting {
   name: string;
   channelUrl: string;
+  fallBackImageUrl?: string;
   schema: RadioSchemaOptional;
 }
 

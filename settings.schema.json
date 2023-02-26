@@ -54,6 +54,9 @@
         "channelUrl": {
           "type": "string"
         },
+        "fallBackImageUrl": {
+          "type": "string"
+        },
         "schema": {
           "type": "object",
           "additionalProperties": false,
@@ -86,12 +89,59 @@
               "properties": {
                 "tracks": {
                   "type": "string"
+                },
+                "broadcast": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "presenters": {
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "time": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "start": {
+                      "type": "string"
+                    },
+                    "end": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "song": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "artist": {
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    },
+                    "listenUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["artist", "title"]
                 }
               }
             }
           }
         }
       },
+      "required": ["name", "channelUrl", "fallBackImageUrl"],
       "type": "object"
     }
   }
