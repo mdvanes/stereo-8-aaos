@@ -1,0 +1,61 @@
+{
+  "$id": "settings.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Settings",
+  "description": "Settings for Stereo 8 AAOS",
+  "type": "object",
+  "$ref": "#/definitions/SettingsType",
+  "definitions": {
+    "SettingsType": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "subsonic": {
+          "$ref": "#/definitions/SubsonicSetting"
+        },
+        "radio": {
+          "items": {
+            "$ref": "#/definitions/RadioSetting"
+          },
+          "description": "Promos record",
+          "type": "array"
+        }
+      },
+      "required": ["subsonic", "radio"],
+      "type": "object"
+    },
+    "SubsonicSetting": {
+      "additionalProperties": false,
+      "description": "Subsonic Settings",
+      "properties": {
+        "domain": {
+          "description": "Subsonic URL ending with /rest/",
+          "type": "string"
+        },
+        "user": {
+          "description": "Username",
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["domain", "user", "password"],
+      "type": "object"
+    },
+    "RadioSetting": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "channelUrl": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
