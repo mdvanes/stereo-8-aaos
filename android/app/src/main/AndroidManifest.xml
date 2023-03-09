@@ -48,11 +48,13 @@
       android:theme="@style/Theme.App.SplashScreen"
       android:windowSoftInputMode="adjustResize">
       <meta-data android:name="distractionOptimized" android:value="true"/>
+      <!-- You can't use either of these intents for Android Automotive OS -->
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
       <intent-filter>
+        <!-- old <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/> -->
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
@@ -62,5 +64,14 @@
     </activity>
 
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
+
+    <service
+      android:name=".MediaPlaybackService" 
+      android:enabled="true"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.media.browse.MediaBrowserService" />
+      </intent-filter>
+    </service>
   </application>
 </manifest>

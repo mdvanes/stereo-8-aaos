@@ -9,7 +9,11 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "bump": "node bump.js"
+    "bump": "node bump.js",
+    "build:aab": "xsltproc -o android/app/src/main/AndroidManifest2.xml android/app/src/main/toAaos.xsl android/app/src/main/AndroidManifest.src.xml",
+    "build:apk": "cp android/app/src/main/AndroidManifest.src.xml android/app/src/main/AndroidManifest2.xml",
+    "build:aab1": "eas build -p android",
+    "build:apk1": "eas build -p android --profile previewApk"
   },
   "jest": {
     "preset": "jest-expo"

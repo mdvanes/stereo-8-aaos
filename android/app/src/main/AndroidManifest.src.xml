@@ -49,10 +49,10 @@
       android:windowSoftInputMode="adjustResize">
       <meta-data android:name="distractionOptimized" android:value="true"/>
       <!-- You can't use either of these intents for Android Automotive OS -->
-      <!-- <intent-filter>
+      <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter> -->
+      </intent-filter>
       <intent-filter>
         <!-- old <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/> -->
         <action android:name="android.intent.action.VIEW"/>
