@@ -35,7 +35,7 @@ on emulator:
 Building is done online at [Expo](https://expo.dev/). This requires an account.
 
 - update version: `npm run bump XX`
-- `eas build -p android` (NOTE: build only APK: `eas build -p android --profile previewApk`)
+- `npm run build:aab` (NOTE: build only APK: `npm run build:apk`)
 - use the URL listed by the CLI and download AAB (or log into expo.dev dashboard, under Builds)
 - push and tag on Github
 
@@ -132,20 +132,20 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.24 bug: topbar (statusbar) on car is black with dark text (only during the day) (not reproducable on emulator)
 - FIXED v1.0.24 enhancement: add a force reload button in Settings (although it still seems to have a memory leak)
 - FIXED v1.0.24 enhancement: mark an album as "local favorite"
-- v1.0.25 enhancement: background can also show album cover
-- v1.0.25 bug: if there are no entries in Favorites, you can't pull down to refresh
-- v1.0.25 enhancement: implement buttons for multiple radio stations
-- v1.0.25 enhancement: add an dedicated extra line to bottombar for programme & presentor
-- v1.0.26 bug: when radio playing and click on a song to play, the interval for radio switches back to radio meta data. Only on Android, not on Web!
-- v1.0.26 enhancement: sort favorites
-- v1.0.26 enhancement: show artist in favorites list
-- v1.0.26 enhancement: toggle show ffwd button
-- v1.0.26 enhancement: added test for offline playing
+- FIXED v1.0.25 enhancement: background can also show album cover
+- FIXED v1.0.25 bug: if there are no entries in Favorites, you can't pull down to refresh
+- FIXED v1.0.25 enhancement: implement buttons for multiple radio stations
+- FIXED v1.0.25 enhancement: add an dedicated extra line to bottombar for programme & presentor
+- FIXED v1.0.26 bug: when radio playing and click on a song to play, the interval for radio switches back to radio meta data. Only on Android, not on Web!
+- FIXED v1.0.26 enhancement: sort favorites
+- FIXED v1.0.26 enhancement: show artist in favorites list
+- FIXED v1.0.26 enhancement: toggle show ffwd button
+- FIXED v1.0.26 enhancement: added test for offline playing
+- v1.0.27 enhancement: Extract radio meta logic and add for other stations
+- v1.0.27 bug: handle eligibility issues from Google Play feedback
 
-- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
-- Cache bust radio meta
-- Extract radio meta logic and add for Sky
-- bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
-- bug: see mail after publish with eligibility issues
 - enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
 - enhancement: show something on the car home screen instead of just the app name
+- Cache bust radio meta
+- bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
+- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
