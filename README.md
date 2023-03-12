@@ -142,9 +142,20 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.26 enhancement: toggle show ffwd button
 - FIXED v1.0.26 enhancement: added test for offline playing
 - v1.0.27 enhancement: Extract radio meta logic and add for other stations
-- v1.0.27 bug: handle eligibility issues from Google Play feedback
 
-- enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler
+- v1.0.28 bug: handle eligibility issues from Google Play feedback
+  - When just removing the intent-filter with MAIN & LAUNCHER (https://developer.android.com/training/cars/media/automotive-os#intent-filters) and adding MediaPlayBackService to the AndroidManifest, it is stuck on "loading content" in AAOS, similar to https://github.com/android/uamp/issues/409
+  - reinstalling does not help
+  - it does not run on Android Mobile without that intent-filter
+  - restore the intent-filter for now
+  - it seems that implementing MediaPlaybackService conflicts with how Expo AV is implemented, see AndroidManifest.src.xml
+  - Examples:
+    - https://github.com/MoleMan1024/audiowagon/blob/master/automotive/src/main/AndroidManifest.xml
+    - https://github.com/android/uamp/blob/main/automotive/src/main/AndroidManifest.xml
+    - https://github.com/volvo-cars/automotive-media-sample/blob/main/app/src/main/AndroidManifest.xml
+
+- bug: it should duck audio of other apps when opening the app
+- enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
 - enhancement: show something on the car home screen instead of just the app name
 - Cache bust radio meta
 - bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library

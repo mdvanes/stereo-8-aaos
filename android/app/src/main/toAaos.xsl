@@ -10,7 +10,8 @@
     </xsl:template>
 
     <!-- remove the intent-filter that is not allowed on AAOS: MAIN & LAUNCHER -->
-    <xsl:template match="/manifest/application/activity/intent-filter[1]">
+    <!-- TODO disabled for now, hangs on "content loading" in AAOS -->
+    <xsl:template match="DISABLED/manifest/application/activity/intent-filter[1]">
         <xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
