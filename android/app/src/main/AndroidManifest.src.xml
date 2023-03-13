@@ -50,10 +50,10 @@
     <!-- TODO this should point to a file MediaPlaybackService.java that implements MediaBrowserServiceCompat 
 but that probably conflicts with the current media player implementation from Expo for background audio.
 -->
-    <service android:name=".MediaPlaybackService" android:enabled="true" android:exported="true">
+    <!-- <service android:name=".MediaPlaybackService" android:enabled="true" android:exported="true">
       <intent-filter>
         <action android:name="android.media.browse.MediaBrowserService" />
       </intent-filter>
-    </service>
+    </service> -->
   </application>
 </manifest>
