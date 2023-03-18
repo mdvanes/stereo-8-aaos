@@ -1,7 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import KeyEvent from "react-native-keyevent";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 import { useGetPreviousSong } from "../SoundWrapper/useGetPreviousSong";
+import { useStationButton } from "../StationButton/useStationButton";
 import { PlayContext } from "./play-context";
 
 export type OnKeyDownEvent = {
@@ -14,6 +17,10 @@ export type OnKeyDownEvent = {
 export const useKeyListener = () => {
   const [keyEventLog, setKeyEventLog] = useState("");
   const context = useContext(PlayContext);
+  const isRadioPlaying = useSelector(
+    (state: RootState) => state.radio.isRadioPlaying
+  );
+  const { toggle, clearMetaUpdateInterval } = useStationButton();
 
   const { getNextSong } = useGetNextSong();
   const { getPreviousSong } = useGetPreviousSong();
@@ -35,8 +42,17 @@ export const useKeyListener = () => {
   const pause = async () => {
     if (context.pbo) {
       try {
-        await context.pbo.pauseAsync();
-        context.setIsPlaying(false);
+        if (context.isPlaying) {
+          await context.pbo.pauseAsync();
+          context.setIsPlaying(false);
+          setKeyEventLog("paused playing");
+        } else {
+          const radioSetting = context.radioSetting;
+          if (radioSetting) {
+            await toggle(radioSetting);
+            setKeyEventLog("toggle radio");
+          }
+        }
       } catch (err) {
         // will throw promise rejection when pbo not yet playing
         console.log(
