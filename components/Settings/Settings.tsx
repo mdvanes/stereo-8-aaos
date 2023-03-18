@@ -14,6 +14,7 @@ import { ISettings } from "../../getSettings";
 import { Text } from "../Themed";
 import { ConfigLoader } from "./ConfigLoader";
 import { DownloadAndPlay } from "./DownloadAndPlay";
+import { ExitButton } from "./ExitButton";
 import {
   getShowFfwd,
   getStoredData,
@@ -113,7 +114,7 @@ export default function Settings({ path }: { path: string }) {
           }}
         />
         <Text style={{ fontSize: 18, lineHeight: 64, marginLeft: 20 }}>
-          Show "back" and "forward" buttons in bottom bar
+          Show back/fwd in bottom bar
         </Text>
       </View>
 
@@ -161,7 +162,11 @@ export default function Settings({ path }: { path: string }) {
 
       {Boolean(isBrowser) || <DownloadAndPlay />}
 
-      <ReloadButton />
+      <View style={{ flexDirection: "row", marginTop: 20 }}>
+        <ReloadButton />
+        <View style={{ flex: 1 }} />
+        <ExitButton />
+      </View>
     </SafeAreaView>
   );
 }

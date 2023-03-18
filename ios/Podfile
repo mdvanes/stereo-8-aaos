@@ -35,6 +35,8 @@ target 'stereo8aaos' do
 
   pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
 
+  pod 'RNExitApp', :path => '../node_modules/react-native-exit-app'
+
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
