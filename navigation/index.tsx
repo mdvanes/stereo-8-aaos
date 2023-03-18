@@ -6,6 +6,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useContext } from "react";
 import { ColorSchemeName } from "react-native";
+import { KeyListenerContextProvider } from "../components/context/key-listener-context";
 import { PlayContextProvider } from "../components/context/play-context";
 import { ProgressContextProvider } from "../components/context/progress-context";
 import {
@@ -58,42 +59,44 @@ function RootNavigator() {
   ) : (
     <PlayContextProvider>
       <ProgressContextProvider>
-        <SoundWrapper />
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerBackVisible: false,
-          }}
-        >
-          <Stack.Screen
-            name="Home"
-            component={HomeTabs}
-            options={stackScreenHomeOptions(colorScheme)}
-          />
-          <Stack.Screen
-            name="Playlist"
-            component={PlaylistScreen}
-            options={stackScreenPlaylistOptions(colorScheme)}
-          />
-          <Stack.Screen
-            name="Favorite"
-            component={FavoritesScreen}
-            options={stackScreenFavoriteOptions(colorScheme)}
-          />
-          {/* TODO NOTE: when NotFound is active, hot reloading is broken and will always direct to this route */}
-          {/* <Stack.Screen
+        <KeyListenerContextProvider>
+          <SoundWrapper />
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerBackVisible: false,
+            }}
+          >
+            <Stack.Screen
+              name="Home"
+              component={HomeTabs}
+              options={stackScreenHomeOptions(colorScheme)}
+            />
+            <Stack.Screen
+              name="Playlist"
+              component={PlaylistScreen}
+              options={stackScreenPlaylistOptions(colorScheme)}
+            />
+            <Stack.Screen
+              name="Favorite"
+              component={FavoritesScreen}
+              options={stackScreenFavoriteOptions(colorScheme)}
+            />
+            {/* TODO NOTE: when NotFound is active, hot reloading is broken and will always direct to this route */}
+            {/* <Stack.Screen
               name="NotFound"
               component={NotFoundScreen}
               options={{ title: "Not Found" }}
             /> */}
-          <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen
-              name="Modal"
-              component={ModalScreen}
-              options={stackScreenModalOptions(colorScheme)}
-            />
-          </Stack.Group>
-        </Stack.Navigator>
+            <Stack.Group screenOptions={{ presentation: "modal" }}>
+              <Stack.Screen
+                name="Modal"
+                component={ModalScreen}
+                options={stackScreenModalOptions(colorScheme)}
+              />
+            </Stack.Group>
+          </Stack.Navigator>
+        </KeyListenerContextProvider>
       </ProgressContextProvider>
     </PlayContextProvider>
   );

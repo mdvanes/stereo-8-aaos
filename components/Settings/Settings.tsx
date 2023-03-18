@@ -36,7 +36,7 @@ export default function Settings({ path }: { path: string }) {
         const newShowFfwd = await getShowFfwd();
         setShowFfwd(newShowFfwd.showFfwd);
         const data = await getStoredData();
-        console.log(data);
+        // console.log(data);
         if (data?.configUrl) {
           onChangeConfigUrl(data.configUrl);
         }

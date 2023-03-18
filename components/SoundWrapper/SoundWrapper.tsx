@@ -133,6 +133,7 @@ export const SoundWrapper: FC = () => {
     context.setIsPlaying(!context.isPlaying);
     await wait(500);
 
+    // TODO use getMeta instead of getNowPlaying, otherwise offline won't work
     const newMeta = await getNowPlaying({ remote: false });
     if (!newMeta?.id) {
       return;
