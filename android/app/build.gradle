@@ -145,8 +145,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         /* start versions */
-        versionCode 29
-        versionName "1.0.29"      
+        versionCode 30
+        versionName "1.0.30"      
         /* end versions */
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
