@@ -3,6 +3,7 @@ import {
   Button,
   Dimensions,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Switch,
   TextInput,
@@ -58,115 +59,117 @@ export default function Settings({ path }: { path: string }) {
 
   return (
     <SafeAreaView style={{ width: "100%" }}>
-      <Text style={styles.label}>Config URL</Text>
+      <ScrollView>
+        <Text style={styles.label}>Config URL</Text>
 
-      <View
-        style={{ flexDirection: "row", alignItems: "center", width: "100%" }}
-      >
-        <Text style={{ fontSize: 18 }}>https://</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeConfigUrl}
-          value={configUrl}
-          placeholder="skip https://"
-          placeholderTextColor="rgba(255,255,255,0.8)"
+        <View
+          style={{ flexDirection: "row", alignItems: "center", width: "100%" }}
+        >
+          <Text style={{ fontSize: 18 }}>https://</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeConfigUrl}
+            value={configUrl}
+            placeholder="skip https://"
+            placeholderTextColor="rgba(255,255,255,0.8)"
+          />
+        </View>
+
+        <ConfigLoader
+          configUrl={configUrl}
+          configSettings={configSettings}
+          isBrowser={isBrowser}
+          setConfigSettings={setConfigSettings}
         />
-      </View>
 
-      <ConfigLoader
-        configUrl={configUrl}
-        configSettings={configSettings}
-        isBrowser={isBrowser}
-        setConfigSettings={setConfigSettings}
-      />
-
-      <Button
-        title="save"
-        onPress={async () => {
-          try {
-            await storeData({
-              configUrl,
-              configSettings,
-            });
-            setSaved(true);
-            setTimeout(() => {
-              setSaved(false);
-            }, 1000);
-          } catch (err) {}
-        }}
-      />
-
-      {Boolean(saved) && <Text>Saved!</Text>}
-      {Boolean(error) && <Text>{error}</Text>}
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 32 }}
-      >
-        <Switch
-          // trackColor={{ true: "#2196f3" }}
-          // thumbColor="#2196f3"
-          trackColor={{ true: "#1b4d74", false: "#717171" }}
-          thumbColor={!showFfwd ? "white" : "#2196f3"}
-          value={showFfwd}
-          onValueChange={async () => {
-            setShowFfwd(!showFfwd);
-            await storeShowFfwd({ showFfwd: !showFfwd });
+        <Button
+          title="save"
+          onPress={async () => {
+            try {
+              await storeData({
+                configUrl,
+                configSettings,
+              });
+              setSaved(true);
+              setTimeout(() => {
+                setSaved(false);
+              }, 1000);
+            } catch (err) {}
           }}
         />
-        <Text style={{ fontSize: 18, lineHeight: 64, marginLeft: 20 }}>
-          Show back/fwd in bottom bar
-        </Text>
-      </View>
 
-      <View style={{ flexDirection: "row" }}>
-        <View>
-          <Text style={{ fontSize: 28 }}>v{appJson.expo.version}</Text>
-          <Text>
-            {Math.round(Dimensions.get("window").width)} x{" "}
-            {Math.round(Dimensions.get("window").height)} (
-            {Layout.isBigDevice ? "big" : "small"})
+        {Boolean(saved) && <Text>Saved!</Text>}
+        {Boolean(error) && <Text>{error}</Text>}
+
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 32 }}
+        >
+          <Switch
+            // trackColor={{ true: "#2196f3" }}
+            // thumbColor="#2196f3"
+            trackColor={{ true: "#1b4d74", false: "#717171" }}
+            thumbColor={!showFfwd ? "white" : "#2196f3"}
+            value={showFfwd}
+            onValueChange={async () => {
+              setShowFfwd(!showFfwd);
+              await storeShowFfwd({ showFfwd: !showFfwd });
+            }}
+          />
+          <Text style={{ fontSize: 18, lineHeight: 64, marginLeft: 20 }}>
+            Show back/fwd in bottom bar
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row", height: 38, marginLeft: 30 }}>
-          {__DEV__ && (
+        <View style={{ flexDirection: "row" }}>
+          <View>
+            <Text style={{ fontSize: 28 }}>v{appJson.expo.version}</Text>
+            <Text>
+              {Math.round(Dimensions.get("window").width)} x{" "}
+              {Math.round(Dimensions.get("window").height)} (
+              {Layout.isBigDevice ? "big" : "small"})
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: "row", height: 38, marginLeft: 30 }}>
+            {__DEV__ && (
+              <Text
+                style={{
+                  backgroundColor: "green",
+                  color: "white",
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  marginRight: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                DEV MODE
+              </Text>
+            )}
+
             <Text
               style={{
-                backgroundColor: "green",
+                backgroundColor: isBrowser ? "green" : "#2196f3",
                 color: "white",
                 paddingVertical: 10,
                 paddingHorizontal: 20,
-                marginRight: 20,
                 fontWeight: "bold",
               }}
             >
-              DEV MODE
+              {Boolean(isBrowser) ? "BROWSER" : "APP"} MODE
             </Text>
-          )}
-
-          <Text
-            style={{
-              backgroundColor: isBrowser ? "green" : "#2196f3",
-              color: "white",
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              fontWeight: "bold",
-            }}
-          >
-            {Boolean(isBrowser) ? "BROWSER" : "APP"} MODE
-          </Text>
+          </View>
         </View>
-      </View>
 
-      <ShowKeys />
+        <ShowKeys />
 
-      {Boolean(isBrowser) || <DownloadAndPlay />}
+        {Boolean(isBrowser) || <DownloadAndPlay />}
 
-      <View style={{ flexDirection: "row", marginTop: 20 }}>
-        <ReloadButton />
-        <View style={{ flex: 1 }} />
-        <ExitButton />
-      </View>
+        <View style={{ flexDirection: "row", marginTop: 20 }}>
+          <ReloadButton />
+          <View style={{ flex: 1 }} />
+          <ExitButton />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
