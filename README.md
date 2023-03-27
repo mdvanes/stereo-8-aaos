@@ -142,9 +142,10 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.26 enhancement: toggle show ffwd button
 - FIXED v1.0.26 enhancement: added test for offline playing
 - FIXED v1.0.27 enhancement: Extract radio meta logic and add for other stations
-- v1.0.30 enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
-- v1.0.30 enhancement: add an exit button to the settings screen that kills the app in case a stream hangs
+- FIXED v1.0.30 enhancement: add an exit button to the settings screen that kills the app in case a stream hangs
+- v1.0.31 enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
 
+- enhancement: starred instead of favorites
 - bug: it should duck audio of other apps when opening the app (see "handle eligibility issues")
 - enhancement: show something on the car home screen instead of just the app name -> requires MediaPlayBackService and native code?
 - Cache bust radio meta

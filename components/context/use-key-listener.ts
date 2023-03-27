@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import KeyEvent from "react-native-keyevent";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { useGetNextSong } from "../SoundWrapper/useGetNextSong";
 import { useGetPreviousSong } from "../SoundWrapper/useGetPreviousSong";
 import { useStationButton } from "../StationButton/useStationButton";
@@ -17,9 +15,6 @@ export type OnKeyDownEvent = {
 export const useKeyListener = () => {
   const [keyEventLog, setKeyEventLog] = useState("");
   const context = useContext(PlayContext);
-  const isRadioPlaying = useSelector(
-    (state: RootState) => state.radio.isRadioPlaying
-  );
   const { toggle, clearMetaUpdateInterval } = useStationButton();
 
   const { getNextSong } = useGetNextSong();
@@ -87,6 +82,16 @@ export const useKeyListener = () => {
       label: "next",
       fn: next,
     },
+    24: {
+      // phone volume up
+      label: "pause",
+      fn: pause,
+    },
+    25: {
+      // phone volume down
+      label: "next",
+      fn: next,
+    },
     87: {
       label: "next",
       fn: next,
@@ -115,7 +120,7 @@ export const useKeyListener = () => {
     return () => {
       KeyEvent.removeKeyDownListener();
     };
-  }, []);
+  }, [keyCodeMap]);
 
   return { keyEventLog, setKeyEventLog };
 };
