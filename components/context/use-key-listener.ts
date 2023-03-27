@@ -82,16 +82,16 @@ export const useKeyListener = () => {
       label: "next",
       fn: next,
     },
-    24: {
-      // phone volume up
-      label: "pause",
-      fn: pause,
-    },
-    25: {
-      // phone volume down
-      label: "next",
-      fn: next,
-    },
+    // 24: {
+    //   // phone volume up
+    //   label: "pause",
+    //   fn: pause,
+    // },
+    // 25: {
+    //   // phone volume down
+    //   label: "next",
+    //   fn: next,
+    // },
     87: {
       label: "next",
       fn: next,
