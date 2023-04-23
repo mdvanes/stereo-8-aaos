@@ -143,14 +143,18 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.26 enhancement: added test for offline playing
 - FIXED v1.0.27 enhancement: Extract radio meta logic and add for other stations
 - FIXED v1.0.30 enhancement: add an exit button to the settings screen that kills the app in case a stream hangs
-- v1.0.31 enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
+- FIXED v1.0.31 enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
+- v1.0.32 enhancement: fix navigating with Breadcrumbs in Library
+- v1.0.32 enhancement: click on the bottombar title when radio playing should redirect to the radio page
 
-- enhancement: starred instead of favorites
-- bug: it should duck audio of other apps when opening the app (see "handle eligibility issues")
-- enhancement: show something on the car home screen instead of just the app name -> requires MediaPlayBackService and native code?
+- v1.0.32 enhancement: pull down to refresh on radio previously played view
+- v1.0.32 enhancement: Optimistic updates on tap (when click on song or click on right play button in bottom bar, show loading state)
+- enhancement: starred instead of/in addition to favorites
 - Cache bust radio meta
 - bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library
-- enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
+- ON HOLD bug: it should duck audio of other apps when opening the app (see "handle eligibility issues")
+- ON HOLD enhancement: show something on the car home screen instead of just the app name -> requires MediaPlayBackService and native code?
+- ON HOLD enhancement: add offline mode for playlists and albums (not songs) (remove expo-file-system from package.json if not used)
 - SKIPPED v1.0.28 bug: handle eligibility issues from Google Play feedback
   - When just removing the intent-filter with MAIN & LAUNCHER (https://developer.android.com/training/cars/media/automotive-os#intent-filters) and adding MediaPlayBackService to the AndroidManifest, it is stuck on "loading content" in AAOS, similar to https://github.com/android/uamp/issues/409
   - reinstalling does not help

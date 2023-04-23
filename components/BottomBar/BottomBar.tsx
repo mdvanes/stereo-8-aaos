@@ -14,6 +14,7 @@ import { Text } from "../Themed";
 import { FfwdButton } from "./FfwdButton";
 import { PrevButton } from "./PrevButton";
 import { ProgressClock } from "./ProgressClock";
+import { useNavigation } from "@react-navigation/native";
 
 export const BottomBar: FC = () => {
   const colorScheme = useColorScheme();
@@ -23,6 +24,7 @@ export const BottomBar: FC = () => {
   );
   const dispatch = useDispatch();
   const [showFfwd, setShowFfwd] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -81,13 +83,22 @@ export const BottomBar: FC = () => {
       </View>
 
       <View style={styles.status}>
-        <Text style={styles.statusH1}>
-          {(context.song?.title || "").slice(0, 70)}
-        </Text>
-        <Text style={styles.statusH2}>{getByline().slice(0, 70)}</Text>
-        {Boolean(broadcastInfo) && (
-          <Text style={styles.statusH3}>{broadcastInfo}</Text>
-        )}
+        <Pressable
+          onPress={() => {
+            if (!context.isPlaying) {
+              // @ts-expect-error this is the documented way to navigate to a nested tab: https://reactnavigation.org/docs/nesting-navigators/#navigating-to-a-screen-in-a-nested-navigator
+              navigation.navigate("Home", { screen: "Radio" });
+            }
+          }}
+        >
+          <Text style={styles.statusH1}>
+            {(context.song?.title || "").slice(0, 70)}
+          </Text>
+          <Text style={styles.statusH2}>{getByline().slice(0, 70)}</Text>
+          {Boolean(broadcastInfo) && (
+            <Text style={styles.statusH3}>{broadcastInfo}</Text>
+          )}
+        </Pressable>
       </View>
 
       <View>
