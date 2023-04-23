@@ -6,6 +6,7 @@ import { View } from "../../Themed";
 import { FavoriteButton } from "./FavoriteButton";
 import { getLabel } from "./getLabel";
 import { styles } from "./Library.styles";
+import { getMusicDir } from "../getSubsonic";
 
 export const Breadcrumb: FC = () => {
   const context = useContext(PlayContext);
@@ -50,7 +51,17 @@ export const Breadcrumb: FC = () => {
             size={20}
             style={{ marginHorizontal: 15, color: "white" }}
           />
-          <Text style={styles.libraryItem}>{getLabel(item)}</Text>
+          <Pressable
+            onPress={async () => {
+              const dirs = await getMusicDir(item.id ?? "");
+              context.setLibraryItems(dirs);
+              context.setLibraryBreadcrumb(
+                context.libraryBreadcrumb.slice(0, index + 1)
+              );
+            }}
+          >
+            <Text style={styles.libraryItem}>{getLabel(item)}</Text>
+          </Pressable>
         </View>
       ))}
     </View>

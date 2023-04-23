@@ -5,6 +5,7 @@ import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { SelectionStationButton } from "./SelectionStationButton";
 
+// TODO React runtime error when navigating (multiple pages) in SectionList: https://github.com/necolas/react-native-web/issues/1769 -> might need upgrading to latest react-native, react 18 etc etc
 export const RadioTab: FC = () => {
   const context = useContext(PlayContext);
   const [settings, setSettings] = useState<ISettings>();

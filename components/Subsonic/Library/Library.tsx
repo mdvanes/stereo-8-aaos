@@ -6,37 +6,17 @@ import { Breadcrumb } from "./Breadcrumb";
 import { FirstLetterSelector } from "./FirstLetterSelector";
 import { LibraryItem } from "./LibraryItem";
 
-// TODO clean up comments or implement
 export const Library: FC = () => {
   const context = useContext(PlayContext);
 
   const init = async () => {
-    // setIsLoading(true);
-    // context.setLibraryItems(await getIndexes());
     const r = await getIndexes();
     context.setLibraryIndexes(r);
     context.setLibraryItems(r.find((n) => n.name === "A")?.artist ?? []);
-    // const x = context.libraryIndexes[0];
-    // if (r && r.length > 0) {
-    //   context.setLibraryItems(r[0].artist ?? []);
-    //   context.setLibraryBreadcrumb([{ name: r[0].name }]);
-    // }
-    // setIsLoading(false);
   };
 
   useEffect(() => {
-    // if (!hasValidSettings()) {
-    //   setError("Settings not complete");
-    //   return;
-    // }
-
     const run = async () => {
-      // try {
-      //   await testConnection();
-      // } catch (err) {
-      //   setError("Settings invalid");
-      //   return;
-      // }
       init();
     };
 
