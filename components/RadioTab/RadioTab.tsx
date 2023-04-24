@@ -1,6 +1,13 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { SafeAreaView, SectionList, Text, View } from "react-native";
-import { getSettings, ISettings } from "../../getSettings";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import {
+  RefreshControl,
+  SafeAreaView,
+  SectionList,
+  Text,
+  View,
+} from "react-native";
+import { ISettings, getSettings } from "../../getSettings";
+import { updateMeta } from "../StationButton/getMetadata";
 import { PlayContext } from "../context/play-context";
 import { styles } from "../item.styles";
 import { SelectionStationButton } from "./SelectionStationButton";
@@ -9,6 +16,7 @@ import { SelectionStationButton } from "./SelectionStationButton";
 export const RadioTab: FC = () => {
   const context = useContext(PlayContext);
   const [settings, setSettings] = useState<ISettings>();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -25,6 +33,19 @@ export const RadioTab: FC = () => {
       }
     };
     run();
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    if (context.radioSetting) {
+      await updateMeta({
+        context,
+        radioSetting: context.radioSetting,
+      });
+    }
+
+    setRefreshing(false);
   }, []);
 
   return (
@@ -45,6 +66,9 @@ export const RadioTab: FC = () => {
         <SectionList
           sections={[{ title: "", data: context.previouslyPlayed ?? [] }]}
           keyExtractor={(item, index) => `${item.time}_${index}`}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           renderItem={({ item }) => (
             <View style={styles.item}>
               <Text style={[styles.line, { color: "white" }]}>
