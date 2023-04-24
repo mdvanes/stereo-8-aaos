@@ -1,6 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
 import { BOTTOM_FONT_SIZE, HEADER_ICON_SIZE } from "../../constants/Layout";
@@ -25,6 +25,7 @@ export const BottomBar: FC = () => {
   const dispatch = useDispatch();
   const [showFfwd, setShowFfwd] = useState<boolean>(false);
   const navigation = useNavigation();
+  const [isPlayPauseLoading, setIsPlayPauseLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -42,6 +43,7 @@ export const BottomBar: FC = () => {
   };
 
   const handlePlayPause = async () => {
+    setIsPlayPauseLoading(true);
     if (context.pbo && context.startSongId) {
       dispatch(setIsRadioPlaying(false));
       if (context.isPlaying || isRadioPlaying) {
@@ -51,6 +53,7 @@ export const BottomBar: FC = () => {
       }
       context.setIsPlaying(!context.isPlaying);
     }
+    setIsPlayPauseLoading(false);
   };
 
   const playView = (
@@ -61,12 +64,16 @@ export const BottomBar: FC = () => {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        <FontAwesome
-          name={context.isPlaying ? "pause" : "play"}
-          size={HEADER_ICON_SIZE}
-          color={Colors[colorScheme].text}
-          style={{ marginRight: 15 }}
-        />
+        {isPlayPauseLoading ? (
+          <ActivityIndicator size={HEADER_ICON_SIZE} color="white" />
+        ) : (
+          <FontAwesome
+            name={context.isPlaying ? "pause" : "play"}
+            size={HEADER_ICON_SIZE}
+            color={Colors[colorScheme].text}
+            style={{ marginRight: 15 }}
+          />
+        )}
       </Pressable>
     </View>
   );

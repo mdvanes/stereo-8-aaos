@@ -146,9 +146,10 @@ https://reactnative.dev/docs/environment-setup
 - FIXED v1.0.31 enhancement: allow use of hardware buttons - https://developer.android.com/reference/kotlin/androidx/media/session/MediaButtonReceiver & https://reactnative.dev/docs/backhandler -> this works, but the listener needs to be lifted to the root. Also it bugs by sometimes being intercepted by the native radio app
 - v1.0.32 enhancement: fix navigating with Breadcrumbs in Library
 - v1.0.32 enhancement: click on the bottombar title when radio playing should redirect to the radio page
-
 - v1.0.32 enhancement: pull down to refresh on radio previously played view
 - v1.0.32 enhancement: Optimistic updates on tap (when click on song or click on right play button in bottom bar, show loading state)
+
+- enhancement: skip when on radio until next meta
 - enhancement: starred instead of/in addition to favorites
 - Cache bust radio meta
 - bug: correctly handle stopping radio & nowPlaying setInterval when playing from Playlist or Library

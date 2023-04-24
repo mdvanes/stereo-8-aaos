@@ -24,9 +24,11 @@ export const SongsInPlaylistItem = ({
 }) => {
   const [isOffline, setIsOffline] = useState(id === "2921");
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const stylenames = getStylenames([
     [styles.item, true],
+    [styles.item__loading, isLoading],
     [styles.item__active, activeId === id],
     [styles.item__offline, isOffline],
   ]);
@@ -43,7 +45,13 @@ export const SongsInPlaylistItem = ({
 
       <Pressable
         style={styles.item_pressable}
-        onPress={onClick(id)}
+        onPress={() => {
+          setIsLoading(true);
+          onClick(id)();
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1000);
+        }}
         onLongPress={() => {
           setModalVisible(true);
           // confirm("open modal/popover with choice to (re)download or delete");
