@@ -6,8 +6,11 @@ import Colors from "../../constants/Colors";
 import { HEADER_ICON_SIZE } from "../../constants/Layout";
 import useColorScheme from "../../hooks/useColorScheme";
 import { RootState } from "../../store/store";
-import { PlayContext } from "../context/play-context";
+import { NowPlayingResponse, PlayContext } from "../context/play-context";
 import { useStationButton } from "./useStationButton";
+import { getMeta, updateMeta } from "./getMetadata";
+import { IRadioSetting } from "../../getSettings";
+import { useSkipRadio } from "./useSkipRadio";
 
 export const StationButton: FC = () => {
   const { toggle, clearMetaUpdateInterval } = useStationButton();
@@ -18,6 +21,7 @@ export const StationButton: FC = () => {
     (state: RootState) => state.radio.isRadioPlaying
   );
   const [isLoading, setIsLoading] = useState(false);
+  const { startSkipRadio, isSkipping, stopSkipping } = useSkipRadio();
 
   useEffect(() => {
     return () => {
@@ -26,6 +30,7 @@ export const StationButton: FC = () => {
   }, []);
 
   const handleOnPress = useCallback(async () => {
+    stopSkipping();
     if (radioSetting) {
       setIsLoading(true);
       await toggle(radioSetting);
@@ -33,10 +38,18 @@ export const StationButton: FC = () => {
     }
   }, [radioSetting, context, isRadioPlaying]);
 
+  const handleOnLongPress = useCallback(async () => {
+    if (isRadioPlaying && radioSetting) {
+      await handleOnPress();
+      startSkipRadio(radioSetting);
+    }
+  }, [handleOnPress, isRadioPlaying]);
+
   return (
     <View>
       <Pressable
         onPress={handleOnPress}
+        onLongPress={handleOnLongPress}
         style={({ pressed }) => ({
           opacity: pressed ? 0.5 : 1,
         })}
@@ -47,7 +60,7 @@ export const StationButton: FC = () => {
           <MaterialIcons
             name={isRadioPlaying ? "pause-circle-filled" : "radio"}
             size={HEADER_ICON_SIZE}
-            color={Colors[colorScheme].text}
+            color={isSkipping ? "#2f95dc" : Colors[colorScheme].text}
           />
         )}
       </Pressable>

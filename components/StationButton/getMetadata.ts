@@ -11,7 +11,7 @@ const bgMap: Record<string, string> = {
   "Pinguin Radio": require("../../assets/images/pinguin-radio.jpg"),
 };
 
-const getMeta = async (
+export const getMeta = async (
   radioSetting: IRadioSetting
 ): Promise<NowPlayingResponse | null> => {
   const { name: channelName, schema } = radioSetting;
