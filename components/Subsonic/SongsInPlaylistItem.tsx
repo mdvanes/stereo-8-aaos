@@ -5,12 +5,12 @@ import { styles } from "../item.styles";
 import { Text } from "../Themed";
 import { DownloadModal } from "./Download/DownloadModal";
 
-const getStylenames = (
-  tuples: Array<[StyleProp<ViewStyle>, boolean]>
-): StyleProp<ViewStyle> =>
-  tuples
-    .filter(([k, v]) => Boolean(v))
-    .map(([k, v]) => k) as StyleProp<ViewStyle>;
+// const getStylenames = (
+//   tuples: Array<[StyleProp<ViewStyle>, boolean]>
+// ): StyleProp<ViewStyle> =>
+//   tuples
+//     .filter(([k, v]) => Boolean(v))
+//     .map(([k, v]) => k) as StyleProp<ViewStyle>;
 
 export const SongsInPlaylistItem = ({
   id,
@@ -26,15 +26,15 @@ export const SongsInPlaylistItem = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const stylenames = getStylenames([
-    [styles.item, true],
-    [styles.item__loading, isLoading],
-    [styles.item__active, activeId === id],
-    [styles.item__offline, isOffline],
-  ]);
-
   return (
-    <View style={stylenames}>
+    <View
+      style={[
+        styles.item,
+        isLoading ? styles.item__loading : undefined,
+        activeId === id ? styles.item__active : undefined,
+        isOffline ? styles.item__offline : undefined,
+      ]}
+    >
       <DownloadModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

@@ -1,6 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
 import { Pressable, Text } from "react-native";
 import {
   Artist,
@@ -52,6 +52,7 @@ const LibrarySongItem: FC<{
   items?: MusicDirectorySong[];
   isActive: boolean;
 }> = ({ item, items, isActive }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const context = useContext(PlayContext);
 
   const track = item.track ? `${item.track?.toString().padStart(2, "0")}.` : "";
@@ -60,14 +61,19 @@ const LibrarySongItem: FC<{
     <Pressable
       style={itemStyles.item_pressable}
       onPress={async () => {
+        setIsLoading(true);
         context.setQueue(items ?? []);
         context.setStartSongId(item.id);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
       }}
     >
       <Text
         style={[
           styles.libraryItem,
           itemStyles.line,
+          isLoading ? itemStyles.item__loading : undefined,
           isActive ? itemStyles.item__active : undefined,
         ]}
       >
