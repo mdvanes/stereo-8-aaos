@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { RefreshControl, SafeAreaView, SectionList } from "react-native";
+import { favoritesStoreKey } from "../../../constants/StorageKeys";
 import { LibraryItemType } from "../../../types";
 import { PlayContext } from "../../context/play-context";
-import { favoritesStoreKey } from "../Library/FavoriteButton";
 import { LibraryItem } from "../Library/LibraryItem";
 import { sortFavorites } from "./sortFavorites";
 

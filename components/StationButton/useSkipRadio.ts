@@ -1,21 +1,15 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import React, { FC, useCallback, useContext, useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
-import { useSelector } from "react-redux";
-import Colors from "../../constants/Colors";
-import { HEADER_ICON_SIZE } from "../../constants/Layout";
-import useColorScheme from "../../hooks/useColorScheme";
-import { RootState } from "../../store/store";
-import { NowPlayingResponse, PlayContext } from "../context/play-context";
-import { useStationButton } from "./useStationButton";
-import { getMeta, updateMeta } from "./getMetadata";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext, useEffect, useState } from "react";
+import { lastPlayedItemStoreKey } from "../../constants/StorageKeys";
 import { IRadioSetting } from "../../getSettings";
+import { NowPlayingResponse, PlayContext } from "../context/play-context";
+import { getMeta } from "./getMetadata";
 
 let metaUpdateInterval: ReturnType<typeof setInterval>;
 
 export const useSkipRadio = () => {
   const [isSkipping, setIsSkipping] = useState(false);
-  // const context = useContext(PlayContext);
+  const context = useContext(PlayContext);
   // const lastChannelName = useSelector(
   //   (state: RootState) => state.radio.lastChannelName
   // );
@@ -28,13 +22,25 @@ export const useSkipRadio = () => {
     };
   }, []);
 
-  const startSkipRadio = (radioSetting: IRadioSetting) => {
+  const startSkipRadio = async (radioSetting: IRadioSetting) => {
     let lastTimestamp = -1;
 
     setIsSkipping(true);
 
+    const lastPlayedItemJson = await AsyncStorage.getItem(
+      lastPlayedItemStoreKey
+    );
+    const lastPlayedItem = lastPlayedItemJson && JSON.parse(lastPlayedItemJson);
+
     // TODO start playing either context.setLibraryItems or context.setFavoritesDirItems or context.setPlaylist
-    // console.log(context.)
+    console.log(
+      // context.playlist,
+      // context.startSongId,
+      // context.favoritesDirItems,
+      // context.libraryItems,
+      "lastPlayedItem",
+      lastPlayedItem
+    );
 
     // setMetaUpdateInterval(
     metaUpdateInterval = setInterval(async () => {

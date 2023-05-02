@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useContext, useEffect, useState } from "react";
 import {
@@ -7,15 +8,16 @@ import {
   SectionList,
   View,
 } from "react-native";
+import { lastPlayedItemStoreKey } from "../../constants/StorageKeys";
 import useColorScheme from "../../hooks/useColorScheme";
-import { PlayContext } from "../context/play-context";
-import { styles } from "../item.styles";
 import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
+import { PlayContext } from "../context/play-context";
+import { styles } from "../item.styles";
 import {
+  IPlaylist,
   getPlaylists,
   hasValidSettings,
-  IPlaylist,
   testConnection,
 } from "./getSubsonic";
 
@@ -65,6 +67,10 @@ export const Playlists: FC = () => {
   }, []);
 
   const handleOpenPlaylist = (p: IPlaylist) => async () => {
+    await AsyncStorage.setItem(
+      lastPlayedItemStoreKey,
+      JSON.stringify({ id: p.id, name: p.name, type: "playlist", songId: null })
+    );
     context.setPlaylist(p);
     navigation.navigate("Playlist");
   };

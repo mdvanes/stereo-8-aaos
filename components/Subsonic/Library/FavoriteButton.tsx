@@ -1,13 +1,12 @@
 import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 import Colors from "../../../constants/Colors";
+import { favoritesStoreKey } from "../../../constants/StorageKeys";
+import { LibraryItemType } from "../../../types";
 import { PlayContext } from "../../context/play-context";
 import { styles } from "./Library.styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LibraryItemType } from "../../../types";
-
-export const favoritesStoreKey = "@favorites";
 
 const addFavorite = async (item: LibraryItemType) => {
   const rawStored = await AsyncStorage.getItem(favoritesStoreKey);
