@@ -1,6 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useState } from "react";
-import { lastPlayedItemStoreKey } from "../../constants/StorageKeys";
+import {
+  ILastPlayedItem,
+  lastPlayedItemStoreKey,
+} from "../../constants/StorageKeys";
 import { IRadioSetting } from "../../getSettings";
 import { NowPlayingResponse, PlayContext } from "../context/play-context";
 import { getMeta } from "./getMetadata";
@@ -30,7 +33,8 @@ export const useSkipRadio = () => {
     const lastPlayedItemJson = await AsyncStorage.getItem(
       lastPlayedItemStoreKey
     );
-    const lastPlayedItem = lastPlayedItemJson && JSON.parse(lastPlayedItemJson);
+    const lastPlayedItem: ILastPlayedItem =
+      lastPlayedItemJson && JSON.parse(lastPlayedItemJson);
 
     // TODO start playing either context.setLibraryItems or context.setFavoritesDirItems or context.setPlaylist
     console.log(
@@ -41,6 +45,18 @@ export const useSkipRadio = () => {
       "lastPlayedItem",
       lastPlayedItem
     );
+
+    if (
+      lastPlayedItem.type === "playlist" &&
+      lastPlayedItem.id &&
+      lastPlayedItem.name
+    ) {
+      context.setPlaylist({ id: lastPlayedItem.id, name: lastPlayedItem.name });
+      // TODO if null, start the first
+      if (lastPlayedItem.songId) {
+        context.setStartSongId(lastPlayedItem.songId);
+      }
+    }
 
     // setMetaUpdateInterval(
     metaUpdateInterval = setInterval(async () => {

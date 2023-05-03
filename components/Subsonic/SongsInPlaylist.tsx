@@ -6,6 +6,8 @@ import { ListItemButton } from "../StationButton/ListItemButton";
 import { Text } from "../Themed";
 import { getPlaylist, hasValidSettings } from "./getSubsonic";
 import { SongsInPlaylistItem } from "./SongsInPlaylistItem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { lastPlayedItemStoreKey } from "../../constants/StorageKeys";
 
 export const SongsInPlaylist: FC = () => {
   const [error, setError] = useState<string>();
@@ -37,6 +39,16 @@ export const SongsInPlaylist: FC = () => {
   }, []);
 
   const handlePlaySong = (id: string) => async () => {
+    const lastPlayedItemJson = await AsyncStorage.getItem(
+      lastPlayedItemStoreKey
+    );
+    const lastPlayedItem = lastPlayedItemJson && JSON.parse(lastPlayedItemJson);
+
+    await AsyncStorage.setItem(
+      lastPlayedItemStoreKey,
+      JSON.stringify({ ...lastPlayedItem, songId: id })
+    );
+
     context.setStartSongId(id);
   };
 

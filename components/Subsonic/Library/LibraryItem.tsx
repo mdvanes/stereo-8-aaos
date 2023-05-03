@@ -1,7 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useContext, useState } from "react";
 import { Pressable, Text } from "react-native";
+import { lastPlayedItemStoreKey } from "../../../constants/StorageKeys";
 import {
   Artist,
   LibraryItemType,
@@ -11,8 +13,8 @@ import {
 import { PlayContext } from "../../context/play-context";
 import { styles as itemStyles } from "../../item.styles";
 import { getMusicDir } from "../getSubsonic";
-import { getLabel, isAlbum, isArtist, isSong } from "./getLabel";
 import { styles } from "./Library.styles";
+import { getLabel, isAlbum, isArtist, isSong } from "./getLabel";
 
 const LibraryDirItem: FC<{
   item: Artist | MusicDirectoryAlbum;
@@ -27,6 +29,20 @@ const LibraryDirItem: FC<{
       style={itemStyles.item_pressable}
       onPress={async () => {
         const dirs = await getMusicDir(item.id ?? "");
+
+        if (isAlbum(item)) {
+          // TODO update this on play song (also for playlist)
+          await AsyncStorage.setItem(
+            lastPlayedItemStoreKey,
+            JSON.stringify({
+              id: item.id,
+              name: item.album,
+              type: "musicdir",
+              songId: null,
+            })
+          );
+        }
+
         if (isFavoritesContext) {
           context.setFavoritesDirItems(dirs);
           navigation.navigate("Favorite");
