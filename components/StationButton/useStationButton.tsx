@@ -29,7 +29,8 @@ export const useStationButton = () => {
   };
 
   const toggle = useCallback(
-    async (radioSetting: IRadioSetting) => {
+    async (radioSetting: IRadioSetting, forceStart?: boolean) => {
+      // console.log("isRadioplaying = ", isRadioPlaying, forceStart);
       clearMetaUpdateInterval();
 
       const { channelUrl, name: channelName } = radioSetting;
@@ -43,10 +44,21 @@ export const useStationButton = () => {
         context.setStartSongId(null);
         context.setIsPlaying(false);
 
-        if (isRadioPlaying && lastChannelName === channelName) {
+        if (!forceStart && isRadioPlaying && lastChannelName === channelName) {
+          // console.log(
+          //   "isRadioPlaying = true && lastChannelName === channelName"
+          // );
           await context.pbo.unloadAsync();
           dispatch(setIsRadioPlaying(false));
         } else {
+          // console.log(
+          //   "isRadioPlaying ",
+          //   isRadioPlaying,
+          //   "| lastChannelName",
+          //   lastChannelName,
+          //   "| channelName",
+          //   channelName
+          // );
           setMetaUpdateInterval(
             setInterval(() => {
               updateMeta({
@@ -70,6 +82,10 @@ export const useStationButton = () => {
     },
     [context, isRadioPlaying, lastChannelName]
   );
+
+  // useEffect(() => {
+  //   console.log("isRadioplaying changed to ", isRadioPlaying);
+  // }, [isRadioPlaying]);
 
   return { clearMetaUpdateInterval, toggle };
 };

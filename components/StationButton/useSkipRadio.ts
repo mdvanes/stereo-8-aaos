@@ -8,6 +8,8 @@ import { IRadioSetting } from "../../getSettings";
 import { PlayContext } from "../context/play-context";
 import { getMeta } from "./getMetadata";
 import { useStationButton } from "./useStationButton";
+import { useDispatch } from "react-redux";
+import { setIsRadioPlaying } from "./radioSlice";
 
 let metaUpdateInterval: ReturnType<typeof setInterval>;
 
@@ -16,6 +18,7 @@ export const useSkipRadio = () => {
   const context = useContext(PlayContext);
   // const [lastMeta, setLastMeta] = useState<NowPlayingResponse>(); // TODO cleanup?
   const { toggle } = useStationButton();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
@@ -53,6 +56,7 @@ export const useSkipRadio = () => {
       context.setPlaylist({ id: lastPlayedItem.id, name: lastPlayedItem.name });
       // TODO if null, start the first.
       if (lastPlayedItem.songId) {
+        // dispatch(setIsRadioPlaying(false));
         // Start the song (SoundWrapper.handlePlaySong), this stops the radio and calls useStationButton.clearMetaUpdateInterval
         context.setStartSongId(lastPlayedItem.songId);
       }
@@ -95,9 +99,16 @@ export const useSkipRadio = () => {
     // context.setIsPlaying(false);
     // TODO switch back to radio (automatically stops other playing items)
     if (context.radioSetting) {
+      // Something is setting setIsRadioPlaying to true for some reason...
       // dispatch(setIsRadioPlaying(false));
+      // isRadioPlaying is never updated in toggle useCallback in useStationButton, maybe because no rerender? So force that we know we want to toggle from stop to start
+      toggle(context.radioSetting!, true);
+      // setTimeout(() => {
+      //   console.log(context.radioSetting);
+      //   // isRadioPlaying is never updated in toggle useCallback in useStationButton, maybe because no rerender? So force that we know we want to toggle from stop to start
+      //   toggle(context.radioSetting!, true);
+      // }, 1000);
       // TODO does it need dispatch(setIsRadioPlaying(false)); ? No it is inside toggle
-      toggle(context.radioSetting);
     }
   };
 
