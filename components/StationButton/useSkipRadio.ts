@@ -5,23 +5,21 @@ import {
   lastPlayedItemStoreKey,
 } from "../../constants/StorageKeys";
 import { IRadioSetting } from "../../getSettings";
-import { NowPlayingResponse, PlayContext } from "../context/play-context";
+import { PlayContext } from "../context/play-context";
 import { getMeta } from "./getMetadata";
+import { useStationButton } from "./useStationButton";
 
 let metaUpdateInterval: ReturnType<typeof setInterval>;
 
 export const useSkipRadio = () => {
   const [isSkipping, setIsSkipping] = useState(false);
   const context = useContext(PlayContext);
-  // const lastChannelName = useSelector(
-  //   (state: RootState) => state.radio.lastChannelName
-  // );
-  const [lastMeta, setLastMeta] = useState<NowPlayingResponse>();
-  // const [lastTimestamp, setLastTimestamp] = useState<number>(0);
+  // const [lastMeta, setLastMeta] = useState<NowPlayingResponse>(); // TODO cleanup?
+  const { toggle } = useStationButton();
 
   useEffect(() => {
     return () => {
-      stopSkipping();
+      cancelSkipping();
     };
   }, []);
 
@@ -36,6 +34,7 @@ export const useSkipRadio = () => {
     const lastPlayedItem: ILastPlayedItem =
       lastPlayedItemJson && JSON.parse(lastPlayedItemJson);
 
+    // TODO currently only works for songs started from playlist, not from favorites
     // TODO start playing either context.setLibraryItems or context.setFavoritesDirItems or context.setPlaylist
     console.log(
       // context.playlist,
@@ -52,25 +51,25 @@ export const useSkipRadio = () => {
       lastPlayedItem.name
     ) {
       context.setPlaylist({ id: lastPlayedItem.id, name: lastPlayedItem.name });
-      // TODO if null, start the first
+      // TODO if null, start the first.
       if (lastPlayedItem.songId) {
+        // Start the song (SoundWrapper.handlePlaySong), this stops the radio and calls useStationButton.clearMetaUpdateInterval
         context.setStartSongId(lastPlayedItem.songId);
       }
     }
 
     // setMetaUpdateInterval(
     metaUpdateInterval = setInterval(async () => {
-      console.log("poll"); // TODO remove
+      // console.log("poll"); // TODO remove
       const meta = await getMeta(radioSetting);
       const newTimestamp = meta?.last_updated
         ? new Date(meta?.last_updated).getTime()
         : -1;
 
       if (lastTimestamp > -1 && newTimestamp > lastTimestamp) {
-        console.log("NEW!!!", meta?.title);
+        console.log("NEW!!!", meta?.title); // TODO remove
 
-        // TODO stopSkipping()
-        stopSkipping();
+        await finishSkipping();
         return;
       }
 
@@ -80,23 +79,38 @@ export const useSkipRadio = () => {
         // meta?.last_updated,
         newTimestamp,
         lastTimestamp
-      );
+      ); // TODO remove
       lastTimestamp = newTimestamp;
     }, 10 * 1000); // TODO 30 * 1000
     // );
   };
 
-  const stopSkipping = () => {
+  const finishSkipping = async () => {
+    console.log("FINISH SKIPPING"); // TODO remove
     setIsSkipping(false);
-    // TODO stop interval
+    // stop skip meta interval
     clearInterval(metaUpdateInterval);
-    // TODO stop whatever is playing
-    // TODO switch back to radio
+    // Stop whatever is playing ____
+    // not needed, is done by toggle - await context.pbo?.pauseAsync();
+    // context.setIsPlaying(false);
+    // TODO switch back to radio (automatically stops other playing items)
+    if (context.radioSetting) {
+      // dispatch(setIsRadioPlaying(false));
+      // TODO does it need dispatch(setIsRadioPlaying(false)); ? No it is inside toggle
+      toggle(context.radioSetting);
+    }
+  };
+
+  const cancelSkipping = () => {
+    console.log("STOP SKIPPING"); // TODO remove
+    setIsSkipping(false);
+    // stop skip meta interval
+    clearInterval(metaUpdateInterval);
   };
 
   return {
     startSkipRadio,
     isSkipping,
-    stopSkipping,
+    cancelSkipping,
   };
 };

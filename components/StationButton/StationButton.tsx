@@ -6,11 +6,9 @@ import Colors from "../../constants/Colors";
 import { HEADER_ICON_SIZE } from "../../constants/Layout";
 import useColorScheme from "../../hooks/useColorScheme";
 import { RootState } from "../../store/store";
-import { NowPlayingResponse, PlayContext } from "../context/play-context";
-import { useStationButton } from "./useStationButton";
-import { getMeta, updateMeta } from "./getMetadata";
-import { IRadioSetting } from "../../getSettings";
+import { PlayContext } from "../context/play-context";
 import { useSkipRadio } from "./useSkipRadio";
+import { useStationButton } from "./useStationButton";
 
 export const StationButton: FC = () => {
   const { toggle, clearMetaUpdateInterval } = useStationButton();
@@ -21,7 +19,7 @@ export const StationButton: FC = () => {
     (state: RootState) => state.radio.isRadioPlaying
   );
   const [isLoading, setIsLoading] = useState(false);
-  const { startSkipRadio, isSkipping, stopSkipping } = useSkipRadio();
+  const { startSkipRadio, isSkipping, cancelSkipping } = useSkipRadio();
 
   useEffect(() => {
     return () => {
@@ -30,7 +28,7 @@ export const StationButton: FC = () => {
   }, []);
 
   const handleOnPress = useCallback(async () => {
-    stopSkipping();
+    cancelSkipping();
     if (radioSetting) {
       setIsLoading(true);
       await toggle(radioSetting);
